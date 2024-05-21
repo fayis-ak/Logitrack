@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+ 
 import 'package:logitrack/modules/company/screens/pages/routes/home/pending.dart';
 import 'package:logitrack/modules/company/screens/pages/routes/home/track.dart';
 import 'package:logitrack/modules/company/utils/clippath.dart';
@@ -8,7 +8,7 @@ import 'package:logitrack/modules/company/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
+ 
 import 'package:logitrack/modules/company/widgets/text_style.dart';
 
 import '../../../../utils/responsivesize.dart';
@@ -35,7 +35,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                     child: ClipPath(
                       clipper: WaveClipper(),
                       child: Container(
-                        height: ResponsiveHelper.getHeight(context) * .350,
+                        height: Helper.H(context) * .350,
                         color: Colors.blue.shade100,
                       ),
                     ),
@@ -43,24 +43,24 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                   ClipPath(
                     clipper: WaveClipper(),
                     child: Container(
-                      height: ResponsiveHelper.getHeight(context) * .320,
+                      height: Helper.H(context) * .320,
                       color: ColorsClass.blueshade,
                     ),
                   ),
                   Positioned(
-                      top: ResponsiveHelper.getWidth(context) * .200,
-                      left: ResponsiveHelper.getWidth(context) * .050,
+                      top: Helper.W(context) * .200,
+                      left: Helper.W(context) * .050,
                       child: Column(
                         children: [
                           Row(
                             children: [
                               InkWell(
                                 onTap: () {
-                                  context.goNamed('profile');
+                                  //profile
                                 },
                                 child: CircleAvatar(
                                   radius:
-                                      ResponsiveHelper.getWidth(context) * .080,
+                                      Helper.W(context) * .080,
                                   backgroundImage: AssetImage(
                                     'assets/images/courier/fedex.png',
                                   ),
@@ -68,7 +68,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                               ),
                               SizedBox(
                                 width:
-                                    ResponsiveHelper.getWidth(context) * .020,
+                                    Helper.W(context) * .020,
                               ),
                               Column(
                                 children: [
@@ -89,11 +89,11 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                         ],
                       )),
                   Positioned(
-                    top: ResponsiveHelper.getWidth(context) * .200,
-                    right: ResponsiveHelper.getWidth(context) * .150,
+                    top: Helper.W(context) * .200,
+                    right: Helper.W(context) * .150,
                     child: InkWell(
                       onTap: () {
-                        context.goNamed('notification');
+                        // notofication
                       },
                       child: Icon(
                         Icons.notifications_active,
@@ -107,14 +107,14 @@ class _HomepageCompanyState extends State<HomepageCompany> {
             Row(
               children: [
                 SizedBox(
-                  width: ResponsiveHelper.getWidth(context) * .070,
+                  width: Helper.W(context) * .070,
                 ),
                 Text('Ongoing'),
               ],
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: ResponsiveHelper.getWidth(context) * .050,
+                horizontal: Helper.W(context) * .050,
               ),
               child: ListView.separated(
                 physics: BouncingScrollPhysics(),
@@ -123,32 +123,32 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                   return Material(
                     elevation: 4,
                     borderRadius: BorderRadius.circular(
-                      ResponsiveHelper.getWidth(context) * .020,
+                      Helper.W(context) * .020,
                     ),
                     child: Container(
                       width: double.infinity,
-                      height: ResponsiveHelper.getHeight(context) * .280,
+                      height: Helper.H(context) * .280,
                       // color: Colors.grey,
                       child: Column(
                         children: [
                           SizedBox(
-                            height: ResponsiveHelper.getHeight(context) * .020,
+                            height: Helper.H(context) * .020,
                           ),
                           Container(
-                            width: ResponsiveHelper.getWidth(context) * .750,
-                            height: ResponsiveHelper.getHeight(context) * .200,
+                            width: Helper.W(context) * .750,
+                            height: Helper.H(context) * .200,
                             decoration: BoxDecoration(
                               color: Colors.blue.shade50,
                               borderRadius: BorderRadius.circular(
-                                ResponsiveHelper.getWidth(context) * .030,
+                                Helper.W(context) * .030,
                               ),
                             ),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                 vertical:
-                                    ResponsiveHelper.getWidth(context) * .020,
+                                    Helper.W(context) * .020,
                                 horizontal:
-                                    ResponsiveHelper.getWidth(context) * .030,
+                                    Helper.W(context) * .030,
                               ),
                               child: Column(
                                 children: [
@@ -164,7 +164,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                             text: 'Clara',
                                             style: AppTextStyles.boldText(
                                               fontSize:
-                                                  ResponsiveHelper.getWidth(
+                                                  Helper.W(
                                                           context) *
                                                       .050,
                                             ),
@@ -173,7 +173,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                             text: '12 march 2024 on 3:00 pm',
                                             style: TextStyle(
                                               fontSize:
-                                                  ResponsiveHelper.getWidth(
+                                                  Helper.W(
                                                           context) *
                                                       .030,
                                               color: Colors.grey,
@@ -188,7 +188,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                                 '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
                                             style: AppTextStyles.regularText(
                                               fontSize:
-                                                  ResponsiveHelper.getWidth(
+                                                  Helper.W(
                                                           context) *
                                                       .025,
                                               color: Colors.grey,
@@ -203,13 +203,13 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                             ),
                           ),
                           SizedBox(
-                            height: ResponsiveHelper.getWidth(context) * .020,
+                            height: Helper.W(context) * .020,
                           ),
                           Row(
                             children: [
                               SizedBox(
                                 width:
-                                    ResponsiveHelper.getWidth(context) * .620,
+                                    Helper.W(context) * .620,
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -221,12 +221,12 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                 },
                                 child: Container(
                                   width:
-                                      ResponsiveHelper.getWidth(context) * .200,
-                                  height: ResponsiveHelper.getHeight(context) *
+                                      Helper.W(context) * .200,
+                                  height: Helper.H(context) *
                                       .030,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
-                                      ResponsiveHelper.getWidth(context) * .010,
+                                      Helper.W(context) * .010,
                                     ),
                                     border: Border.all(),
                                   ),
@@ -236,7 +236,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                       Text(
                                         'On the way',
                                         style: AppTextStyles.regularText(
-                                          fontSize: ResponsiveHelper.getWidth(
+                                          fontSize: Helper.W(
                                                   context) *
                                               .030,
                                         ),
@@ -268,14 +268,14 @@ class _HomepageCompanyState extends State<HomepageCompany> {
             Row(
               children: [
                 SizedBox(
-                  width: ResponsiveHelper.getWidth(context) * .070,
+                  width: Helper.W(context) * .070,
                 ),
                 Text('Pending'),
               ],
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: ResponsiveHelper.getWidth(context) * .050),
+                  horizontal: Helper.W(context) * .050),
               child: ListView.separated(
                 physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
@@ -290,17 +290,17 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                     },
                     child: Container(
                       width: double.infinity,
-                      height: ResponsiveHelper.getHeight(context) * .200,
+                      height: Helper.H(context) * .200,
                       decoration: BoxDecoration(
                         color: Colors.blue.shade50,
                         borderRadius: BorderRadius.circular(
-                          ResponsiveHelper.getWidth(context) * .030,
+                          Helper.W(context) * .030,
                         ),
                       ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                          vertical: ResponsiveHelper.getWidth(context) * .020,
-                          horizontal: ResponsiveHelper.getWidth(context) * .030,
+                          vertical: Helper.W(context) * .020,
+                          horizontal: Helper.W(context) * .030,
                         ),
                         child: Column(
                           children: [
@@ -314,7 +314,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                       text: 'Clara',
                                       style: AppTextStyles.boldText(
                                         fontSize:
-                                            ResponsiveHelper.getWidth(context) *
+                                            Helper.W(context) *
                                                 .050,
                                       ),
                                     ),
@@ -322,7 +322,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                       text: '12 march 2024 on 3:00 pm',
                                       style: TextStyle(
                                         fontSize:
-                                            ResponsiveHelper.getWidth(context) *
+                                            Helper.W(context) *
                                                 .030,
                                         color: Colors.grey,
                                       ),
@@ -336,7 +336,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                           '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
                                       style: AppTextStyles.regularText(
                                         fontSize:
-                                            ResponsiveHelper.getWidth(context) *
+                                            Helper.W(context) *
                                                 .025,
                                         color: Colors.grey,
                                       ),
@@ -356,7 +356,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                       style: AppTextStyles.regularText(
                                         color: Colors.grey,
                                         fontSize:
-                                            ResponsiveHelper.getWidth(context) *
+                                            Helper.W(context) *
                                                 .020,
                                       ),
                                     ),
@@ -379,7 +379,7 @@ class _HomepageCompanyState extends State<HomepageCompany> {
               ),
             ),
             SizedBox(
-              height: ResponsiveHelper.getHeight(context) * .060,
+              height: Helper.H(context) * .060,
             )
           ],
         ),

@@ -1,14 +1,23 @@
+import 'dart:developer';
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:logitrack/models/addproductorder.dart';
 import 'package:logitrack/modules/deliveryboy/screens/bottom_navbar.dart';
 
 import 'package:logitrack/modules/deliveryboy/widgets/container.dart';
 import 'package:logitrack/modules/deliveryboy/widgets/text_style.dart';
+import 'package:logitrack/services/firebase_controller.dart';
+import 'package:logitrack/tsetssss.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../utils/colors.dart';
 import '../../../../../../utils/responsivesize.dart';
 
 class ShipmentDetails extends StatefulWidget {
-  const ShipmentDetails({super.key});
+  final Addproductmodel indexdata;
+  const ShipmentDetails({super.key, required this.indexdata});
 
   @override
   State<ShipmentDetails> createState() => _ShipmentDetailsState();
@@ -24,6 +33,16 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
 
   bool _isSelected5 = false;
 
+  List orderstaus = [
+    'Order conFormed',
+    'Vehicle Assaigned',
+    'shipment picked',
+    'in transit',
+    'Shipment delivery',
+  ];
+
+  int orderstus = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,22 +54,22 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: ResponsiveHelper.getWidth(context) * .050,
+                horizontal: Helper.W(context) * .050,
               ),
               child: Column(
                 children: [
                   Material(
                     elevation: 4,
                     borderRadius: BorderRadius.circular(
-                      ResponsiveHelper.getWidth(context) * .050,
+                      Helper.W(context) * .050,
                     ),
                     child: Container(
                       width: double.infinity,
-                      height: ResponsiveHelper.getHeight(context) * .250,
+                      height: Helper.H(context) * .250,
                       decoration: BoxDecoration(
                         border: Border.all(),
                         borderRadius: BorderRadius.circular(
-                          ResponsiveHelper.getWidth(context) * .050,
+                          Helper.W(context) * .050,
                         ),
                       ),
                       child: Row(
@@ -58,43 +77,35 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                           Expanded(
                             child: Padding(
                               padding: EdgeInsets.only(
-                                top: ResponsiveHelper.getWidth(context) * .030,
-                                left: ResponsiveHelper.getWidth(context) * .030,
+                                top: Helper.W(context) * .030,
+                                left: Helper.W(context) * .030,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Clara',
+                                    widget.indexdata.Deliveryname,
                                     style: AppTextStyles.regularText(
-                                      fontSize:
-                                          ResponsiveHelper.getWidth(context) *
-                                              .050,
+                                      fontSize: Helper.W(context) * .050,
                                     ),
                                   ),
                                   Text(
-                                    '12march 2024 on 3:00pm ',
+                                    widget.indexdata.orderdate.toString(),
                                     style: AppTextStyles.regularText(
-                                      fontSize:
-                                          ResponsiveHelper.getWidth(context) *
-                                              .030,
+                                      fontSize: Helper.W(context) * .030,
                                       color: Colors.grey,
                                     ),
                                   ),
                                   Text(
                                     'Pickup From',
                                     style: AppTextStyles.regularText(
-                                      fontSize:
-                                          ResponsiveHelper.getWidth(context) *
-                                              .050,
+                                      fontSize: Helper.W(context) * .050,
                                     ),
                                   ),
                                   Text(
-                                    '54 w Nob Hill Blvd city/\n Town yakima State/\nPostal code98902',
+                                    widget.indexdata.Pickupaddress,
                                     style: AppTextStyles.regularText(
-                                      fontSize:
-                                          ResponsiveHelper.getWidth(context) *
-                                              .030,
+                                      fontSize: Helper.W(context) * .030,
                                       color: Colors.grey,
                                     ),
                                   ),
@@ -102,47 +113,36 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                               ),
                             ),
                           ),
-                          SizedBox(
-                              width: ResponsiveHelper.getWidth(context) * .030),
+                          SizedBox(width: Helper.W(context) * .030),
                           Expanded(
                             child: Padding(
                               padding: EdgeInsets.only(
-                                top: ResponsiveHelper.getWidth(context) * .030,
-                                left: ResponsiveHelper.getWidth(context) * .030,
+                                top: Helper.W(context) * .030,
+                                left: Helper.W(context) * .030,
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   ContainerWidget(
                                     color: ColorsClass.greenColor,
-                                    width: ResponsiveHelper.getWidth(context) *
-                                        .250,
-                                    height:
-                                        ResponsiveHelper.getHeight(context) *
-                                            .030,
+                                    width: Helper.W(context) * .250,
+                                    height: Helper.H(context) * .030,
                                     text: 'Accept',
-                                    radius: ResponsiveHelper.getWidth(context) *
-                                        .030,
+                                    radius: Helper.W(context) * .030,
                                   ),
                                   SizedBox(
-                                    height:
-                                        ResponsiveHelper.getHeight(context) *
-                                            .030,
+                                    height: Helper.H(context) * .030,
                                   ),
                                   Text(
                                     'Delivery to',
                                     style: AppTextStyles.regularText(
-                                      fontSize:
-                                          ResponsiveHelper.getWidth(context) *
-                                              .050,
+                                      fontSize: Helper.W(context) * .050,
                                     ),
                                   ),
                                   Text(
-                                    '54 w Nob Hill Blvd city/\n Town yakima State/\nPostal code98902',
+                                    '${widget.indexdata.Deliveryadress}',
                                     style: AppTextStyles.regularText(
-                                      fontSize:
-                                          ResponsiveHelper.getWidth(context) *
-                                              .030,
+                                      fontSize: Helper.W(context) * .030,
                                       color: Colors.grey,
                                     ),
                                   ),
@@ -155,65 +155,189 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                     ),
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
-                  MyCheckboxListTile(
-                    onChanged: (value) {
-                      setState(() {
-                        _isSelected = value!;
-                      });
+                  // MyCheckboxListTile(
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       _isSelected = value!;
+                  //     });
+                  //   },
+                  //   title: 'Shipment Created',
+                  //   value: _isSelected,
+                  // ),
+                  // SizedBox(
+                  //   height: Helper.H(context) * .020,
+                  // ),
+                  // MyCheckboxListTile(
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       _isSelected2 = value!;
+                  //     });
+                  //   },
+                  //   title: 'Vehicle Assigned',
+                  //   value: _isSelected2,
+                  // ),
+                  // SizedBox(
+                  //   height: Helper.H(context) * .020,
+                  // ),
+                  // MyCheckboxListTile(
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       _isSelected3 = value!;
+                  //     });
+                  //   },
+                  //   title: 'Shipment Picked',
+                  //   value: _isSelected3,
+                  // ),
+                  // SizedBox(
+                  //   height: Helper.H(context) * .020,
+                  // ),
+                  // MyCheckboxListTile(
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       _isSelected4 = value!;
+                  //     });
+                  //   },
+                  //   title: 'In Transit',
+                  //   value: _isSelected4,
+                  // ),
+                  // SizedBox(
+                  //   height: Helper.H(context) * .020,
+                  // ),
+                  // MyCheckboxListTile(
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       _isSelected5 = value!;
+                  //     });
+                  //   },
+                  //   title: 'Shipment Delivered',
+                  //   value: _isSelected5,
+                  // ),
+
+                  Consumer<FirebaseController>(
+                    builder: (context, instance, _) {
+                      return FutureBuilder(
+                          future: instance.deliverystatus(widget.indexdata.id),
+                          builder: (context, snapshot) {
+                            final data = instance.deliverydetails;
+
+                            // log(widget.indexdata.id as String);
+
+                            // log(data!.orderstatus.toString());
+
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text('Order request'),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(data!.orderstatus.toString()),
+                                    Spacer(),
+                                    IconButton(
+                                        onPressed: () {
+                                          db
+                                              .collection('addNewOrder')
+                                              .doc(widget.indexdata.id)
+                                              .update({
+                                            'orderstatus': 'order pending'
+                                          });
+                                        },
+                                        icon:
+                                            Icon(Icons.check_box_outline_blank))
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text('order cancel'),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(data!.orderstatus.toString()),
+                                    Spacer(),
+                                    IconButton(
+                                        onPressed: () {
+                                          db
+                                              .collection('addNewOrder')
+                                              .doc(widget.indexdata.id)
+                                              .update({
+                                            'orderstatus': 'order cancel'
+                                          });
+                                        },
+                                        icon:
+                                            Icon(Icons.check_box_outline_blank))
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text('Complete order'),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(data!.orderstatus.toString()),
+                                    Spacer(),
+                                    IconButton(
+                                        onPressed: () {
+                                          db
+                                              .collection('addNewOrder')
+                                              .doc(widget.indexdata.id)
+                                              .update(
+                                                  {'orderstatus': 'Complete'});
+                                        },
+                                        icon:
+                                            Icon(Icons.check_box_outline_blank))
+                                  ],
+                                ),
+                              ],
+                            );
+                          }
+
+                          //   return Column(
+                          //     children: [
+                          //       ListView.separated(
+                          //         itemCount: orderstaus.length,
+                          //         shrinkWrap: true,
+                          //         itemBuilder: (context, index) {
+                          //           return Row(
+                          //             children: [
+                          //               Text(orderstaus[index]),
+                          //               Spacer(),
+                          //               Container(
+                          //                 width: Helper.H(context) * .020,
+                          //                 height: Helper.H(context) * .020,
+                          //                 child: Icon(
+                          //                   widget.indexdata.orderstatus ==
+                          //                           'orderconformed'
+                          //                       ? Icons.check_box
+                          //                       : Icons
+                          //                           .check_box_outline_blank_rounded,
+                          //                   color: widget.indexdata.orderstatus ==
+                          //                           'orderconformed'
+                          //                       ? Colors.blue
+                          //                       : Colors.red,
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           );
+                          //         },
+                          //         separatorBuilder: (context, index) {
+                          //           return SizedBox(
+                          //             height: Helper.H(context) * .050,
+                          //           );
+                          //         },
+                          //       ),
+                          //       SizedBox(
+                          //         height: Helper.H(context) * .050,
+                          //       ),
+                          //     ],
+                          //   );
+                          // },
+                          );
                     },
-                    title: 'Shipment Created',
-                    value: _isSelected,
                   ),
-                  SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .020,
-                  ),
-                  MyCheckboxListTile(
-                    onChanged: (value) {
-                      setState(() {
-                        _isSelected2 = value!;
-                      });
-                    },
-                    title: 'Vehicle Assigned',
-                    value: _isSelected2,
-                  ),
-                  SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .020,
-                  ),
-                  MyCheckboxListTile(
-                    onChanged: (value) {
-                      setState(() {
-                        _isSelected3 = value!;
-                      });
-                    },
-                    title: 'Shipment Picked',
-                    value: _isSelected3,
-                  ),
-                  SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .020,
-                  ),
-                  MyCheckboxListTile(
-                    onChanged: (value) {
-                      setState(() {
-                        _isSelected4 = value!;
-                      });
-                    },
-                    title: 'In Transit',
-                    value: _isSelected4,
-                  ),
-                  SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .020,
-                  ),
-                  MyCheckboxListTile(
-                    onChanged: (value) {
-                      setState(() {
-                        _isSelected5 = value!;
-                      });
-                    },
-                    title: 'Shipment Delivered',
-                    value: _isSelected5,
-                  ),
+                  // Text(widget.indexdata.orderstatus)
                 ],
               ),
             )

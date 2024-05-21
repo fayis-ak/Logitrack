@@ -9,29 +9,37 @@ class ContainerWidget extends StatelessWidget {
   final double radius;
   final String text;
   final double? textsize;
+  final Alignment? align;
+  final Function()? ontap;
   const ContainerWidget(
       {super.key,
       required this.width,
       required this.height,
       required this.text,
       required this.radius,
+      this.align,
+      this.ontap,
       this.textsize});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-          color: ColorsClass.SplashScreenbg,
-          borderRadius: BorderRadius.circular(radius)),
-      child: Center(
-        child: Text(
-          text,
-          style: GoogleFonts.heebo(
-            fontSize: ResponsiveHelper.getWidth(context) * .060,
-            color: ColorsClass.whiteColor,
-            fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: ontap,
+      child: Container(
+        alignment: align,
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+            color: ColorsClass.SplashScreenbg,
+            borderRadius: BorderRadius.circular(radius)),
+        child: Center(
+          child: Text(
+            text,
+            style: GoogleFonts.heebo(
+              fontSize: Helper.W(context) * .060,
+              color: ColorsClass.whiteColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),

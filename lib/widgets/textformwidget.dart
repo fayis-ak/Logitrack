@@ -3,16 +3,31 @@ import 'package:logitrack/utils/colors.dart';
 import 'package:logitrack/utils/responsivesize.dart';
 
 class Textformwidget extends StatelessWidget {
-  final String hint;
+  final String? hint;
   final double radius;
-  const Textformwidget({super.key, required this.hint, required this.radius});
+  final TextEditingController controller;
+  String? Function(String?)? validator;
+  final IconButton? suffix;
+  final bool? obscure;
+  Textformwidget({
+    super.key,
+    required this.validator,
+    this.hint,
+    required this.radius,
+    required this.controller,
+    this.suffix,
+    this.obscure,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: obscure ?? false,
+      controller: controller,
       decoration: InputDecoration(
+        suffixIcon: suffix,
         contentPadding: EdgeInsets.all(
-          ResponsiveHelper.getWidth(context) * .010,
+          Helper.W(context) * .010,
         ),
         hintText: hint,
         hintStyle: TextStyle(
@@ -23,20 +38,21 @@ class Textformwidget extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius:
-              BorderRadius.circular(ResponsiveHelper.getWidth(context) * .020),
+              BorderRadius.circular(Helper.W(context) * .020),
           borderSide: BorderSide(
             color: ColorsClass.SplashScreenbg,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius:
-              BorderRadius.circular(ResponsiveHelper.getWidth(context) * .020),
+              BorderRadius.circular(Helper.W(context) * .020),
           borderSide: BorderSide(
             color: ColorsClass.SplashScreenbg,
             width: 1.0,
           ),
         ),
       ),
+      validator: validator,
     );
   }
 }

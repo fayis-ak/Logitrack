@@ -23,15 +23,15 @@ Widget notification(context) {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            vertical: ResponsiveHelper.getWidth(context) * .020,
-            horizontal: ResponsiveHelper.getWidth(context) * .020,
+            vertical: Helper.W(context) * .020,
+            horizontal: Helper.W(context) * .020,
           ),
           child: Container(
             width: double.infinity,
-            height: ResponsiveHelper.getHeight(context) * .920,
+            height: Helper.H(context) * .920,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(
-                ResponsiveHelper.getWidth(context) * .030,
+                Helper.W(context) * .030,
               ),
               color: ColorsClass.blueshade,
             ),
@@ -43,20 +43,20 @@ Widget notification(context) {
                 // ),
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      vertical: ResponsiveHelper.getWidth(context) * .010,
-                      horizontal: ResponsiveHelper.getWidth(context) * .020),
+                      vertical: Helper.W(context) * .010,
+                      horizontal: Helper.W(context) * .020),
                   child: Material(
                     elevation: 4,
                     borderRadius: BorderRadius.circular(
-                      ResponsiveHelper.getWidth(context) * .020,
+                      Helper.W(context) * .020,
                     ),
                     child: Container(
-                      width: ResponsiveHelper.getWidth(context) * .800,
-                      height: ResponsiveHelper.getHeight(context) * .800,
+                      width: Helper.W(context) * .800,
+                      height: Helper.H(context) * .800,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(
-                          ResponsiveHelper.getWidth(context) * .020,
+                          Helper.W(context) * .020,
                         ),
                       ),
                       child: Row(
@@ -64,7 +64,7 @@ Widget notification(context) {
                           Expanded(
                             child: Padding(
                               padding: EdgeInsets.all(
-                                ResponsiveHelper.getWidth(context) * .020,
+                                Helper.W(context) * .020,
                               ),
                               child: Container(
                                 // color: Colors.red,
@@ -73,20 +73,20 @@ Widget notification(context) {
                                       return Material(
                                         elevation: 4,
                                         borderRadius: BorderRadius.circular(
-                                          ResponsiveHelper.getWidth(context) *
+                                          Helper.W(context) *
                                               .010,
                                         ),
                                         child: Container(
-                                          width: ResponsiveHelper.getWidth(
+                                          width: Helper.W(
                                                   context) *
                                               .300,
-                                          height: ResponsiveHelper.getHeight(
+                                          height: Helper.H(
                                                   context) *
                                               .090,
                                           decoration: BoxDecoration(
                                             color: Color(0xFFD3EBF7),
                                             borderRadius: BorderRadius.circular(
-                                              ResponsiveHelper.getWidth(
+                                              Helper.W(
                                                       context) *
                                                   .010,
                                             ),
@@ -95,17 +95,17 @@ Widget notification(context) {
                                             children: [
                                               SizedBox(
                                                 width:
-                                                    ResponsiveHelper.getWidth(
+                                                    Helper.W(
                                                             context) *
                                                         .020,
                                               ),
                                               Container(
                                                 width:
-                                                    ResponsiveHelper.getWidth(
+                                                    Helper.W(
                                                             context) *
                                                         .050,
                                                 height:
-                                                    ResponsiveHelper.getHeight(
+                                                    Helper.H(
                                                             context) *
                                                         .030,
                                                 color: Colors.green,
@@ -118,7 +118,7 @@ Widget notification(context) {
                                     },
                                     separatorBuilder: (context, index) {
                                       return SizedBox(
-                                        height: ResponsiveHelper.getHeight(
+                                        height: Helper.H(
                                                 context) *
                                             .030,
                                       );
@@ -128,12 +128,12 @@ Widget notification(context) {
                             ),
                           ),
                           SizedBox(
-                            width: ResponsiveHelper.getWidth(context) * .020,
+                            width: Helper.W(context) * .020,
                           ),
                           Expanded(
                             child: Padding(
                               padding: EdgeInsets.all(
-                                  ResponsiveHelper.getWidth(context) * .020),
+                                  Helper.W(context) * .020),
                               child: Container(
                                 // color: Colors.red,
                                 child: ListView.separated(
@@ -141,20 +141,20 @@ Widget notification(context) {
                                       return Material(
                                         elevation: 4,
                                         borderRadius: BorderRadius.circular(
-                                          ResponsiveHelper.getWidth(context) *
+                                          Helper.W(context) *
                                               .010,
                                         ),
                                         child: Container(
-                                          width: ResponsiveHelper.getWidth(
+                                          width: Helper.W(
                                                   context) *
                                               .300,
-                                          height: ResponsiveHelper.getHeight(
+                                          height: Helper.H(
                                                   context) *
                                               .090,
                                           decoration: BoxDecoration(
                                             color: Color(0xFFD3EBF7),
                                             borderRadius: BorderRadius.circular(
-                                              ResponsiveHelper.getWidth(
+                                              Helper.W(
                                                       context) *
                                                   .010,
                                             ),
@@ -163,17 +163,17 @@ Widget notification(context) {
                                             children: [
                                               SizedBox(
                                                 width:
-                                                    ResponsiveHelper.getWidth(
+                                                    Helper.W(
                                                             context) *
                                                         .020,
                                               ),
                                               Container(
                                                 width:
-                                                    ResponsiveHelper.getWidth(
+                                                    Helper.W(
                                                             context) *
                                                         .050,
                                                 height:
-                                                    ResponsiveHelper.getHeight(
+                                                    Helper.H(
                                                             context) *
                                                         .030,
                                                 color: Colors.green,
@@ -186,7 +186,7 @@ Widget notification(context) {
                                     },
                                     separatorBuilder: (context, index) {
                                       return SizedBox(
-                                        height: ResponsiveHelper.getHeight(
+                                        height: Helper.H(
                                                 context) *
                                             .030,
                                       );

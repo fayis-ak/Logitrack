@@ -23,7 +23,7 @@ class Textformwidget extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(
-          ResponsiveHelper.getWidth(context) * .010,
+          Helper.W(context) * .010,
         ),
         hintText: hint,
         hintStyle: TextStyle(
@@ -34,14 +34,14 @@ class Textformwidget extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius:
-              BorderRadius.circular(ResponsiveHelper.getWidth(context) * .020),
+              BorderRadius.circular(Helper.W(context) * .020),
           borderSide: BorderSide(
             color: ColorsClass.SplashScreenbg,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius:
-              BorderRadius.circular(ResponsiveHelper.getWidth(context) * .020),
+              BorderRadius.circular(Helper.W(context) * .020),
           borderSide: BorderSide(
             color: ColorsClass.SplashScreenbg,
             width: 1.0,

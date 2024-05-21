@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
+ 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logitrack/modules/deliveryboy/screens/auth_service/Loggin_screen.dart';
 import 'package:logitrack/modules/user/screens/boarding_screen/second_bording.dart';
@@ -20,7 +20,7 @@ class BoardingScreen extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            height: ResponsiveHelper.getHeight(context) * .300,
+            height: Helper.H(context) * .300,
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
@@ -29,16 +29,16 @@ class BoardingScreen extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: ResponsiveHelper.getHeight(context) * .040,
+            height: Helper.H(context) * .040,
           ),
           Text(
             'Unlocking the Future of \n Logisticks',
             style: GoogleFonts.heebo(
-              fontSize: ResponsiveHelper.getWidth(context) * .080,
+              fontSize: Helper.W(context) * .080,
             ),
           ),
           SizedBox(
-            height: ResponsiveHelper.getHeight(context) * .150,
+            height: Helper.H(context) * .150,
           ),
           GestureDetector(
             onTap: () {
@@ -49,9 +49,9 @@ class BoardingScreen extends StatelessWidget {
                   ));
             },
             child: ContainerWidget(
-              width: ResponsiveHelper.getWidth(context) * .350,
-              height: ResponsiveHelper.getHeight(context) * .050,
-              radius: ResponsiveHelper.getWidth(context) * .050,
+              width: Helper.W(context) * .350,
+              height: Helper.H(context) * .050,
+              radius: Helper.W(context) * .050,
               text: 'Next',
             ),
           )

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:go_router/go_router.dart';
+ 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logitrack/modules/company/utils/colors.dart';
 import 'package:logitrack/modules/company/widgets/container.dart';
@@ -29,7 +29,7 @@ class LogginScreenCompany extends StatelessWidget {
       child: Scaffold(
         body: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: ResponsiveHelper.getWidth(context) * .080,
+            horizontal: Helper.W(context) * .080,
             // vertical: ResponsiveHelper.getHeight(context) * .080,
           ),
           child: SingleChildScrollView(
@@ -38,7 +38,7 @@ class LogginScreenCompany extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .040,
+                    height: Helper.H(context) * .040,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -50,7 +50,7 @@ class LogginScreenCompany extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .080,
+                    height: Helper.H(context) * .080,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,13 +58,13 @@ class LogginScreenCompany extends StatelessWidget {
                       TExtWidget(
                         text: 'Username',
                         style: GoogleFonts.heebo(
-                          fontSize: ResponsiveHelper.getWidth(context) * .040,
+                          fontSize: Helper.W(context) * .040,
                         ),
                       ),
                       Textformwidget(
                         controller: _nameController,
                         hint: 'Name',
-                        radius: ResponsiveHelper.getWidth(context) * .020,
+                        radius: Helper.W(context) * .020,
                         validation: (value) {
                           if (value!.isEmpty) {
                             return 'required';
@@ -75,7 +75,7 @@ class LogginScreenCompany extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .050,
+                    height: Helper.H(context) * .050,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,13 +83,13 @@ class LogginScreenCompany extends StatelessWidget {
                       TExtWidget(
                         text: 'Password',
                         style: GoogleFonts.heebo(
-                          fontSize: ResponsiveHelper.getWidth(context) * .040,
+                          fontSize: Helper.W(context) * .040,
                         ),
                       ),
                       Textformwidget(
                         controller: _passwordController,
                         hint: 'password',
-                        radius: ResponsiveHelper.getWidth(context) * .020,
+                        radius: Helper.W(context) * .020,
                         validation: (value) {
                           if (value!.isEmpty) {
                             return 'required';
@@ -100,7 +100,7 @@ class LogginScreenCompany extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .020,
+                    height: Helper.H(context) * .020,
                   ),
                   Row(
                     children: [
@@ -113,12 +113,12 @@ class LogginScreenCompany extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .080,
+                    height: Helper.H(context) * .080,
                   ),
                   GestureDetector(
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        context.goNamed('home');
+                       ///home
                       } else {
                         print('error');
                       }
@@ -126,58 +126,58 @@ class LogginScreenCompany extends StatelessWidget {
                     child: ContainerWidget(
                                         color: ColorsClass.SplashScreenbg,
 
-                      width: ResponsiveHelper.getWidth(context) * .600,
-                      height: ResponsiveHelper.getHeight(context) * .070,
+                      width: Helper.W(context) * .600,
+                      height: Helper.H(context) * .070,
                       text: 'Login',
-                      radius: ResponsiveHelper.getWidth(context) * .050,
+                      radius: Helper.W(context) * .050,
                     ),
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: ResponsiveHelper.getWidth(context) * .030,
+                        width: Helper.W(context) * .030,
                         child: Divider(),
                       ),
                       Text('or'),
                       SizedBox(
-                        width: ResponsiveHelper.getWidth(context) * .030,
+                        width: Helper.W(context) * .030,
                         child: Divider(),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .040,
+                    height: Helper.H(context) * .040,
                   ),
                   Container(
-                    width: ResponsiveHelper.getWidth(context) * .800,
-                    height: ResponsiveHelper.getHeight(context) * .080,
+                    width: Helper.W(context) * .800,
+                    height: Helper.H(context) * .080,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
-                        ResponsiveHelper.getWidth(context) * .020,
+                        Helper.W(context) * .020,
                       ),
                       border: Border.all(color: ColorsClass.SplashScreenbg),
                     ),
                     child: Row(
                       children: [
                         SizedBox(
-                          width: ResponsiveHelper.getWidth(context) * .080,
+                          width: Helper.W(context) * .080,
                         ),
                         Image.asset(
                           'assets/images/Google.png',
                         ),
                         SizedBox(
-                          width: ResponsiveHelper.getWidth(context) * .010,
+                          width: Helper.W(context) * .010,
                         ),
                         Text('Continue with google')
                       ],
                     ),
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .040,
+                    height: Helper.H(context) * .040,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -188,13 +188,13 @@ class LogginScreenCompany extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          context.goNamed('signup');
+                        //signup
                         },
                         child: TExtWidget(
                           text: 'Sign in',
                           style: GoogleFonts.heebo(
                             color: ColorsClass.SplashScreenbg,
-                            fontSize: ResponsiveHelper.getWidth(context) * .050,
+                            fontSize: Helper.W(context) * .050,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

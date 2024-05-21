@@ -1,16 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:logitrack/modules/deliveryboy/screens/pages/order.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/routes/home/cenceled.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/routes/home/completed.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/routes/home/pending.dart';
- 
+
 import 'package:logitrack/modules/deliveryboy/widgets/container.dart';
 import 'package:logitrack/modules/deliveryboy/widgets/text_style.dart';
 import 'package:logitrack/modules/deliveryboy/widgets/textformwidget.dart';
+import 'package:logitrack/services/firebase_controller.dart';
 import 'package:logitrack/utils/responsivesize.dart';
+import 'package:logitrack/utils/strings.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../utils/colors.dart';
 
@@ -24,248 +29,298 @@ class HomepageDelivery extends StatefulWidget {
 class _HomepageDeliveryState extends State<HomepageDelivery> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: ResponsiveHelper.getHeight(context) * .080,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              // vertical: ResponsiveHelper.getWidth(context) * .180,
-              horizontal: ResponsiveHelper.getWidth(context) * .110,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: ResponsiveHelper.getWidth(context) * .080,
-                      backgroundImage: AssetImage('assets/images/userimg.png'),
-                    ),
-                    SizedBox(
-                      width: ResponsiveHelper.getWidth(context) * .050,
-                    ),
-                    Column(
-                      children: [
-                        Text('Hi'),
-                        Text('Clara'),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .050,
-                ),
-                Textformwidget(
-                  hint: 'Enter Tracking id number',
-                  radius: ResponsiveHelper.getWidth(context) * .020,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveHelper.getWidth(context) * .020,
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .050,
-                ),
-                //first row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Mainscreencontainer(
-                      ontap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Orderbottomdelivery(),
-                            ));
-                      },
-                      width: ResponsiveHelper.getWidth(context) * .280,
-                      height: ResponsiveHelper.getHeight(context) * .110,
-                      image: 'assets/images/newordercont.png',
-                    ),
-                    Mainscreencontainer(
-                      ontap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PendingScreenDelivery(),
-                          ),
-                        );
-                      },
-                      width: ResponsiveHelper.getWidth(context) * .280,
-                      height: ResponsiveHelper.getHeight(context) * .110,
-                      image: 'assets/imagesdelivery/Clock.png',
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .020,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text('OrderRequest'),
-                    Text('Pending'),
-                  ],
-                ),
-                SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .050,
-                ),
+    return SingleChildScrollView(child: Consumer<FirebaseController>(
+      builder: (context, instancedeli, child) {
+        return FutureBuilder(
+          future: instancedeli.fetchigdelivery(auth.currentUser!.uid),
+          builder: (context, snapshot) {
+            final dat = instancedeli.deliveryboy;
 
-                //second row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Mainscreencontainer(
-                      ontap: () {
-                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Completed(),
-                          ),
-                        );
-                      },
-                      width: ResponsiveHelper.getWidth(context) * .280,
-                      height: ResponsiveHelper.getHeight(context) * .110,
-                      image: 'assets/imagesdelivery/Check All.png',
-                    ),
-                    Mainscreencontainer(
-                      ontap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Canceled(),
-                          ),
-                        );
-                      },
-                      width: ResponsiveHelper.getWidth(context) * .280,
-                      height: ResponsiveHelper.getHeight(context) * .110,
-                      image: 'assets/imagesdelivery/Unavailable.png',
-                    ),
-                  ],
-                ),
+            log(snapshot.data.toString());
+
+            return Column(
+              children: [
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .020,
+                  height: Helper.H(context) * .080,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text('Completed'),
-                    Text('Canceled'),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: ResponsiveHelper.getHeight(context) * .050,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveHelper.getWidth(context) * .040,
-            ),
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemCount: 2,
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: double.infinity,
-                    height: ResponsiveHelper.getHeight(context) * .200,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(
-                        ResponsiveHelper.getWidth(context) * .030,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: ResponsiveHelper.getWidth(context) * .020,
-                        horizontal: ResponsiveHelper.getWidth(context) * .030,
-                      ),
-                      child: Column(
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    // vertical: ResponsiveHelper.getWidth(context) * .180,
+                    horizontal: Helper.W(context) * .110,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          CircleAvatar(
+                            radius: Helper.W(context) * .080,
+                            backgroundImage:
+                                AssetImage('assets/images/userimg.png'),
+                          ),
+                          SizedBox(
+                            width: Helper.W(context) * .050,
+                          ),
+                          Column(
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextWidget(
-                                    text: 'Clara',
-                                    style: AppTextStyles.boldText(
-                                      fontSize:
-                                          ResponsiveHelper.getWidth(context) *
-                                              .050,
-                                    ),
-                                  ),
-                                  TextWidget(
-                                    text: '12 march 2024 on 3:00 pm',
-                                    style: TextStyle(
-                                      fontSize:
-                                          ResponsiveHelper.getWidth(context) *
-                                              .030,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  TextWidget(
-                                    text: 'Address',
-                                    style: AppTextStyles.regularText(),
-                                  ),
-                                  TextWidget(
-                                    text:
-                                        '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
-                                    style: AppTextStyles.regularText(
-                                      fontSize:
-                                          ResponsiveHelper.getWidth(context) *
-                                              .025,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ContainerWidget(
-                                    color: ColorsClass.greenColor,
-                                    width: ResponsiveHelper.getWidth(context) *
-                                        .250,
-                                    height:
-                                        ResponsiveHelper.getHeight(context) *
-                                            .030,
-                                    text: 'Accept',
-                                    radius: ResponsiveHelper.getWidth(context) *
-                                        .030,
-                                  ),
-                                ],
-                              ),
+                              TextWidget(
+                                  text: 'HI',
+                                  style: TextStyle(
+                                    fontSize: Helper.W(context) * .080,
+                                  )),
+                              TextWidget(
+                                  text: dat!.Name,
+                                  style: TextStyle(
+                                    fontSize: Helper.W(context) * .050,
+                                  )),
                             ],
                           ),
                         ],
                       ),
-                    ),
+                      SizedBox(
+                        height: Helper.H(context) * .050,
+                      ),
+                      Textformwidget(
+                        hint: 'Enter Tracking id number',
+                        radius: Helper.W(context) * .020,
+                      ),
+                    ],
                   ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .030,
-                );
-              },
-            ),
-          )
-        ],
-      ),
-    );
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Helper.W(context) * .020,
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: Helper.H(context) * .050,
+                      ),
+                      //first row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Mainscreencontainer(
+                            ontap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Orderbottomdelivery(),
+                                  ));
+                            },
+                            width: Helper.W(context) * .280,
+                            height: Helper.H(context) * .110,
+                            image: 'assets/images/newordercont.png',
+                          ),
+                          Mainscreencontainer(
+                            ontap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PendingScreenDelivery(),
+                                ),
+                              );
+                            },
+                            width: Helper.W(context) * .280,
+                            height: Helper.H(context) * .110,
+                            image: 'assets/imagesdelivery/Clock.png',
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: Helper.H(context) * .020,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text('OrderRequest'),
+                          Text('Pending'),
+                        ],
+                      ),
+                      SizedBox(
+                        height: Helper.H(context) * .050,
+                      ),
+
+                      //second row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Mainscreencontainer(
+                            ontap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Completed(),
+                                ),
+                              );
+                            },
+                            width: Helper.W(context) * .280,
+                            height: Helper.H(context) * .110,
+                            image: 'assets/imagesdelivery/Check All.png',
+                          ),
+                          Mainscreencontainer(
+                            ontap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Canceled(),
+                                ),
+                              );
+                            },
+                            width: Helper.W(context) * .280,
+                            height: Helper.H(context) * .110,
+                            image: 'assets/imagesdelivery/Unavailable.png',
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: Helper.H(context) * .020,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text('Completed'),
+                          Text('Canceled'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: Helper.H(context) * .050,
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Helper.W(context) * .040,
+                    ),
+                    child: Consumer<FirebaseController>(
+                      builder: (context, instance, _) {
+                        return StreamBuilder(
+                          stream: instance.fetchingproductorder().asStream(),
+                          builder: (context, snapshot) {
+                            final sineldocdata = instance.deliveryaccesprdoct;
+                            if (sineldocdata.isEmpty) {
+                              return Center(
+                                child: TextWidget(
+                                  text: 'No order This time',
+                                  style: TextStyle(
+                                    fontSize: Helper.W(context) * .050,
+                                    color: CupertinoColors.activeBlue,
+                                  ),
+                                ),
+                              );
+                            }
+                            ;
+                            return ListView.separated(
+                              shrinkWrap: true,
+                              itemCount: sineldocdata.length,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: Helper.H(context) * .200,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue.shade50,
+                                      borderRadius: BorderRadius.circular(
+                                        Helper.W(context) * .030,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: Helper.W(context) * .020,
+                                        horizontal: Helper.W(context) * .030,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  TextWidget(
+                                                    text: sineldocdata[index]
+                                                        .Deliveryname,
+                                                    style:
+                                                        AppTextStyles.boldText(
+                                                      fontSize:
+                                                          Helper.W(context) *
+                                                              .050,
+                                                    ),
+                                                  ),
+                                                  TextWidget(
+                                                    text:
+                                                        '12 march 2024 on 3:00 pm',
+                                                    style: TextStyle(
+                                                      fontSize:
+                                                          Helper.W(context) *
+                                                              .030,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                  TextWidget(
+                                                    text: sineldocdata[index]
+                                                        .Deliveryadress,
+                                                    style: AppTextStyles
+                                                        .regularText(),
+                                                  ),
+                                                  TextWidget(
+                                                    text:
+                                                        '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
+                                                    style: AppTextStyles
+                                                        .regularText(
+                                                      fontSize:
+                                                          Helper.W(context) *
+                                                              .025,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  ContainerWidget(
+                                                    color:
+                                                        ColorsClass.greenColor,
+                                                    width: Helper.W(context) *
+                                                        .250,
+                                                    height: Helper.H(context) *
+                                                        .030,
+                                                    text: 'Accept',
+                                                    radius: Helper.W(context) *
+                                                        .030,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                  height: Helper.H(context) * .030,
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ))
+              ],
+            );
+          },
+        );
+      },
+    ));
   }
 }
 
@@ -292,13 +347,13 @@ class Mainscreencontainer extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.blue.shade50,
           borderRadius: BorderRadius.circular(
-            ResponsiveHelper.getWidth(context) * .030,
+            Helper.W(context) * .030,
           ),
         ),
         child: Column(
           children: [
             SizedBox(
-              height: ResponsiveHelper.getHeight(context) * .020,
+              height: Helper.H(context) * .020,
             ),
             Image.asset(image),
           ],

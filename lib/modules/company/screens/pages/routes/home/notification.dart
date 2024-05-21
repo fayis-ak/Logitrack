@@ -38,25 +38,25 @@ class NotificationHome extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: ResponsiveHelper.getWidth(context) * .050,
+                    horizontal: Helper.W(context) * .050,
                   ),
                   child: Container(
                     width: double.infinity,
-                    height: ResponsiveHelper.getHeight(context) * .120,
+                    height: Helper.H(context) * .120,
                     decoration: BoxDecoration(
                       color: Colors.blue.shade50,
                       borderRadius: BorderRadius.circular(
-                        ResponsiveHelper.getWidth(context) * .030,
+                        Helper.W(context) * .030,
                       ),
                     ),
                     child: Row(
                       children: [
                         SizedBox(
-                          width: ResponsiveHelper.getWidth(context) * .020,
+                          width: Helper.W(context) * .020,
                         ),
                         Image.asset(notification[index]),
                         SizedBox(
-                          width: ResponsiveHelper.getWidth(context) * .020,
+                          width: Helper.W(context) * .020,
                         ),
                         Text(notifstatus[index])
                       ],
@@ -66,7 +66,7 @@ class NotificationHome extends StatelessWidget {
               },
               separatorBuilder: (context, index) {
                 return SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .050,
+                  height: Helper.H(context) * .050,
                 );
               },
               itemCount: 5,

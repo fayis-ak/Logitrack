@@ -9,33 +9,33 @@ Widget DeliveryBoys(context) {
   return SingleChildScrollView(
       child: Padding(
     padding: EdgeInsets.symmetric(
-      horizontal: ResponsiveHelper.getWidth(context) * .030,
-      vertical: ResponsiveHelper.getHeight(context) * .020,
+      horizontal: Helper.W(context) * .030,
+      vertical: Helper.H(context) * .020,
     ),
     child: Column(children: [
       Container(
         width: double.infinity,
-        height: ResponsiveHelper.getHeight(context) * .950,
+        height: Helper.H(context) * .950,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(
-            ResponsiveHelper.getWidth(context) * .030,
+            Helper.W(context) * .030,
           ),
           color:ColorsClass.blueshade,
         ),
         child: Column(
           children: [
             SizedBox(
-              height: ResponsiveHelper.getHeight(context) * .050,
+              height: Helper.H(context) * .050,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  width: ResponsiveHelper.getWidth(context) * .300,
-                  height: ResponsiveHelper.getHeight(context) * .850,
+                  width: Helper.W(context) * .300,
+                  height: Helper.H(context) * .850,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                      ResponsiveHelper.getWidth(context) * .030,
+                      Helper.W(context) * .030,
                     ),
                     // color: Colors.red,
                   ),
@@ -53,18 +53,18 @@ Widget DeliveryBoys(context) {
                         },
                         separatorBuilder: (context, index) {
                           return SizedBox(
-                            height: ResponsiveHelper.getHeight(context) * .030,
+                            height: Helper.H(context) * .030,
                           );
                         },
                         itemCount: 30),
                   ),
                 ),
                 Container(
-                  width: ResponsiveHelper.getWidth(context) * .300,
-                  height: ResponsiveHelper.getHeight(context) * .850,
+                  width: Helper.W(context) * .300,
+                  height: Helper.H(context) * .850,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                      ResponsiveHelper.getWidth(context) * .030,
+                      Helper.W(context) * .030,
                     ),
                     // color: Colors.red,
                   ),
@@ -81,7 +81,7 @@ Widget DeliveryBoys(context) {
                         },
                         separatorBuilder: (context, index) {
                           return SizedBox(
-                            height: ResponsiveHelper.getHeight(context) * .030,
+                            height: Helper.H(context) * .030,
                           );
                         },
                         itemCount: 30),

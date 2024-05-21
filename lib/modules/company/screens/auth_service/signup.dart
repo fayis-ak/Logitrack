@@ -1,4 +1,4 @@
-import 'package:go_router/go_router.dart';
+ 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logitrack/modules/company/utils/colors.dart';
 import 'package:logitrack/modules/company/widgets/container.dart';
@@ -32,7 +32,7 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: ResponsiveHelper.getWidth(context) * .080,
+          horizontal: Helper.W(context) * .080,
           // vertical: ResponsiveHelper.getHeight(context) * .080,
         ),
         child: SingleChildScrollView(
@@ -41,14 +41,14 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
             child: Column(
               children: [
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .040,
+                  height: Helper.H(context) * .040,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [],
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .080,
+                  height: Helper.H(context) * .080,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,12 +56,12 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                     TExtWidget(
                       text: 'Username',
                       style: GoogleFonts.heebo(
-                        fontSize: ResponsiveHelper.getWidth(context) * .040,
+                        fontSize: Helper.W(context) * .040,
                       ),
                     ),
                     Textformwidget(
                       hint: 'Name',
-                      radius: ResponsiveHelper.getWidth(context) * .020,
+                      radius: Helper.W(context) * .020,
                       controller: _usernameController,
                       validation: (value) {
                         if (value!.isEmpty) {
@@ -73,7 +73,7 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                   ],
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .030,
+                  height: Helper.H(context) * .030,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,12 +81,12 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                     TExtWidget(
                       text: 'Email',
                       style: GoogleFonts.heebo(
-                        fontSize: ResponsiveHelper.getWidth(context) * .040,
+                        fontSize: Helper.W(context) * .040,
                       ),
                     ),
                     Textformwidget(
                       hint: 'abcd45@gmail.com',
-                      radius: ResponsiveHelper.getWidth(context) * .020,
+                      radius: Helper.W(context) * .020,
                       controller: _emailController,
                       validation: (value) {
                         if (value!.isEmpty) {
@@ -98,7 +98,7 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                   ],
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .020,
+                  height: Helper.H(context) * .020,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,12 +106,12 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                     TExtWidget(
                       text: 'Your Driving license',
                       style: GoogleFonts.heebo(
-                        fontSize: ResponsiveHelper.getWidth(context) * .040,
+                        fontSize: Helper.W(context) * .040,
                       ),
                     ),
                     Textformwidget(
                       controller: _drivinglicenseController,
-                      radius: ResponsiveHelper.getWidth(context) * .020,
+                      radius: Helper.W(context) * .020,
                       validation: (value) {
                         if (value!.isEmpty) {
                           return 'please enter value';
@@ -122,7 +122,7 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                   ],
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .030,
+                  height: Helper.H(context) * .030,
                 ),
 
                 // delivery vehicle
@@ -136,21 +136,21 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                         });
                       },
                       child: Container(
-                        width: ResponsiveHelper.getWidth(context) * .250,
-                        height: ResponsiveHelper.getHeight(context) * .110,
+                        width: Helper.W(context) * .250,
+                        height: Helper.H(context) * .110,
                         decoration: BoxDecoration(
                           color: selectedIndex == 0
                               ? ColorsClass.selectedvehicle
                               : Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(
-                            ResponsiveHelper.getWidth(context) * .030,
+                            Helper.W(context) * .030,
                           ),
                         ),
                         child: Column(
                           children: [
                             SizedBox(
                               height:
-                                  ResponsiveHelper.getHeight(context) * .020,
+                                  Helper.H(context) * .020,
                             ),
                             Image.asset('assets/images/Quad Bike.png'),
                           ],
@@ -164,21 +164,21 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                         });
                       },
                       child: Container(
-                        width: ResponsiveHelper.getWidth(context) * .250,
-                        height: ResponsiveHelper.getHeight(context) * .110,
+                        width: Helper.W(context) * .250,
+                        height: Helper.H(context) * .110,
                         decoration: BoxDecoration(
                           color: selectedIndex == 1
                               ? ColorsClass.selectedvehicle
                               : Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(
-                            ResponsiveHelper.getWidth(context) * .030,
+                            Helper.W(context) * .030,
                           ),
                         ),
                         child: Column(
                           children: [
                             SizedBox(
                               height:
-                                  ResponsiveHelper.getHeight(context) * .020,
+                                  Helper.H(context) * .020,
                             ),
                             Image.asset('assets/images/Truck.png'),
                           ],
@@ -192,21 +192,21 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                         });
                       },
                       child: Container(
-                        width: ResponsiveHelper.getWidth(context) * .250,
-                        height: ResponsiveHelper.getHeight(context) * .110,
+                        width: Helper.W(context) * .250,
+                        height: Helper.H(context) * .110,
                         decoration: BoxDecoration(
                           color: selectedIndex == 2
                               ? ColorsClass.selectedvehicle
                               : Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(
-                            ResponsiveHelper.getWidth(context) * .030,
+                            Helper.W(context) * .030,
                           ),
                         ),
                         child: Column(
                           children: [
                             SizedBox(
                               height:
-                                  ResponsiveHelper.getHeight(context) * .020,
+                                  Helper.H(context) * .020,
                             ),
                             Image.asset('assets/images/newordercont.png'),
                           ],
@@ -228,7 +228,7 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                   ],
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .050,
+                  height: Helper.H(context) * .050,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,11 +236,11 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                     TExtWidget(
                       text: 'Your vehicle number',
                       style: GoogleFonts.heebo(
-                        fontSize: ResponsiveHelper.getWidth(context) * .040,
+                        fontSize: Helper.W(context) * .040,
                       ),
                     ),
                     Textformwidget(
-                      radius: ResponsiveHelper.getWidth(context) * .020,
+                      radius: Helper.W(context) * .020,
                       controller: _vehiclenumberController,
                       validation: (value) {
                         if (value!.isEmpty) {
@@ -252,26 +252,26 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                   ],
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .080,
+                  height: Helper.H(context) * .080,
                 ),
                 GestureDetector(
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
-                      context.goNamed('home');
+                      //home
                     } else {
                       print('object');
                     }
                   },
                   child: ContainerWidget(
                     color: ColorsClass.SplashScreenbg,
-                    width: ResponsiveHelper.getWidth(context) * .600,
-                    height: ResponsiveHelper.getHeight(context) * .070,
+                    width: Helper.W(context) * .600,
+                    height: Helper.H(context) * .070,
                     text: 'Sign up',
-                    radius: ResponsiveHelper.getWidth(context) * .050,
+                    radius: Helper.W(context) * .050,
                   ),
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .030,
+                  height: Helper.H(context) * .030,
                 ),
               ],
             ),

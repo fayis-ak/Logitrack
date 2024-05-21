@@ -27,29 +27,29 @@ class Payment extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: ResponsiveHelper.getWidth(context) * .050,
+                horizontal: Helper.W(context) * .050,
               ),
               child: Column(
                 children: [
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   Material(
                     borderRadius: BorderRadius.circular(
-                      ResponsiveHelper.getWidth(context) * .030,
+                      Helper.W(context) * .030,
                     ),
                     elevation: 4,
                     child: Container(
                       width: double.infinity,
-                      height: ResponsiveHelper.getHeight(context) * .130,
+                      height: Helper.H(context) * .130,
                       child: Row(
                         children: [
                           SizedBox(
-                            width: ResponsiveHelper.getWidth(context) * .050,
+                            width: Helper.W(context) * .050,
                           ),
                           Container(
-                            width: ResponsiveHelper.getWidth(context) * .150,
-                            height: ResponsiveHelper.getHeight(context) * .080,
+                            width: Helper.W(context) * .150,
+                            height: Helper.H(context) * .080,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage(
@@ -59,13 +59,13 @@ class Payment extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: ResponsiveHelper.getWidth(context) * .050,
+                            width: Helper.W(context) * .050,
                           ),
                           Text(
                             'My Wallet',
                             style: TextStyle(
                               fontSize:
-                                  ResponsiveHelper.getWidth(context) * .060,
+                                  Helper.W(context) * .060,
                             ),
                           ),
                         ],
@@ -73,12 +73,12 @@ class Payment extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   Row(
                     children: [
                       SizedBox(
-                        width: ResponsiveHelper.getWidth(context) * .060,
+                        width: Helper.W(context) * .060,
                       ),
                       const Text(
                         'Choose Payment',
@@ -89,7 +89,7 @@ class Payment extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   PaymentListtilewidget(
                     image: 'assets/images/payment/Google pay.png',
@@ -112,11 +112,11 @@ class Payment extends StatelessWidget {
                     ontap: () {},
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .050,
+                    height: Helper.H(context) * .050,
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: ResponsiveHelper.getWidth(context) * .060,
+                      horizontal: Helper.W(context) * .060,
                     ),
                     child: Column(
                       children: [
@@ -126,7 +126,7 @@ class Payment extends StatelessWidget {
                               'Price Details',
                               style: AppTextStyles.boldText(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                    Helper.W(context) * .040,
                               ),
                             ),
                           ],
@@ -139,20 +139,20 @@ class Payment extends StatelessWidget {
                               'Package Price',
                               style: AppTextStyles.regularText(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .050,
+                                    Helper.W(context) * .050,
                               ),
                             ),
                             Text(
                               '\$400',
                               style: AppTextStyles.regularText(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .050,
+                                    Helper.W(context) * .050,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: ResponsiveHelper.getHeight(context) * .020,
+                          height: Helper.H(context) * .020,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,7 +161,7 @@ class Payment extends StatelessWidget {
                               'Taxes',
                               style: AppTextStyles.regularText(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                    Helper.W(context) * .040,
                                 color: Colors.grey,
                               ),
                             ),
@@ -169,14 +169,14 @@ class Payment extends StatelessWidget {
                               '\$8.3',
                               style: AppTextStyles.regularText(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                    Helper.W(context) * .040,
                                 color: Colors.grey,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: ResponsiveHelper.getHeight(context) * .020,
+                          height: Helper.H(context) * .020,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -186,7 +186,7 @@ class Payment extends StatelessWidget {
                               style: AppTextStyles.regularText(
                                 color: Colors.grey,
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                    Helper.W(context) * .040,
                               ),
                             ),
                             Text(
@@ -194,7 +194,7 @@ class Payment extends StatelessWidget {
                               style: AppTextStyles.regularText(
                                 color: Colors.grey,
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                    Helper.W(context) * .040,
                               ),
                             ),
                           ],
@@ -207,20 +207,20 @@ class Payment extends StatelessWidget {
                               'Package Total',
                               style: AppTextStyles.regularText(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                    Helper.W(context) * .040,
                               ),
                             ),
                             Text(
                               '400',
                               style: AppTextStyles.regularText(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                    Helper.W(context) * .040,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: ResponsiveHelper.getHeight(context) * .040,
+                          height: Helper.H(context) * .040,
                         ),
                         GestureDetector(
                           //
@@ -228,13 +228,13 @@ class Payment extends StatelessWidget {
                                         color: ColorsClass.SplashScreenbg,
 
                             width: double.infinity,
-                            height: ResponsiveHelper.getHeight(context) * .060,
+                            height: Helper.H(context) * .060,
                             text: 'Place Order',
-                            radius: ResponsiveHelper.getWidth(context) * .050,
+                            radius: Helper.W(context) * .050,
                           ),
                         ),
                         SizedBox(
-                          height: ResponsiveHelper.getHeight(context) * .040,
+                          height: Helper.H(context) * .040,
                         ),
                       ],
                     ),
@@ -263,8 +263,8 @@ class PaymentListtilewidget extends StatelessWidget {
     return ListTile(
       onTap: ontap,
       leading: SizedBox(
-        width: ResponsiveHelper.getWidth(context) * .180,
-        height: ResponsiveHelper.getHeight(context) * .080,
+        width: Helper.W(context) * .180,
+        height: Helper.H(context) * .080,
         child: Image.asset(image),
       ),
       trailing: Icon(Icons.arrow_forward_ios_rounded),

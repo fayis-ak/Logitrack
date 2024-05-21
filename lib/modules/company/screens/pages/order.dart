@@ -17,23 +17,23 @@ class OrderbottomCompany extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: ResponsiveHelper.getWidth(context) * .050,
+          horizontal: Helper.W(context) * .050,
         ),
         child: ListView.separated(
           itemBuilder: (context, index) {
             return Container(
               width: double.infinity,
-              height: ResponsiveHelper.getHeight(context) * .200,
+              height: Helper.H(context) * .200,
               decoration: BoxDecoration(
                 color: Colors.blue.shade50,
                 borderRadius: BorderRadius.circular(
-                  ResponsiveHelper.getWidth(context) * .030,
+                  Helper.W(context) * .030,
                 ),
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: ResponsiveHelper.getWidth(context) * .020,
-                  horizontal: ResponsiveHelper.getWidth(context) * .030,
+                  vertical: Helper.W(context) * .020,
+                  horizontal: Helper.W(context) * .030,
                 ),
                 child: Column(
                   children: [
@@ -47,14 +47,14 @@ class OrderbottomCompany extends StatelessWidget {
                               text: 'Clara',
                               style: AppTextStyles.boldText(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .050,
+                                    Helper.W(context) * .050,
                               ),
                             ),
                             TextWidget(
                               text: '12 march 2024 on 3:00 pm',
                               style: TextStyle(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .030,
+                                    Helper.W(context) * .030,
                                 color: Colors.grey,
                               ),
                             ),
@@ -67,7 +67,7 @@ class OrderbottomCompany extends StatelessWidget {
                                   '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
                               style: AppTextStyles.regularText(
                                 fontSize:
-                                    ResponsiveHelper.getWidth(context) * .025,
+                                    Helper.W(context) * .025,
                                 color: Colors.grey,
                               ),
                             ),
@@ -78,11 +78,11 @@ class OrderbottomCompany extends StatelessWidget {
                           children: [
                             ContainerWidget(
                               color: ColorsClass.greenColor,
-                              width: ResponsiveHelper.getWidth(context) * .250,
+                              width: Helper.W(context) * .250,
                               height:
-                                  ResponsiveHelper.getHeight(context) * .030,
+                                  Helper.H(context) * .030,
                               text: 'Accept',
-                              radius: ResponsiveHelper.getWidth(context) * .030,
+                              radius: Helper.W(context) * .030,
                             ),
                           ],
                         ),
@@ -95,7 +95,7 @@ class OrderbottomCompany extends StatelessWidget {
           },
           separatorBuilder: (context, index) {
             return SizedBox(
-              height: ResponsiveHelper.getHeight(context) * .030,
+              height: Helper.H(context) * .030,
             );
           },
           itemCount: 5,

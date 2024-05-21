@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:logitrack/modules/admin/view/dashboard_home/add_company.dart';
 import 'package:logitrack/modules/company/utils/colors.dart';
 
 import '../../../../utils/responsivesize.dart';
@@ -29,8 +31,8 @@ class _NavigationTabState extends State<NavigationTab> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ResponsiveHelper.getWidth(context) * .150,
-      height: ResponsiveHelper.getHeight(context),
+      width: Helper.W(context) * .150,
+      height: Helper.H(context),
       decoration: BoxDecoration(),
       child: SingleChildScrollView(
         child: Column(
@@ -40,25 +42,33 @@ class _NavigationTabState extends State<NavigationTab> {
               'Logitrack',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: ResponsiveHelper.getWidth(context) * .020),
+                  fontSize: Helper.W(context) * .020),
             ),
             SizedBox(
-              height: ResponsiveHelper.getHeight(context) * .050,
+              height: Helper.H(context) * .050,
             ),
-            Container(
-              width: ResponsiveHelper.getWidth(context) * .110,
-              height: ResponsiveHelper.getHeight(context) * .050,
-              decoration: BoxDecoration(
-                color: ColorsClass.blueshade,
-                borderRadius: BorderRadius.circular(
-                    ResponsiveHelper.getWidth(context) * .030),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Icon(Icons.add),
-                  Text('Add Company'),
-                ],
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddCompany(),
+                    ));
+              },
+              child: Container(
+                width: Helper.W(context) * .110,
+                height: Helper.H(context) * .050,
+                decoration: BoxDecoration(
+                  color: ColorsClass.blueshade,
+                  borderRadius: BorderRadius.circular(Helper.W(context) * .030),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(Icons.add),
+                    Text('Add Company'),
+                  ],
+                ),
               ),
             ),
             ListTile(
@@ -84,7 +94,7 @@ class _NavigationTabState extends State<NavigationTab> {
             buildListTileTitle("Company", 2, Icons.remove_red_eye),
             buildListTileTitle("Delivery Boys", 3, Icons.person),
             buildListTileTitle("Notification", 4, Icons.notifications_active),
-            SizedBox(height: ResponsiveHelper.getHeight(context) * .450),
+            SizedBox(height: Helper.H(context) * .450),
             buildListTileTitle("About us", 5, Icons.question_mark),
             buildListTileTitle("Log out", 6, Icons.logout),
           ],

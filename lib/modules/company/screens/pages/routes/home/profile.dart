@@ -20,7 +20,7 @@ class ProfileView extends StatelessWidget {
       body: Scaffold(
         body: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: ResponsiveHelper.getWidth(context) * .080,
+            horizontal: Helper.W(context) * .080,
             // vertical: ResponsiveHelper.getHeight(context) * .080,
           ),
           child: SingleChildScrollView(
@@ -28,7 +28,7 @@ class ProfileView extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .020,
+                    height: Helper.H(context) * .020,
                   ),
                   CircleAvatar(
                     radius: 50,
@@ -39,7 +39,7 @@ class ProfileView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .020,
+                    height: Helper.H(context) * .020,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,12 +47,12 @@ class ProfileView extends StatelessWidget {
                       TExtWidget(
                         text: 'Company name',
                         style: GoogleFonts.heebo(
-                          fontSize: ResponsiveHelper.getWidth(context) * .040,
+                          fontSize: Helper.W(context) * .040,
                         ),
                       ),
                       Textformwidget(
                         hint: 'Name',
-                        radius: ResponsiveHelper.getWidth(context) * .020,
+                        radius: Helper.W(context) * .020,
                         validation: (value) {
                           if (value!.isEmpty) {
                             return 'please enter value';
@@ -63,7 +63,7 @@ class ProfileView extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,12 +71,12 @@ class ProfileView extends StatelessWidget {
                       TExtWidget(
                         text: 'Email',
                         style: GoogleFonts.heebo(
-                          fontSize: ResponsiveHelper.getWidth(context) * .040,
+                          fontSize: Helper.W(context) * .040,
                         ),
                       ),
                       Textformwidget(
                         hint: 'abcd45@gmail.com',
-                        radius: ResponsiveHelper.getWidth(context) * .020,
+                        radius: Helper.W(context) * .020,
                         validation: (value) {
                           if (value!.isEmpty) {
                             return 'please enter value';
@@ -87,7 +87,7 @@ class ProfileView extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .020,
+                    height: Helper.H(context) * .020,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,11 +95,11 @@ class ProfileView extends StatelessWidget {
                       TExtWidget(
                         text: 'Company  license',
                         style: GoogleFonts.heebo(
-                          fontSize: ResponsiveHelper.getWidth(context) * .040,
+                          fontSize: Helper.W(context) * .040,
                         ),
                       ),
                       Textformwidget(
-                        radius: ResponsiveHelper.getWidth(context) * .020,
+                        radius: Helper.W(context) * .020,
                         validation: (value) {
                           if (value!.isEmpty) {
                             return 'please enter value';
@@ -110,7 +110,7 @@ class ProfileView extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,11 +118,11 @@ class ProfileView extends StatelessWidget {
                       TExtWidget(
                         text: 'Company location',
                         style: GoogleFonts.inter(
-                          fontSize: ResponsiveHelper.getWidth(context) * .040,
+                          fontSize: Helper.W(context) * .040,
                         ),
                       ),
                       Textformwidget(
-                        radius: ResponsiveHelper.getWidth(context) * .020,
+                        radius: Helper.W(context) * .020,
                         validation: (value) {
                           if (value!.isEmpty) {
                             return 'please enter value';
@@ -133,7 +133,7 @@ class ProfileView extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,11 +141,11 @@ class ProfileView extends StatelessWidget {
                       TExtWidget(
                         text: 'Password',
                         style: GoogleFonts.inter(
-                          fontSize: ResponsiveHelper.getWidth(context) * .040,
+                          fontSize: Helper.W(context) * .040,
                         ),
                       ),
                       Textformwidget(
-                        radius: ResponsiveHelper.getWidth(context) * .020,
+                        radius: Helper.W(context) * .020,
                         validation: (value) {
                           if (value!.isEmpty) {
                             return 'please enter value';
@@ -156,7 +156,7 @@ class ProfileView extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -168,14 +168,14 @@ class ProfileView extends StatelessWidget {
                     },
                     child: ContainerWidget(
                       color: ColorsClass.SplashScreenbg,
-                      width: ResponsiveHelper.getWidth(context) * .600,
-                      height: ResponsiveHelper.getHeight(context) * .070,
+                      width: Helper.W(context) * .600,
+                      height: Helper.H(context) * .070,
                       text: 'Sign up',
-                      radius: ResponsiveHelper.getWidth(context) * .050,
+                      radius: Helper.W(context) * .050,
                     ),
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                 ],
               ),

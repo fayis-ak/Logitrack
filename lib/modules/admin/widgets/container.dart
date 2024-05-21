@@ -11,12 +11,12 @@ class Containerwidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      width: ResponsiveHelper.getWidth(context) * .050,
-      height: ResponsiveHelper.getHeight(context) * .030,
+      width: Helper.W(context) * .050,
+      height: Helper.H(context) * .030,
       decoration: BoxDecoration(
           color: Color(0xFF084077),
           borderRadius:
-              BorderRadius.circular(ResponsiveHelper.getWidth(context) * .020)),
+              BorderRadius.circular(Helper.W(context) * .020)),
       child: Text(
         'Remove',
         style: TextStyle(color: Colors.white),

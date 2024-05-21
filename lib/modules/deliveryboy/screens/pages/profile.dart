@@ -1,20 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logitrack/app.dart';
+import 'package:logitrack/modules/deliveryboy/screens/auth_service/Loggin_screen.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/routes/profile/notification.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/routes/profile/profileedit.dart';
 import 'package:logitrack/modules/deliveryboy/widgets/text_style.dart';
+import 'package:logitrack/services/firebase_controller.dart';
 
 import 'package:logitrack/utils/responsivesize.dart';
+import 'package:logitrack/utils/toast.dart';
 import 'package:logitrack/widgets/textwidget.dart';
+import 'package:provider/provider.dart';
 
 class Profiledelivery extends StatelessWidget {
   const Profiledelivery({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Future<void> Logoutdilog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Logout'),
+            content: const SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Are you sure logout'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              Consumer<FirebaseController>(
+                builder: (context, instance, child) {
+                  return TextButton(
+                    child: const Text('logout'),
+                    onPressed: () {
+                      instance
+                          .logout(context)
+                          .then((value) => Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Userprf(),
+                              ),
+                              (route) => false));
+                      succestoast(context, 'Logout success');
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              ),
+              TextButton(
+                child: const Text('no'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
         body: SingleChildScrollView(
       child: Column(
@@ -23,13 +74,13 @@ class Profiledelivery extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                  top: ResponsiveHelper.getHeight(context) * .080,
+                  top: Helper.H(context) * .080,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
-                      radius: ResponsiveHelper.getWidth(context) * .100,
+                      radius: Helper.W(context) * .100,
                       backgroundImage:
                           AssetImage('assets/imagesdelivery/deliveryboy.png'),
                     ),
@@ -39,17 +90,17 @@ class Profiledelivery extends StatelessWidget {
               Text(
                 'Manu',
                 style: AppTextStyles.regularText(
-                  fontSize: ResponsiveHelper.getWidth(context) * .050,
+                  fontSize: Helper.W(context) * .050,
                 ),
               ),
             ],
           ),
           SizedBox(
-            height: ResponsiveHelper.getHeight(context) * .060,
+            height: Helper.H(context) * .060,
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveHelper.getWidth(context) * .050,
+              horizontal: Helper.W(context) * .050,
             ),
             child: Column(
               children: [
@@ -90,6 +141,7 @@ class Profiledelivery extends StatelessWidget {
                   textColor: Colors.red,
                   leading: Icon(Icons.logout),
                   title: Text('Logout'),
+                  onTap: () async => await Logoutdilog(),
                 ),
               ],
             ),

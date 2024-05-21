@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
+import 'package:logitrack/modules/company/widgets/text_style.dart';
+
 import 'package:logitrack/modules/user/screens/pages/routes/home/newOrder.dart';
 import 'package:logitrack/modules/user/screens/pages/routes/home/reviews.dart';
-import 'package:logitrack/modules/user/screens/pages/routes/home/track_order.dart';
-import 'package:logitrack/router/app_router.dart';
+import 'package:logitrack/modules/user/screens/pages/track_order.dart';
+import 'package:logitrack/services/firebase_controller.dart';
+import 'package:logitrack/services/user_controller.dart';
+
 import 'package:logitrack/utils/responsivesize.dart';
+import 'package:logitrack/utils/strings.dart';
 import 'package:logitrack/widgets/textformwidget.dart';
+import 'package:provider/provider.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -26,63 +31,84 @@ class _HomepageState extends State<Homepage> {
     _progressValue = 20;
   }
 
+  final _formKey = GlobalKey<FormState>();
+
+  final search = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(
-            height: ResponsiveHelper.getHeight(context) * .080,
+            height: Helper.H(context) * .080,
           ),
           Padding(
             padding: EdgeInsets.symmetric(
               // vertical: ResponsiveHelper.getWidth(context) * .180,
-              horizontal: ResponsiveHelper.getWidth(context) * .110,
+              horizontal: Helper.W(context) * .110,
             ),
             child: Column(
               children: [
                 Row(
                   children: [
                     CircleAvatar(
-                      radius: ResponsiveHelper.getWidth(context) * .080,
+                      radius: Helper.W(context) * .080,
                       backgroundImage: AssetImage('assets/images/userimg.png'),
                     ),
                     SizedBox(
-                      width: ResponsiveHelper.getWidth(context) * .050,
+                      width: Helper.W(context) * .050,
                     ),
                     Column(
                       children: [
-                        Text('Hi'),
-                        Text('Clara'),
+                        TextWidget(
+                            text: 'Hi',
+                            style: TextStyle(
+                              fontSize: Helper.W(context) * .050,
+                            )),
+                        TextWidget(
+                          text: 'curent user name',
+                          style: TextStyle(
+                            fontSize: Helper.W(context) * .050,
+                          ),
+                        )
                       ],
                     )
                   ],
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .050,
+                  height: Helper.H(context) * .050,
                 ),
                 Textformwidget(
+                  controller: search,
                   hint: 'Enter Tracking id number',
-                  radius: ResponsiveHelper.getWidth(context) * .020,
+                  radius: Helper.W(context) * .020,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter the required field";
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
               ],
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveHelper.getWidth(context) * .020,
+              horizontal: Helper.W(context) * .020,
             ),
             child: Column(
               children: [
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .050,
+                  height: Helper.H(context) * .050,
                 ),
                 Container(
                   width: double.infinity,
-                  height: ResponsiveHelper.getHeight(context) * .300,
+                  height: Helper.H(context) * .300,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                      ResponsiveHelper.getWidth(context) * .030,
+                      Helper.W(context) * .030,
                     ),
                     image: DecorationImage(
                       fit: BoxFit.cover,
@@ -94,11 +120,11 @@ class _HomepageState extends State<Homepage> {
             ),
           ),
           SizedBox(
-            height: ResponsiveHelper.getHeight(context) * .050,
+            height: Helper.H(context) * .050,
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveHelper.getWidth(context) * .030,
+              horizontal: Helper.W(context) * .030,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,76 +179,118 @@ class _HomepageState extends State<Homepage> {
                   ],
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .050,
+                  height: Helper.H(context) * .050,
                 ),
                 Text('Recent Delivery'),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .030,
+                  height: Helper.H(context) * .030,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TrackOrderScreen(),
-                        ));
+
+                //  future: instance.fetchingorderstatus('order pending'),
+                // builder: (context, snapshot) {
+                //   final dat = snapshot.data;
+
+                Consumer<FirebaseController>(
+                  builder: (context, instance, child) {
+                    return FutureBuilder(
+                      future: instance.fetchingorderstatus('Complete'),
+                      builder: (context, snapshot) {
+                        // final prdctdt = instance.productmodl;.
+                        final coutpending = instance.orderstatus;
+
+                        return coutpending.isEmpty
+                            ? Center(
+                                child: Text('No order '),
+                              )
+                            : ListView.separated(
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                TrackOrderScreen(),
+                                          ));
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: Helper.H(context) * .200,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.shade50,
+                                        borderRadius: BorderRadius.circular(
+                                          Helper.W(context) * .030,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  children: [
+                                                    Text('Order id'),
+                                                    Text(coutpending[index]
+                                                        .productid),
+                                                    Text('12 march 2024'),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Column(
+                                                  children: [
+                                                    Text('cont'),
+                                                    SizedBox(
+                                                      height:
+                                                          Helper.H(context) *
+                                                              .020,
+                                                    ),
+                                                    Text('16 march 2024'),
+                                                    Text(
+                                                      coutpending[index]
+                                                          .Deliveryadress,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: LinearProgressIndicator(
+                                              backgroundColor:
+                                                  Colors.cyanAccent,
+                                              valueColor:
+                                                  new AlwaysStoppedAnimation<
+                                                      Color>(Colors.red),
+                                              value: _progressValue,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(
+                                    height: Helper.H(context) * .020,
+                                  );
+                                },
+                                itemCount: coutpending.length);
+                      },
+                    );
                   },
-                  child: Container(
-                    width: double.infinity,
-                    height: ResponsiveHelper.getHeight(context) * .200,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(
-                        ResponsiveHelper.getWidth(context) * .030,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Text('Order id'),
-                                  Text('#2919567'),
-                                  Text('12 march 2024'),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Text('cont'),
-                                  SizedBox(
-                                    height:
-                                        ResponsiveHelper.getHeight(context) *
-                                            .020,
-                                  ),
-                                  Text('16 march 2024'),
-                                  Text('Karnataka'),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: LinearProgressIndicator(
-                            backgroundColor: Colors.cyanAccent,
-                            valueColor:
-                                new AlwaysStoppedAnimation<Color>(Colors.red),
-                            value: _progressValue,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .030,
+                  height: Helper.H(context) * .030,
                 ),
               ],
             ),
@@ -243,18 +311,18 @@ class MainscreenContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ResponsiveHelper.getWidth(context) * .280,
-      height: ResponsiveHelper.getHeight(context) * .110,
+      width: Helper.W(context) * .280,
+      height: Helper.H(context) * .110,
       decoration: BoxDecoration(
         color: Colors.blue.shade50,
         borderRadius: BorderRadius.circular(
-          ResponsiveHelper.getWidth(context) * .030,
+          Helper.W(context) * .030,
         ),
       ),
       child: Column(
         children: [
           SizedBox(
-            height: ResponsiveHelper.getHeight(context) * .020,
+            height: Helper.H(context) * .020,
           ),
           Image.asset(image),
         ],

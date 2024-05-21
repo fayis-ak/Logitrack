@@ -1,142 +1,202 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logitrack/modules/user/screens/pages/bottom_bar.dart';
-import 'package:logitrack/utils/colors.dart';
-import 'package:logitrack/utils/responsivesize.dart';
-import 'package:logitrack/widgets/container.dart';
-import 'package:logitrack/widgets/textformwidget.dart';
-import 'package:logitrack/widgets/textwidget.dart';
 
-class SignupScreenUser extends StatelessWidget {
+import 'package:logitrack/modules/company/utils/colors.dart';
+
+import 'package:logitrack/services/user_controller.dart';
+
+import 'package:logitrack/utils/responsivesize.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../widgets/textformwidget.dart';
+import '../../../../widgets/textwidget.dart';
+import '../../../company/widgets/container.dart';
+
+class SignupScreenUser extends StatefulWidget {
   const SignupScreenUser({super.key});
+
+  @override
+  State<SignupScreenUser> createState() => _SignupScreenUserState();
+}
+
+class _SignupScreenUserState extends State<SignupScreenUser> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: ResponsiveHelper.getWidth(context) * .080,
-          // vertical: ResponsiveHelper.getHeight(context) * .080,
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: ResponsiveHelper.getHeight(context) * .080,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            horizontal: Helper.W(context) * .050),
+        child: SingleChildScrollView(child: Consumer<AuthController>(
+          builder: (context, authcontroller, _) {
+            return Form(
+              key: _formKey,
+              child: Column(
                 children: [
-                  Text(
-                    'Get Started',
-                    style: GoogleFonts.heebo(
-                      fontSize: ResponsiveHelper.getWidth(context) * .060,
-                    ),
+                  SizedBox(
+                    height: Helper.H(context) * .080,
                   ),
-                ],
-              ),
-              SizedBox(
-                height: ResponsiveHelper.getHeight(context) * .050,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TExtWidget(
-                    text: 'Username',
-                    style: GoogleFonts.heebo(
-                      fontSize: ResponsiveHelper.getWidth(context) * .040,
-                    ),
-                  ),
-                  Container(
-                    height: 50,
-                    child: Textformwidget(
-                      hint: 'Name',
-                      radius: ResponsiveHelper.getWidth(context) * .020,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: ResponsiveHelper.getHeight(context) * .030,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TExtWidget(
-                    text: 'abcd45@gmail.com',
-                    style: GoogleFonts.heebo(
-                      fontSize: ResponsiveHelper.getWidth(context) * .040,
-                    ),
-                  ),
-                  Textformwidget(
-                    hint: 'password',
-                    radius: ResponsiveHelper.getWidth(context) * .080,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: ResponsiveHelper.getHeight(context) * .020,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TExtWidget(
-                    text: 'Username',
-                    style: GoogleFonts.heebo(
-                      fontSize: ResponsiveHelper.getWidth(context) * .040,
-                    ),
-                  ),
-                  Textformwidget(
-                    hint: 'Name',
-                    radius: ResponsiveHelper.getWidth(context) * .020,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: ResponsiveHelper.getHeight(context) * .030,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TExtWidget(
-                    text: 'Conform password',
-                    style: GoogleFonts.heebo(
-                      fontSize: ResponsiveHelper.getWidth(context) * .040,
-                    ),
-                  ),
-                  Textformwidget(
-                    hint: 'conform password',
-                    radius: ResponsiveHelper.getWidth(context) * .080,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: ResponsiveHelper.getHeight(context) * .120,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BottomnavUser(
-                          selectedindex: 0,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Get Started',
+                        style: GoogleFonts.heebo(
+                          fontSize: Helper.W(context) * .060,
                         ),
-                      ));
-                },
-                child: ContainerWidget(
-                  width: ResponsiveHelper.getWidth(context) * .600,
-                  height: ResponsiveHelper.getHeight(context) * .070,
-                  text: 'Sign up',
-                  radius: ResponsiveHelper.getWidth(context) * .050,
-                ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: Helper.H(context) * .050,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TExtWidget(
+                        text: 'Username',
+                        style: GoogleFonts.heebo(
+                          fontSize: Helper.W(context) * .040,
+                        ),
+                      ),
+                      Textformwidget(
+                        controller: authcontroller.nameController,
+                        hint: 'Name',
+                        radius: Helper.W(context) * .020,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Enter the required field";
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: Helper.H(context) * .030,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TExtWidget(
+                        text: 'Email',
+                        style: GoogleFonts.heebo(
+                          fontSize: Helper.W(context) * .040,
+                        ),
+                      ),
+                      Textformwidget(
+                        controller: authcontroller.emailcontroller,
+                        hint: 'abcd45@gmail.com',
+                        radius: Helper.W(context) * .080,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Enter the required field";
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: Helper.H(context) * .020,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TExtWidget( 
+                        text: 'Password',
+                        style: GoogleFonts.heebo(
+                          fontSize: Helper.W(context) * .040,
+                        ),
+                      ),
+                      Textformwidget(
+                        controller: authcontroller.passwordcontroller,
+                        radius: Helper.W(context) * .020,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Enter the required field";
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: Helper.H(context) * .030,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TExtWidget(
+                        text: 'Conform password',
+                        style: GoogleFonts.heebo(
+                          fontSize: Helper.W(context) * .040,
+                        ),
+                      ),
+                      Consumer<AuthController>(
+                        builder: (context, controller, _) {
+                          return Textformwidget(
+                            controller:
+                                authcontroller.confirmPasswordcontroller,
+                            hint: 'conform password',
+                            radius: Helper.W(context) * .080,
+                            obscure: authcontroller.obscureText,
+                            suffix: IconButton(
+                                onPressed: () {
+                                  authcontroller.isTextvisible();
+                                },
+                                icon: Icon(controller.obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off)),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Enter the required field";
+                              } else if (value !=
+                                  controller.passwordcontroller.text) {
+                                return 'password does note match';
+                              } else {
+                                return null;
+                              }
+                            },
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: Helper.H(context) * .120,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        authcontroller.signup(
+                          authcontroller.emailcontroller.text.trim(),
+                          authcontroller.passwordcontroller.text.trim(),
+                          authcontroller.nameController.text.trim(),
+                          context,
+                        );
+                      }
+                    },
+                    child: ContainerWidget(
+                      color: ColorsClass.SplashScreenbg,
+                      width: Helper.W(context) * .600,
+                      height: Helper.H(context) * .070,
+                      text: 'Sign up',
+                      radius: Helper.W(context) * .050,
+                    ),
+                  ),
+                  SizedBox(
+                    height: Helper.H(context) * .030,
+                  ),
+                ],
               ),
-              SizedBox(
-                height: ResponsiveHelper.getHeight(context) * .030,
-              ),
-            ],
-          ),
-        ),
+            );
+          },
+        )),
       ),
     );
   }

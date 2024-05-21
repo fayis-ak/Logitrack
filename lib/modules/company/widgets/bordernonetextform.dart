@@ -16,7 +16,7 @@ class BorderNoneetextformwidget extends StatelessWidget {
         fillColor: Colors.blue.shade50,
         filled: true,
         contentPadding:
-            EdgeInsets.all(ResponsiveHelper.getWidth(context) * .010),
+            EdgeInsets.all(Helper.W(context) * .010),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
         ),

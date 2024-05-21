@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:logitrack/modules/user/screens/pages/home_page.dart';
 import 'package:logitrack/modules/user/screens/pages/order.dart';
 import 'package:logitrack/modules/user/screens/pages/profile.dart';
-import 'package:logitrack/modules/user/screens/pages/routes/home/track_order.dart';
+import 'package:logitrack/modules/user/screens/pages/track_order.dart';
+import 'package:logitrack/services/controller.dart';
+import 'package:provider/provider.dart';
 
 class BottomnavUser extends StatefulWidget {
   int selectedindex = 0;
@@ -13,34 +15,44 @@ class BottomnavUser extends StatefulWidget {
 }
 
 class _BottomnavUserState extends State<BottomnavUser> {
-  @override
-  Widget build(BuildContext context) {
-    final _pages = [
+  List<Widget> _pages() {
+    return [
       Homepage(),
       TrackOrderScreen(),
       Orderbottom(),
       Profile(),
     ];
+  }
 
-    return Scaffold(
-      body: _pages[widget.selectedindex],
-      bottomNavigationBar: mynav(
-        index: widget.selectedindex,
-        onTap: (index) {
-          setState(() {
-            widget.selectedindex = index;
-          });
-        },
-      ),
-    ); 
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<Controller>(
+      builder: (context, controller, _) {
+        return Scaffold(
+          body: _pages()[controller.selectedindex],
+          bottomNavigationBar: mynav(
+            index: controller.selectedindex,
+            onTap: (value) {
+              controller.changeIndex(value);
+              // setState(() {
+              //   widget.selectedindex = index;
+              // });
+            },
+          ),
+        );
+      },
+    );
   }
 }
 
-Widget mynav({int? index, void Function(int)? onTap,  }) {
+Widget mynav({
+  int? index,
+  void Function(int)? onTap,
+}) {
   return NavigationBar(
     selectedIndex: index!,
     onDestinationSelected: onTap,
-    
+    indicatorColor: Colors.blue,
     destinations: [
       NavigationDestination(
         icon: Image.asset(

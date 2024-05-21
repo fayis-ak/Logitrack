@@ -20,25 +20,25 @@ class ReviesScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: ResponsiveHelper.getWidth(context) * .040,
+                      horizontal: Helper.W(context) * .040,
                     ),
                     child: Row(
                       children: [
                         CircleAvatar(
-                          radius: ResponsiveHelper.getWidth(context) * .060,
+                          radius: Helper.W(context) * .060,
                           backgroundImage:
                               AssetImage('assets/images/circleprofile.png'),
                         ),
                         SizedBox(
-                          width: ResponsiveHelper.getWidth(context) * .020,
+                          width: Helper.W(context) * .020,
                         ),
                         Container(
-                          width: ResponsiveHelper.getWidth(context) * .750,
-                          height: ResponsiveHelper.getHeight(context) * .090,
+                          width: Helper.W(context) * .750,
+                          height: Helper.H(context) * .090,
                           decoration: BoxDecoration(
                             color: Colors.pink.shade50,
                             borderRadius: BorderRadius.circular(
-                              ResponsiveHelper.getWidth(context) * .040,
+                              Helper.W(context) * .040,
                             ),
                           ),
                           child: Row(
@@ -60,7 +60,7 @@ class ReviesScreen extends StatelessWidget {
                 },
                 separatorBuilder: (context, index) {
                   return SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .050,
+                    height: Helper.H(context) * .050,
                   );
                 },
                 itemCount: 10),

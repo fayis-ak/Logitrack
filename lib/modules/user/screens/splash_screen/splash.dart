@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
+ 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logitrack/modules/user/screens/boarding_screen/first_bording.dart';
 
@@ -17,6 +17,9 @@ class SplashScreenUser extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreenUser> {
+
+
+  
   @override
   void initState() {
     Future.delayed(Duration(seconds: 4)).then((value) => Navigator.push(
@@ -37,7 +40,7 @@ class _SplashScreenState extends State<SplashScreenUser> {
           style: GoogleFonts.heebo(
             fontWeight: FontWeight.bold,
             color: ColorsClass.whiteColor,
-            fontSize: ResponsiveHelper.getWidth(context) * .150,
+            fontSize: Helper.W(context) * .150,
           ),
         ),
       ),

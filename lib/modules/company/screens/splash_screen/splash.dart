@@ -3,7 +3,7 @@ import 'dart:async';
  
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
+ 
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../utils/colors.dart';
@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.didChangeDependencies();
     Timer(Duration(seconds: 2), () {
       try {
-       context.goNamed('bording');
+       //boarding
       } catch (e) {
         print("Error navigating: $e");
       }
@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
           style: GoogleFonts.heebo(
             fontWeight: FontWeight.bold,
             color: ColorsClass.whiteColor,
-            fontSize: ResponsiveHelper.getWidth(context) * .150,
+            fontSize: Helper.W(context) * .150,
           ),
         ),
       ),

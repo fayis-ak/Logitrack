@@ -37,12 +37,12 @@ class Profile extends StatelessWidget {
                       style: TextStyle(color: Colors.grey,),
                     ),
                     trailing: Container(
-                      width: ResponsiveHelper.getWidth(context) * .150,
-                      height: ResponsiveHelper.getHeight(context) * .030,
+                      width: Helper.W(context) * .150,
+                      height: Helper.H(context) * .030,
                       decoration: BoxDecoration(
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(
-                              ResponsiveHelper.getWidth(context) * .020)),
+                              Helper.W(context) * .020)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -57,7 +57,7 @@ class Profile extends StatelessWidget {
                 },
                 separatorBuilder: (context, index) {
                   return SizedBox(
-                    width: ResponsiveHelper.getWidth(context) * .020,
+                    width: Helper.W(context) * .020,
                   );
                 },
                 itemCount: deliveryboys.length,

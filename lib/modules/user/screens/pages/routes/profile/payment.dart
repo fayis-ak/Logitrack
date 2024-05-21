@@ -1,10 +1,25 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:logitrack/models/addproductorder.dart';
+import 'package:logitrack/models/prductmodel.dart';
+import 'package:logitrack/modules/user/screens/pages/bottom_bar.dart';
+import 'package:logitrack/modules/user/screens/pages/home_page.dart';
+import 'package:logitrack/services/controller.dart';
+import 'package:logitrack/services/firebase_controller.dart';
+import 'package:logitrack/services/paymentcontroller.dart';
 import 'package:logitrack/utils/responsivesize.dart';
+import 'package:logitrack/utils/toast.dart';
 import 'package:logitrack/widgets/container.dart';
 import 'package:logitrack/widgets/text_style.dart';
+import 'package:provider/provider.dart';
+import 'package:random_string/random_string.dart';
+import 'package:upi_india/upi_india.dart';
 
-class Payment extends StatelessWidget {
-  const Payment({super.key});
+class PaymentUser extends StatelessWidget {
+  final Company? Selectedindex ;
+
+  PaymentUser({ this.Selectedindex, super.key});
 
   Widget dividerwidget() {
     return const Divider(
@@ -13,8 +28,14 @@ class Payment extends StatelessWidget {
     );
   }
 
+  int fee = 10;
+  // UpiIndia _upiIndia = UpiIndia();
+  // UpiApp app = UpiApp.googlePay;
+
   @override
   Widget build(BuildContext context) {
+    Future<UpiResponse>? transaction;
+    final serchController = Provider.of<FirebaseController>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Payment'),
@@ -24,29 +45,29 @@ class Payment extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: ResponsiveHelper.getWidth(context) * .050,
+                horizontal: Helper.W(context) * .050,
               ),
               child: Column(
                 children: [
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   Material(
                     borderRadius: BorderRadius.circular(
-                      ResponsiveHelper.getWidth(context) * .030,
+                      Helper.W(context) * .030,
                     ),
                     elevation: 4,
                     child: Container(
                       width: double.infinity,
-                      height: ResponsiveHelper.getHeight(context) * .130,
+                      height: Helper.H(context) * .130,
                       child: Row(
                         children: [
                           SizedBox(
-                            width: ResponsiveHelper.getWidth(context) * .050,
+                            width: Helper.W(context) * .050,
                           ),
                           Container(
-                            width: ResponsiveHelper.getWidth(context) * .150,
-                            height: ResponsiveHelper.getHeight(context) * .080,
+                            width: Helper.W(context) * .150,
+                            height: Helper.H(context) * .080,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage(
@@ -56,13 +77,12 @@ class Payment extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            width: ResponsiveHelper.getWidth(context) * .050,
+                            width: Helper.W(context) * .050,
                           ),
                           Text(
                             'My Wallet',
                             style: TextStyle(
-                              fontSize:
-                                  ResponsiveHelper.getWidth(context) * .060,
+                              fontSize: Helper.W(context) * .060,
                             ),
                           ),
                         ],
@@ -70,12 +90,12 @@ class Payment extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
                   Row(
                     children: [
                       SizedBox(
-                        width: ResponsiveHelper.getWidth(context) * .060,
+                        width: Helper.W(context) * .060,
                       ),
                       const Text(
                         'Choose Payment',
@@ -86,34 +106,71 @@ class Payment extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .030,
+                    height: Helper.H(context) * .030,
                   ),
-                  PaymentListtilewidget(
-                    image: 'assets/images/payment/Google pay.png',
-                    ontap: () {},
+                  FutureBuilder(
+                    future: PaymentController().appopen(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // Placeholder for loading state
+                      }
+                      return ListView.separated(
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                child: Icon(Icons.payment),
+                              ),
+                              title: Text(snapshot.data!.name),
+                              onTap: () {
+                                var j = serchController.prdctprice(
+                                    int.parse(Selectedindex!.CompanyCharge));
+                                transaction =
+                                    PaymentController().initiateTransaction(
+                                  // app: snapshot.data![index],
+                                  // reciverUpiid: reciverUpiid,
+                                  amout: double.parse(j.toString()),
+                                  recivename: 'logitrack',
+                                );
+                              },
+                            );
+                          },
+                          separatorBuilder: (context, index) => SizedBox(
+                                height: Helper.H(context) * .050,
+                              ),
+                          itemCount: 1);
+                    },
                   ),
-                  PaymentListtilewidget(
-                    image: 'assets/images/payment/paytm.png',
-                    ontap: () {},
-                  ),
-                  PaymentListtilewidget(
-                    image: 'assets/images/payment/phonepay.png',
-                    ontap: () {},
-                  ),
-                  PaymentListtilewidget(
-                    image: 'assets/images/payment/paypal.png',
-                    ontap: () {},
-                  ),
-                  PaymentListtilewidget(
-                    image: 'assets/images/payment/bank.png',
-                    ontap: () {},
+                  FutureBuilder(
+                    future: transaction,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return Text(
+                              _upiErrorHandler(snapshot.error.runtimeType));
+                        }
+                      }
+                      if (snapshot.hasData) {
+                        UpiResponse upiResponse = snapshot.data!;
+
+                        String txnId = upiResponse.transactionId ?? 'N/A';
+                        String resCode = upiResponse.responseCode ?? 'N/A';
+                        String txnRef = upiResponse.transactionRefId ?? 'N/A';
+                        String status = upiResponse.status ?? 'N/A';
+                        String approvalRef = upiResponse.approvalRefNo ?? 'N/A';
+                        _checkTxnStatus(status);
+                        return Text('data');
+                      }
+                      return Text('');
+                    },
                   ),
                   SizedBox(
-                    height: ResponsiveHelper.getHeight(context) * .050,
+                    height: Helper.H(context) * .050,
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: ResponsiveHelper.getWidth(context) * .060,
+                      horizontal: Helper.W(context) * .060,
                     ),
                     child: Column(
                       children: [
@@ -122,8 +179,7 @@ class Payment extends StatelessWidget {
                             Text(
                               'Price Details',
                               style: AppTextStyles.boldText(
-                                fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                fontSize: Helper.W(context) * .040,
                               ),
                             ),
                           ],
@@ -135,21 +191,19 @@ class Payment extends StatelessWidget {
                             Text(
                               'Package Price',
                               style: AppTextStyles.regularText(
-                                fontSize:
-                                    ResponsiveHelper.getWidth(context) * .050,
+                                fontSize: Helper.W(context) * .050,
                               ),
                             ),
                             Text(
-                              '\$400',
+                              '\$ ${serchController.prdctprice(int.parse(Selectedindex!.CompanyCharge))}',
                               style: AppTextStyles.regularText(
-                                fontSize:
-                                    ResponsiveHelper.getWidth(context) * .050,
+                                fontSize: Helper.W(context) * .050,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: ResponsiveHelper.getHeight(context) * .020,
+                          height: Helper.H(context) * .020,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,23 +211,21 @@ class Payment extends StatelessWidget {
                             Text(
                               'Taxes',
                               style: AppTextStyles.regularText(
-                                fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                fontSize: Helper.W(context) * .040,
                                 color: Colors.grey,
                               ),
                             ),
                             Text(
                               '\$8.3',
                               style: AppTextStyles.regularText(
-                                fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                fontSize: Helper.W(context) * .040,
                                 color: Colors.grey,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: ResponsiveHelper.getHeight(context) * .020,
+                          height: Helper.H(context) * .020,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,16 +234,14 @@ class Payment extends StatelessWidget {
                               'Delivery changes',
                               style: AppTextStyles.regularText(
                                 color: Colors.grey,
-                                fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                fontSize: Helper.W(context) * .040,
                               ),
                             ),
                             Text(
                               '15',
                               style: AppTextStyles.regularText(
                                 color: Colors.grey,
-                                fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                fontSize: Helper.W(context) * .040,
                               ),
                             ),
                           ],
@@ -203,33 +253,74 @@ class Payment extends StatelessWidget {
                             Text(
                               'Package Total',
                               style: AppTextStyles.regularText(
-                                fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                fontSize: Helper.W(context) * .040,
                               ),
                             ),
                             Text(
-                              '400',
+                              '${serchController.prdctprice(int.parse(Selectedindex!.CompanyCharge))}',
                               style: AppTextStyles.regularText(
-                                fontSize:
-                                    ResponsiveHelper.getWidth(context) * .040,
+                                fontSize: Helper.W(context) * .040,
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          height: ResponsiveHelper.getHeight(context) * .040,
+                          height: Helper.H(context) * .040,
                         ),
                         GestureDetector(
-                          //
+                          onTap: () {
+                            log(Selectedindex.toString());
+
+                            log(Selectedindex!.CompanyCharge.toString());
+                            String prodid = randomAlpha(5);
+
+                            serchController
+                                .addorderdetail(Addproductmodel(
+                                    // id: Controller.auth.currentUser!.uid,
+                                    userid:
+                                        serchController.auth.currentUser!.uid,
+                                    Pickupfromname:
+                                        serchController.Pickeupname.text,
+                                    Pickupfromnumber:
+                                        serchController.pickupnumber.text,
+                                    Pickupaddress:
+                                        serchController.pickupadress.text,
+                                    Deliveryname:
+                                        serchController.deliveryname.text,
+                                    Deliveryadress:
+                                        serchController.deliveryadress.text,
+                                    Deliverynumber:
+                                        serchController.deliverynumber.text,
+                                    Producttype:
+                                        serchController.producttype.text,
+                                    Prductweight:
+                                        serchController.prodcutweight.text,
+                                    productid: prodid,
+                                    payment: true,
+                                    orderstatus: 'orderconformed'))
+                                .then((value) {
+                              serchController.clearcontroller();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BottomnavUser(
+                                    selectedindex: 0,
+                                  ),
+                                ),
+                              );
+
+                              succestoast(context, 'add product succes');
+                            });
+                          },
                           child: ContainerWidget(
                             width: double.infinity,
-                            height: ResponsiveHelper.getHeight(context) * .060,
+                            height: Helper.H(context) * .060,
                             text: 'Place Order',
-                            radius: ResponsiveHelper.getWidth(context) * .050,
+                            radius: Helper.W(context) * .050,
                           ),
                         ),
                         SizedBox(
-                          height: ResponsiveHelper.getHeight(context) * .040,
+                          height: Helper.H(context) * .040,
                         ),
                       ],
                     ),
@@ -241,6 +332,37 @@ class Payment extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _checkTxnStatus(String status) {
+    switch (status) {
+      case UpiPaymentStatus.SUCCESS:
+        print('Transaction Successful');
+        break;
+      case UpiPaymentStatus.SUBMITTED:
+        print('Transaction Submitted');
+        break;
+      case UpiPaymentStatus.FAILURE:
+        print('Transaction Failed');
+        break;
+      default:
+        print('Received an Unknown transaction status');
+    }
+  }
+
+  String _upiErrorHandler(error) {
+    switch (error) {
+      case UpiIndiaAppNotInstalledException:
+        return 'Requested app not installed on device';
+      case UpiIndiaUserCancelledException:
+        return 'You cancelled the transaction';
+      case UpiIndiaNullResponseException:
+        return 'Requested app didn\'t return any response';
+      case UpiIndiaInvalidParametersException:
+        return 'Requested app cannot handle the transaction';
+      default:
+        return 'An Unknown error has occurred';
+    }
   }
 }
 
@@ -258,11 +380,40 @@ class PaymentListtilewidget extends StatelessWidget {
     return ListTile(
       onTap: ontap,
       leading: SizedBox(
-        width: ResponsiveHelper.getWidth(context) * .180,
-        height: ResponsiveHelper.getHeight(context) * .080,
+        width: Helper.W(context) * .180,
+        height: Helper.H(context) * .080,
         child: Image.asset(image),
       ),
       trailing: Icon(Icons.arrow_forward_ios_rounded),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+   // // PaymentListtilewidget(
+                  //   image: 'assets/images/payment/paytm.png',
+                  //   ontap: () {},
+                  // ),
+                  // PaymentListtilewidget(
+                  //   image: 'assets/images/payment/phonepay.png',
+                  //   ontap: () {},
+                  // ),
+                  // PaymentListtilewidget(
+                  //   image: 'assets/images/payment/paypal.png',
+                  //   ontap: () {},
+                  // ),
+                  // PaymentListtilewidget(
+                  //   image: 'assets/images/payment/bank.png',
+                  //   ontap: () {},
+                  // ),
+                  // SizedBox(
+                  //   height: Helper.H(context) * .050,
+                  // ),

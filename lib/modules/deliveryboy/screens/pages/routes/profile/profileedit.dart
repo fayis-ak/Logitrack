@@ -30,13 +30,13 @@ class ProfileEditScreen extends StatelessWidget {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                        top: ResponsiveHelper.getHeight(context) * .00,
+                        top: Helper.H(context) * .00,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
-                            radius: ResponsiveHelper.getWidth(context) * .090,
+                            radius: Helper.W(context) * .090,
                             backgroundImage:
                                 AssetImage('assets/images/deliveryboy.png'),
                           ),
@@ -46,17 +46,17 @@ class ProfileEditScreen extends StatelessWidget {
                     Text(
                       'Manu',
                       style: AppTextStyles.regularText(
-                        fontSize: ResponsiveHelper.getWidth(context) * .050,
+                        fontSize: Helper.W(context) * .050,
                       ),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: ResponsiveHelper.getHeight(context) * .060,
+                  height: Helper.H(context) * .060,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: ResponsiveHelper.getWidth(context) * .050,
+                    horizontal: Helper.W(context) * .050,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,35 +66,35 @@ class ProfileEditScreen extends StatelessWidget {
                         controller: _nameController,
                       ),
                       SizedBox(
-                        height: ResponsiveHelper.getHeight(context) * .030,
+                        height: Helper.H(context) * .030,
                       ),
                       Text('Email'),
                       BorderNoneetextformwidget(
                         controller: _emailController,
                       ),
                       SizedBox(
-                        height: ResponsiveHelper.getHeight(context) * .030,
+                        height: Helper.H(context) * .030,
                       ),
                       Text('Adress'),
                       BorderNoneetextformwidget(
                         controller: _adressController,
                       ),
                       SizedBox(
-                        height: ResponsiveHelper.getHeight(context) * .030,
+                        height: Helper.H(context) * .030,
                       ),
                       Text('Number'),
                       BorderNoneetextformwidget(
                         controller: _nameController,
                       ),
                       SizedBox(
-                        height: ResponsiveHelper.getHeight(context) * .030,
+                        height: Helper.H(context) * .030,
                       ),
                       Text('Password'),
                       BorderNoneetextformwidget(
                         controller: _passwordController,
                       ),
                       SizedBox(
-                        height: ResponsiveHelper.getHeight(context) * .030,
+                        height: Helper.H(context) * .030,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -105,17 +105,17 @@ class ProfileEditScreen extends StatelessWidget {
                             },
                             child: ContainerWidget(
                               color: ColorsClass.SplashScreenbg,
-                              width: ResponsiveHelper.getWidth(context) * .700,
+                              width: Helper.W(context) * .700,
                               height:
-                                  ResponsiveHelper.getHeight(context) * .060,
+                                  Helper.H(context) * .060,
                               text: 'Conform',
-                              radius: ResponsiveHelper.getWidth(context) * .050,
+                              radius: Helper.W(context) * .050,
                             ),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: ResponsiveHelper.getHeight(context) * .030,
+                        height: Helper.H(context) * .030,
                       ),
                     ],
                   ),
