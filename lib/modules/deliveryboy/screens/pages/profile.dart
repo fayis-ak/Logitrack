@@ -23,7 +23,7 @@ class Profiledelivery extends StatelessWidget {
     Future<void> Logoutdilog() async {
       return showDialog<void>(
         context: context,
-        barrierDismissible: false, // user must tap button!
+        barrierDismissible: false, 
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Logout'),
@@ -40,14 +40,15 @@ class Profiledelivery extends StatelessWidget {
                   return TextButton(
                     child: const Text('logout'),
                     onPressed: () {
-                      instance
-                          .logout(context)
-                          .then((value) => Navigator.pushAndRemoveUntil(
+                      instance.logout(context).then(
+                            (value) => Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => Userprf(),
                               ),
-                              (route) => false));
+                              (route) => false,
+                            ),
+                          );
                       succestoast(context, 'Logout success');
                       Navigator.of(context).pop();
                     },

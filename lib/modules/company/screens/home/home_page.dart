@@ -1,5 +1,5 @@
- 
 import 'package:logitrack/modules/company/screens/pages/routes/home/pending.dart';
+import 'package:logitrack/modules/company/screens/pages/routes/home/profile.dart';
 import 'package:logitrack/modules/company/screens/pages/routes/home/track.dart';
 import 'package:logitrack/modules/company/utils/clippath.dart';
 
@@ -8,8 +8,10 @@ import 'package:logitrack/modules/company/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
- 
+
 import 'package:logitrack/modules/company/widgets/text_style.dart';
+import 'package:logitrack/services/firebase_controller.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../utils/responsivesize.dart';
 
@@ -56,19 +58,21 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  //profile
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfileView(),
+                                      ));
                                 },
                                 child: CircleAvatar(
-                                  radius:
-                                      Helper.W(context) * .080,
+                                  radius: Helper.W(context) * .080,
                                   backgroundImage: AssetImage(
                                     'assets/images/courier/fedex.png',
                                   ),
                                 ),
                               ),
                               SizedBox(
-                                width:
-                                    Helper.W(context) * .020,
+                                width: Helper.W(context) * .020,
                               ),
                               Column(
                                 children: [
@@ -113,153 +117,165 @@ class _HomepageCompanyState extends State<HomepageCompany> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: Helper.W(context) * .050,
-              ),
-              child: ListView.separated(
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Material(
-                    elevation: 4,
-                    borderRadius: BorderRadius.circular(
-                      Helper.W(context) * .020,
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      height: Helper.H(context) * .280,
-                      // color: Colors.grey,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: Helper.H(context) * .020,
-                          ),
-                          Container(
-                            width: Helper.W(context) * .750,
-                            height: Helper.H(context) * .200,
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade50,
+                padding: EdgeInsets.symmetric(
+                  horizontal: Helper.W(context) * .050,
+                ),
+                child: Consumer<FirebaseController>(
+                  builder: (context, instance, _) {
+                    return StreamBuilder(
+                      stream: instance.fetchingproductorder().asStream(),
+                      builder: (context, snapshot) {
+                        final data = instance.deliveryaccesprdoct;
+                        return ListView.separated(
+                          itemCount: data.length,
+                          physics: BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return Material(
+                              elevation: 4,
                               borderRadius: BorderRadius.circular(
-                                Helper.W(context) * .030,
+                                Helper.W(context) * .020,
                               ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical:
-                                    Helper.W(context) * .020,
-                                horizontal:
-                                    Helper.W(context) * .030,
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          TextWidget(
-                                            text: 'Clara',
-                                            style: AppTextStyles.boldText(
-                                              fontSize:
-                                                  Helper.W(
-                                                          context) *
-                                                      .050,
-                                            ),
-                                          ),
-                                          TextWidget(
-                                            text: '12 march 2024 on 3:00 pm',
-                                            style: TextStyle(
-                                              fontSize:
-                                                  Helper.W(
-                                                          context) *
-                                                      .030,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                          TextWidget(
-                                            text: 'Address',
-                                            style: AppTextStyles.regularText(),
-                                          ),
-                                          TextWidget(
-                                            text:
-                                                '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
-                                            style: AppTextStyles.regularText(
-                                              fontSize:
-                                                  Helper.W(
-                                                          context) *
-                                                      .025,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: Helper.W(context) * .020,
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width:
-                                    Helper.W(context) * .620,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Tracking(),
-                                      ));
-                                },
-                                child: Container(
-                                  width:
-                                      Helper.W(context) * .200,
-                                  height: Helper.H(context) *
-                                      .030,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      Helper.W(context) * .010,
+                              child: Container(
+                                width: double.infinity,
+                                // height: Helper.H(context) * .280,
+                                // color: Colors.grey,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: Helper.H(context) * .020,
                                     ),
-                                    border: Border.all(),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'On the way',
-                                        style: AppTextStyles.regularText(
-                                          fontSize: Helper.W(
-                                                  context) *
-                                              .030,
+                                    Container(
+                                      width: Helper.W(context) * .750,
+                                      // height: Helper.H(context) * .200,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.shade50,
+                                        borderRadius: BorderRadius.circular(
+                                          Helper.W(context) * .030,
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: Helper.W(context) * .020,
+                                          horizontal: Helper.W(context) * .030,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    TextWidget(
+                                                      text: data[index]
+                                                          .Deliveryname,
+                                                      style: AppTextStyles
+                                                          .boldText(
+                                                        fontSize:
+                                                            Helper.W(context) *
+                                                                .050,
+                                                      ),
+                                                    ),
+                                                    TextWidget(
+                                                      text: data[index]
+                                                          .orderdate
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            Helper.W(context) *
+                                                                .030,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                    TextWidget(
+                                                      text: 'Address',
+                                                      style: AppTextStyles
+                                                          .regularText(),
+                                                    ),
+                                                    TextWidget(
+                                                      text: data[index]
+                                                          .Deliveryadress,
+                                                      style: AppTextStyles
+                                                          .regularText(
+                                                        fontSize:
+                                                            Helper.W(context) *
+                                                                .025,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: Helper.W(context) * .020,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: Helper.W(context) * .620,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Tracking(),
+                                                ));
+                                          },
+                                          child: Container(
+                                            width: Helper.W(context) * .200,
+                                            height: Helper.H(context) * .030,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                Helper.W(context) * .010,
+                                              ),
+                                              border: Border.all(),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'On the way',
+                                                  style:
+                                                      AppTextStyles.regularText(
+                                                    fontSize:
+                                                        Helper.W(context) *
+                                                            .030,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
                                 ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return SizedBox(
-                    height: 50,
-                  );
-                },
-                itemCount: 1,
-              ),
-            ),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 50,
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                )),
 
             // second
             SizedBox(
@@ -274,110 +290,135 @@ class _HomepageCompanyState extends State<HomepageCompany> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Helper.W(context) * .050),
-              child: ListView.separated(
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PendingScreen(),
-                          ));
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: Helper.H(context) * .200,
-                      decoration: BoxDecoration(
-                        color: Colors.blue.shade50,
-                        borderRadius: BorderRadius.circular(
-                          Helper.W(context) * .030,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: Helper.W(context) * .020,
-                          horizontal: Helper.W(context) * .030,
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    TextWidget(
-                                      text: 'Clara',
-                                      style: AppTextStyles.boldText(
-                                        fontSize:
-                                            Helper.W(context) *
-                                                .050,
+                padding:
+                    EdgeInsets.symmetric(horizontal: Helper.W(context) * .050),
+                child: Consumer<FirebaseController>(
+                  builder: (context, insatnce, child) {
+                    return StreamBuilder(
+                      stream:
+                          insatnce.fetchingorderstatus('pending').asStream(),
+                      builder: (context, snapshot) {
+                        final data = insatnce.orderstatus;
+                        return data.isEmpty
+                            ? Center(
+                                child: Text('No pending order'),
+                              )
+                            : ListView.separated(
+                                itemCount: data.length,
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PendingScreen(),
+                                          ));
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: Helper.H(context) * .200,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.shade50,
+                                        borderRadius: BorderRadius.circular(
+                                          Helper.W(context) * .030,
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: Helper.W(context) * .020,
+                                          horizontal: Helper.W(context) * .030,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    TextWidget(
+                                                      text: 'Clara',
+                                                      style: AppTextStyles
+                                                          .boldText(
+                                                        fontSize:
+                                                            Helper.W(context) *
+                                                                .050,
+                                                      ),
+                                                    ),
+                                                    TextWidget(
+                                                      text:
+                                                          '12 march 2024 on 3:00 pm',
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            Helper.W(context) *
+                                                                .030,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                    TextWidget(
+                                                      text: 'Address',
+                                                      style: AppTextStyles
+                                                          .regularText(),
+                                                    ),
+                                                    TextWidget(
+                                                      text:
+                                                          '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
+                                                      style: AppTextStyles
+                                                          .regularText(
+                                                        fontSize:
+                                                            Helper.W(context) *
+                                                                .025,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      'Pending',
+                                                      style: AppTextStyles
+                                                          .regularText(
+                                                        color: ColorsClass
+                                                            .redcolor,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      ' Request has been\n accepted',
+                                                      style: AppTextStyles
+                                                          .regularText(
+                                                        color: Colors.grey,
+                                                        fontSize:
+                                                            Helper.W(context) *
+                                                                .020,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    TextWidget(
-                                      text: '12 march 2024 on 3:00 pm',
-                                      style: TextStyle(
-                                        fontSize:
-                                            Helper.W(context) *
-                                                .030,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    TextWidget(
-                                      text: 'Address',
-                                      style: AppTextStyles.regularText(),
-                                    ),
-                                    TextWidget(
-                                      text:
-                                          '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
-                                      style: AppTextStyles.regularText(
-                                        fontSize:
-                                            Helper.W(context) *
-                                                .025,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      'Pending',
-                                      style: AppTextStyles.regularText(
-                                        color: ColorsClass.redcolor,
-                                      ),
-                                    ),
-                                    Text(
-                                      ' Request has been\n accepted',
-                                      style: AppTextStyles.regularText(
-                                        color: Colors.grey,
-                                        fontSize:
-                                            Helper.W(context) *
-                                                .020,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return SizedBox(
-                    height: 50,
-                  );
-                },
-                itemCount: 5,
-              ),
-            ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(
+                                    height: 50,
+                                  );
+                                },
+                              );
+                      },
+                    );
+                  },
+                )),
             SizedBox(
               height: Helper.H(context) * .060,
             )

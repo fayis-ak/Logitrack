@@ -33,7 +33,7 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
         ),
         body: Consumer<FirebaseController>(
           builder: (context, instance, child) {
-            return FutureBuilder(  
+            return FutureBuilder(
               future: instance.fetchtracking(),
               builder: (context, snapshot) {
                 final prdctdt = instance.productmodl;
@@ -52,14 +52,11 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
                                 itemBuilder: (context, index) {
                                   return Container(
                                     width: double.infinity,
-                                    height:
-                                        Helper.H(context) *
-                                            .200,
+                                    height: Helper.H(context) * .200,
                                     decoration: BoxDecoration(
                                       color: Colors.blue.shade50,
                                       borderRadius: BorderRadius.circular(
-                                        Helper.W(context) *
-                                            .030,
+                                        Helper.W(context) * .030,
                                       ),
                                     ),
                                     child: Column(
@@ -83,7 +80,9 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
-                                                  Text('12 march 2024'),
+                                                  Text(prdctdt[index]
+                                                      .orderdate
+                                                      .toString()),
                                                   Text(prdctdt[index]
                                                       .Pickupaddress),
                                                 ],
@@ -96,9 +95,7 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
                                                 children: [
                                                   Text('cont'),
                                                   SizedBox(
-                                                    height: Helper
-                                                            .H(
-                                                                context) *
+                                                    height: Helper.H(context) *
                                                         .020,
                                                   ),
                                                   Text('16 march 2024'),
@@ -126,9 +123,7 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
                                 },
                                 separatorBuilder: (context, index) {
                                   return SizedBox(
-                                    height:
-                                        Helper.H(context) *
-                                            .040,
+                                    height: Helper.H(context) * .040,
                                   );
                                 },
                                 itemCount: instance.productmodl.length,

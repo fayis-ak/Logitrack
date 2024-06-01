@@ -6,6 +6,7 @@ class DeliveryBoys {
   String DLNumber;
   String Vehiclenumber;
   String? id;
+  String vehicl;
 
   DeliveryBoys({
     required this.Name,
@@ -13,6 +14,7 @@ class DeliveryBoys {
     required this.DLNumber,
     required this.Vehiclenumber,
     this.id,
+    required this.vehicl,
   });
 
   Map<String, dynamic> tojson(uid) => {
@@ -21,6 +23,7 @@ class DeliveryBoys {
         'DLNumber': DLNumber,
         'VehicleNumber': Vehiclenumber,
         'id': uid,
+        'vehicle':vehicl,
       };
 
   factory DeliveryBoys.fromJson(Map<String, dynamic> json) {
@@ -30,6 +33,7 @@ class DeliveryBoys {
       DLNumber: json['DLNumber'],
       Vehiclenumber: json['VehicleNumber'],
       id: json['id'],
+      vehicl: json['vehicle']
     );
   }
 }

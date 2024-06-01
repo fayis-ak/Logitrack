@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logitrack/models/addproductorder.dart';
@@ -24,23 +21,6 @@ class ShipmentDetails extends StatefulWidget {
 }
 
 class _ShipmentDetailsState extends State<ShipmentDetails> {
-  bool _isSelected = false;
-  bool _isSelected2 = false;
-
-  bool _isSelected3 = false;
-
-  bool _isSelected4 = false;
-
-  bool _isSelected5 = false;
-
-  List orderstaus = [
-    'Order conFormed',
-    'Vehicle Assaigned',
-    'shipment picked',
-    'in transit',
-    'Shipment delivery',
-  ];
-
   int orderstus = 0;
 
   @override
@@ -234,19 +214,20 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                                     SizedBox(
                                       width: 20,
                                     ),
-                                    Text(data!.orderstatus.toString()),
                                     Spacer(),
-                                    IconButton(
-                                        onPressed: () {
-                                          db
-                                              .collection('addNewOrder')
-                                              .doc(widget.indexdata.id)
-                                              .update({
-                                            'orderstatus': 'order pending'
-                                          });
-                                        },
-                                        icon:
-                                            Icon(Icons.check_box_outline_blank))
+                                    Consumer<FirebaseController>(
+                                      builder: (context, instance, child) {
+                                        return IconButton(
+                                            onPressed: () {
+                                              instance.updateconfoorm(
+                                                widget.indexdata.id,
+                                                'order request',
+                                              );
+                                            },
+                                            icon: Icon(
+                                                Icons.check_box_outline_blank));
+                                      },
+                                    )
                                   ],
                                 ),
                                 Row(
@@ -255,19 +236,42 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                                     SizedBox(
                                       width: 20,
                                     ),
-                                    Text(data!.orderstatus.toString()),
                                     Spacer(),
-                                    IconButton(
-                                        onPressed: () {
-                                          db
-                                              .collection('addNewOrder')
-                                              .doc(widget.indexdata.id)
-                                              .update({
-                                            'orderstatus': 'order cancel'
-                                          });
-                                        },
-                                        icon:
-                                            Icon(Icons.check_box_outline_blank))
+                                    Consumer<FirebaseController>(
+                                      builder: (context, instance, child) {
+                                        return IconButton(
+                                            onPressed: () {
+                                              instance.updateconfoorm(
+                                                widget.indexdata.id,
+                                                'order cancel',
+                                              );
+                                            },
+                                            icon: Icon(
+                                                Icons.check_box_outline_blank));
+                                      },
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text('procesing'),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Spacer(),
+                                    Consumer<FirebaseController>(
+                                      builder: (context, instance, child) {
+                                        return IconButton(
+                                            onPressed: () {
+                                              instance.updateconfoorm(
+                                                widget.indexdata.id,
+                                                'pending',
+                                              );
+                                            },
+                                            icon: Icon(
+                                                Icons.check_box_outline_blank));
+                                      },
+                                    )
                                   ],
                                 ),
                                 Row(
@@ -276,20 +280,23 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                                     SizedBox(
                                       width: 20,
                                     ),
-                                    Text(data!.orderstatus.toString()),
                                     Spacer(),
-                                    IconButton(
-                                        onPressed: () {
-                                          db
-                                              .collection('addNewOrder')
-                                              .doc(widget.indexdata.id)
-                                              .update(
-                                                  {'orderstatus': 'Complete'});
-                                        },
-                                        icon:
-                                            Icon(Icons.check_box_outline_blank))
+                                    Consumer<FirebaseController>(
+                                      builder: (context, instance, child) {
+                                        return IconButton(
+                                            onPressed: () {
+                                              instance.updateconfoorm(
+                                                widget.indexdata.id,
+                                                'Complete',
+                                              );
+                                            },
+                                            icon: Icon(
+                                                Icons.check_box_outline_blank));
+                                      },
+                                    ),
                                   ],
                                 ),
+                                Text(data!.orderstatus.toString()),
                               ],
                             );
                           }

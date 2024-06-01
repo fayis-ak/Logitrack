@@ -1,4 +1,3 @@
-  
 import 'package:flutter/cupertino.dart';
 
 class Controller with ChangeNotifier {
@@ -12,6 +11,17 @@ class Controller with ChangeNotifier {
   bool get isSelected => _isSelected;
   tickconform(bool value) {
     _isSelected = value;
+    notifyListeners();
+  }
+
+  int activeindex = 1;
+  Activeindex(int newindex) {
+    newindex = activeindex;
+  }
+
+  int curentindex = 0;
+  newindex(value) {
+    curentindex = value;
     notifyListeners();
   }
 }

@@ -34,6 +34,11 @@ class _HomepageDeliveryState extends State<HomepageDelivery> {
         return FutureBuilder(
           future: instancedeli.fetchigdelivery(auth.currentUser!.uid),
           builder: (context, snapshot) {
+            // if (snapshot.connectionState == ConnectionState.waiting) {
+            //   return Center(
+            //     child: CircularProgressIndicator(),
+            //   );
+            // }
             final dat = instancedeli.deliveryboy;
 
             log(snapshot.data.toString());

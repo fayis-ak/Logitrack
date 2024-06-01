@@ -20,32 +20,10 @@ class CourierServicesUser extends StatelessWidget {
     super.key,
   });
 
-  List<String> coriername = [
-    'FedEx',
-    'GATI',
-    'DHL',
-    'Blue Dart',
-    'Shipway',
-    'DTDC'
-  ];
+  
 
-  List<int> shpingfee = [
-    100,
-    150,
-    200,
-    250,
-    1000,
-    350,
-  ];
-
-  List<String> imagecorier = [
-    'assets/images/courier/fedex.png',
-    'assets/images/courier/gati.png',
-    'assets/images/courier/djl.png',
-    'assets/images/courier/bluedat.png',
-    'assets/images/courier/shipaway.png',
-    'assets/images/courier/dtdc.png',
-  ];
+ 
+ 
 
   @override
   Widget build(BuildContext context) {

@@ -1,30 +1,27 @@
 import 'dart:ui';
 
- 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
- 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logitrack/modules/company/screens/auth_service/signup.dart';
 import 'package:logitrack/modules/company/utils/colors.dart';
 import 'package:logitrack/modules/company/widgets/container.dart';
 import 'package:logitrack/modules/company/widgets/textformwidget.dart';
 import 'package:logitrack/modules/company/widgets/textwidget.dart';
+import 'package:logitrack/services/firebase_controller.dart';
+import 'package:logitrack/services/user_controller.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../utils/responsivesize.dart';
- 
 
 class LogginScreenCompany extends StatelessWidget {
   LogginScreenCompany({super.key});
 
-  final _formKey = GlobalKey<FormState>();
-
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    final provdrdata = Provider.of<FirebaseController>(context);
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -34,7 +31,7 @@ class LogginScreenCompany extends StatelessWidget {
           ),
           child: SingleChildScrollView(
             child: Form(
-              key: _formKey,
+              key: provdrdata.formKey,
               child: Column(
                 children: [
                   SizedBox(
@@ -44,7 +41,7 @@ class LogginScreenCompany extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Welcome',
+                        'Welcome company',
                         style: GoogleFonts.heebo(),
                       ),
                     ],
@@ -62,7 +59,7 @@ class LogginScreenCompany extends StatelessWidget {
                         ),
                       ),
                       Textformwidget(
-                        controller: _nameController,
+                        controller: provdrdata.companylogginemail,
                         hint: 'Name',
                         radius: Helper.W(context) * .020,
                         validation: (value) {
@@ -87,7 +84,7 @@ class LogginScreenCompany extends StatelessWidget {
                         ),
                       ),
                       Textformwidget(
-                        controller: _passwordController,
+                        controller: provdrdata.companypasswordloggin,
                         hint: 'password',
                         radius: Helper.W(context) * .020,
                         validation: (value) {
@@ -115,22 +112,27 @@ class LogginScreenCompany extends StatelessWidget {
                   SizedBox(
                     height: Helper.H(context) * .080,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                       ///home
-                      } else {
-                        print('error');
-                      }
+                  Consumer<AuthController>(
+                    builder: (context, insatnce, _) {
+                      return GestureDetector(
+                        onTap: () {
+                          if (provdrdata.formKey.currentState!.validate()) {
+                            insatnce.CompanyLoggin(
+                              provdrdata.companylogginemail.text,
+                              provdrdata.companypasswordloggin.text,
+                              context,
+                            );
+                          }
+                        },
+                        child: ContainerWidget(
+                          color: ColorsClass.SplashScreenbg,
+                          width: Helper.W(context) * .600,
+                          height: Helper.H(context) * .070,
+                          text: 'Login',
+                          radius: Helper.W(context) * .050,
+                        ),
+                      );
                     },
-                    child: ContainerWidget(
-                                        color: ColorsClass.SplashScreenbg,
-
-                      width: Helper.W(context) * .600,
-                      height: Helper.H(context) * .070,
-                      text: 'Login',
-                      radius: Helper.W(context) * .050,
-                    ),
                   ),
                   SizedBox(
                     height: Helper.H(context) * .030,
@@ -188,7 +190,11 @@ class LogginScreenCompany extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                        //signup
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignupScreenCompany(),
+                              ));
                         },
                         child: TExtWidget(
                           text: 'Sign in',

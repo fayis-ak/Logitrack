@@ -1,10 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logitrack/models/addproductorder.dart';
 import 'package:logitrack/models/prductmodel.dart';
 import 'package:logitrack/modules/user/screens/pages/bottom_bar.dart';
 import 'package:logitrack/modules/user/screens/pages/home_page.dart';
+import 'package:logitrack/modules/user/screens/pages/routes/home/orderplaced.dart';
 import 'package:logitrack/services/controller.dart';
 import 'package:logitrack/services/firebase_controller.dart';
 import 'package:logitrack/services/paymentcontroller.dart';
@@ -17,9 +19,9 @@ import 'package:random_string/random_string.dart';
 import 'package:upi_india/upi_india.dart';
 
 class PaymentUser extends StatelessWidget {
-  final Company? Selectedindex ;
+  final Company? Selectedindex;
 
-  PaymentUser({ this.Selectedindex, super.key});
+  PaymentUser({this.Selectedindex, super.key});
 
   Widget dividerwidget() {
     return const Divider(
@@ -273,6 +275,8 @@ class PaymentUser extends StatelessWidget {
 
                             log(Selectedindex!.CompanyCharge.toString());
                             String prodid = randomAlpha(5);
+                            String date =
+                                DateFormat("dd/M/yyyy").format(DateTime.now());
 
                             serchController
                                 .addorderdetail(Addproductmodel(
@@ -297,16 +301,15 @@ class PaymentUser extends StatelessWidget {
                                         serchController.prodcutweight.text,
                                     productid: prodid,
                                     payment: true,
+                                    orderdate: date,
                                     orderstatus: 'orderconformed'))
                                 .then((value) {
                               serchController.clearcontroller();
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => BottomnavUser(
-                                    selectedindex: 0,
-                                  ),
-                                ),
+                                    builder: (context) => OrderConformed()),
                               );
 
                               succestoast(context, 'add product succes');

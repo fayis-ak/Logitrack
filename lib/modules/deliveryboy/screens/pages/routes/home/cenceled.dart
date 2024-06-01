@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:logitrack/modules/deliveryboy/screens/bottom_navbar.dart';
 
 import 'package:logitrack/modules/deliveryboy/widgets/text_style.dart';
+import 'package:logitrack/services/firebase_controller.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../utils/colors.dart';
 import '../../../../../../utils/responsivesize.dart';
@@ -16,96 +18,116 @@ class Canceled extends StatelessWidget {
         title: Text('Cenceled'),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: Helper.W(context) * .050,
-        ),
-        child: ListView.separated(
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {},
-              child: Container(
-                width: double.infinity,
-                height: Helper.H(context) * .200,
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(
-                    Helper.W(context) * .030,
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: Helper.W(context) * .020,
-                    horizontal: Helper.W(context) * .030,
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextWidget(
-                                text: 'Clara',
-                                style: AppTextStyles.boldText(
-                                  fontSize:
-                                      Helper.W(context) * .050,
+          padding: EdgeInsets.symmetric(
+            horizontal: Helper.W(context) * .050,
+          ),
+          child: Consumer<FirebaseController>(
+            builder: (context, instance, _) {
+              return StreamBuilder(
+                stream: instance.fetchingorderstatus('order cancel').asStream(),
+                builder: (context, snapshot) {
+                  final sineldocdata = instance.orderstatus;
+                  return sineldocdata.isEmpty
+                      ? Center(
+                          child: Text('No product '),
+                        )
+                      : ListView.separated(
+                          itemCount: sineldocdata.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                width: double.infinity,
+                                height: Helper.H(context) * .200,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.shade50,
+                                  borderRadius: BorderRadius.circular(
+                                    Helper.W(context) * .030,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: Helper.W(context) * .020,
+                                    horizontal: Helper.W(context) * .030,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              TextWidget(
+                                                text: 'Clara',
+                                                style: AppTextStyles.boldText(
+                                                  fontSize:
+                                                      Helper.W(context) * .050,
+                                                ),
+                                              ),
+                                              TextWidget(
+                                                text:
+                                                    '12 march 2024 on 3:00 pm',
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      Helper.W(context) * .030,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              TextWidget(
+                                                text: 'Address',
+                                                style:
+                                                    AppTextStyles.regularText(),
+                                              ),
+                                              TextWidget(
+                                                text:
+                                                    '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
+                                                style:
+                                                    AppTextStyles.regularText(
+                                                  fontSize:
+                                                      Helper.W(context) * .025,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                'Cancelled',
+                                                style:
+                                                    AppTextStyles.regularText(
+                                                  color: ColorsClass.redcolor,
+                                                ),
+                                              ),
+                                              Image.asset(
+                                                'assets/imagesdelivery/canceled.png',
+                                                errorBuilder: (context, error,
+                                                        stackTrace) =>
+                                                    Icon(Icons.error),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              TextWidget(
-                                text: '12 march 2024 on 3:00 pm',
-                                style: TextStyle(
-                                  fontSize:
-                                      Helper.W(context) * .030,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              TextWidget(
-                                text: 'Address',
-                                style: AppTextStyles.regularText(),
-                              ),
-                              TextWidget(
-                                text:
-                                    '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
-                                style: AppTextStyles.regularText(
-                                  fontSize:
-                                      Helper.W(context) * .025,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                'Cancelled',
-                                style: AppTextStyles.regularText(
-                                  color: ColorsClass.redcolor,
-                                ),
-                              ),
-                              Image.asset(
-                                'assets/imagesdelivery/canceled.png',
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Icon(Icons.error),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return SizedBox(
-              height: Helper.H(context) * .030,
-            );
-          },
-          itemCount: 2,
-        ),
-      ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: Helper.H(context) * .030,
+                            );
+                          },
+                        );
+                },
+              );
+            },
+          )),
       bottomNavigationBar: mynav(
         index: 0,
         onTap: (index) {

@@ -1,11 +1,18 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:another_stepper/dto/stepper_data.dart';
 import 'package:another_stepper/widgets/another_stepper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logitrack/modules/company/utils/responsivesize.dart';
+import 'package:logitrack/services/controller.dart';
+import 'package:logitrack/services/firebase_controller.dart';
+import 'package:logitrack/tsetssss.dart';
+import 'package:logitrack/utils/strings.dart';
+import 'package:provider/provider.dart';
 
 class Orderbottom extends StatefulWidget {
   const Orderbottom({super.key});
@@ -54,8 +61,6 @@ class _OrderbottomState extends State<Orderbottom> {
     getpolyPoint();
     super.initState();
   }
-
- 
 
   List<StepperData> generateStepperData() {
     return [
@@ -235,44 +240,63 @@ class _OrderbottomState extends State<Orderbottom> {
             ),
           ),
 
-          // Column(
-          //   children: [
-          //     ElevatedButton(
-          //       onPressed: () {
-          //         setState(() {
-          //           activeIndex = 1;
-          //         });
-          //       },
-          //       child: Text('insta'),
-          //     ),
-          //     ElevatedButton(
-          //       onPressed: () {
-          //         setState(() {
-          //           activeIndex = 2;
-          //         });
-          //       },
-          //       child: Text('youtube'),
-          //     ),
-          //     ElevatedButton(
-          //       onPressed: () {
-          //         setState(() {
-          //           activeIndex = 3;
-          //         });
-          //       },
-          //       child: Text('upload'),
-          //     ),
-          //     ElevatedButton(
-          //       onPressed: () {
-          //         setState(() {
-          //           activeIndex = 4;
-          //         });
-          //       },
-          //       child: Text('refer'),
-          //     ),
-          //   ],
-          // )
+          Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    activeIndex = 1;
+                  });
+                },
+                child: Text('insta'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    activeIndex = 2;
+                  });
+                },
+                child: Text('youtube'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    activeIndex = 3;
+                  });
+                },
+                child: Text('upload'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    activeIndex = 4;
+                  });
+                },
+                child: Text('refer'),
+              ),
+            ],
+          )
         ],
       ),
     );
   }
 }
+
+// void activeindex(BuildContext context) async {
+//   final provdr = Provider.of<Controller>(context);
+
+//   final fetch = Provider.of<FirebaseController>(context);
+
+//   QuerySnapshot<Map<String, dynamic>> dat = await db
+//       .collection('addNewOrder')
+//       .where('userid', isEqualTo: auth.currentUser!.uid)
+//       .get();
+      
+
+//   switch () {
+//     case 1:
+//       provdr.activeindex;
+//     case 2:
+//       provdr.activeindex;
+//   }
+// }

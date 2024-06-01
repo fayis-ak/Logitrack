@@ -312,6 +312,7 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
                               Email: _emailController.text,
                               DLNumber: _drivinglicenseController.text,
                               Vehiclenumber: _vehiclenumberController.text,
+                              vehicl: selectedIndex.toString(),
                             ),
                           );
                           succestoast(context, 'add delivery ');

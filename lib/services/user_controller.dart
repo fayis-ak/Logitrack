@@ -6,7 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logitrack/models/company.dart';
+import 'package:logitrack/models/prductmodel.dart';
 import 'package:logitrack/models/user_model.dart';
+import 'package:logitrack/modules/company/screens/bottom_navbar.dart';
 import 'package:logitrack/modules/deliveryboy/screens/auth_service/signup.dart';
 import 'package:logitrack/modules/deliveryboy/screens/bottom_navbar.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/home_page.dart';
@@ -189,6 +192,59 @@ class AuthController with ChangeNotifier {
     } catch (e) {
       errortoast(context, 'error ');
       print(e);
+    }
+  }
+
+  Future CompanySignup(
+      String email, String password, BuildContext context, CompanyModel) async {
+    try {
+      log('try ulllil working');
+      await auth
+          .createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      )
+          .then((value) {
+        log('try then working');
+
+        final prvdr = Provider.of<FirebaseController>(context, listen: false);
+
+        prvdr.Companysignup(auth.currentUser!.uid, CompanyModel);
+        log('add db');
+
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BottomnavCompany(
+                selectedindex: 0,
+              ),
+            ));
+        log('navi then');
+
+        succestoast(context, 'company signup sucess');
+      });
+    } on FirebaseAuthException catch (e) {
+      throw e.toString();
+    }
+  }
+
+  CompanyLoggin(String email, String password, BuildContext context) async {
+    try {
+      auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BottomnavCompany(
+                selectedindex: 0,
+              ),
+            ));
+        succestoast(context, 'loggin succes');
+      });
+    } on FirebaseException catch (e) {
+      errortoast(context, 'error ');
+      throw e.toString();
     }
   }
 }

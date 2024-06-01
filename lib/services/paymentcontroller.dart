@@ -17,7 +17,7 @@ class PaymentController with ChangeNotifier {
   }) async {
     return _upiIndia.startTransaction(
       app: app,
-      receiverUpiId: 'fayisak256@okicici',
+      receiverUpiId: ' upiid',
       receiverName: recivename,
       transactionRefId: 'TestingUpiIndiaPlugin',
       transactionNote: 'Not actual. Just an example.',

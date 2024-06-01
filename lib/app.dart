@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logitrack/modules/admin/view/dashboard_home/add_company.dart';
 import 'package:logitrack/modules/admin/view/dashboard_home/dashboard_home.dart';
+import 'package:logitrack/modules/company/screens/auth_service/Loggin_screen.dart';
 import 'package:logitrack/modules/company/screens/bottom_navbar.dart';
 import 'package:logitrack/modules/company/widgets/text_style.dart';
 import 'package:logitrack/modules/deliveryboy/screens/auth_service/Loggin_screen.dart';
@@ -128,9 +129,7 @@ class Userprf extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BottomnavCompany(
-                            selectedindex: 0,
-                          ),
+                          builder: (context) => LogginScreenCompany(),
                         ));
                   },
                   child: Container(

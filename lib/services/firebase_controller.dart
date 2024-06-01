@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logitrack/models/addproductorder.dart';
 import 'package:logitrack/models/addressmodel.dart';
+import 'package:logitrack/models/company.dart';
 import 'package:logitrack/models/deliveryboys.dart';
 
 import 'package:logitrack/models/prductmodel.dart';
@@ -22,6 +23,8 @@ class FirebaseController with ChangeNotifier {
 
   // cntroller
 
+  final formKey = GlobalKey<FormState>();
+
   final Pickeupname = TextEditingController();
   final pickupnumber = TextEditingController();
   final pickupadress = TextEditingController();
@@ -30,6 +33,17 @@ class FirebaseController with ChangeNotifier {
   final deliveryadress = TextEditingController();
   final producttype = TextEditingController();
   final prodcutweight = TextEditingController();
+
+  // company
+  TextEditingController companyusernameController = TextEditingController();
+  TextEditingController companyemailController = TextEditingController();
+  TextEditingController companylisence = TextEditingController();
+  TextEditingController companylocation = TextEditingController();
+  TextEditingController companypassword = TextEditingController();
+
+  // company login
+  TextEditingController companylogginemail = TextEditingController();
+  TextEditingController  companypasswordloggin = TextEditingController();
 
   clearcontroller() {
     Pickeupname.clear();
@@ -46,6 +60,12 @@ class FirebaseController with ChangeNotifier {
 
   Future adduser(String uid, usermodel) async {
     db.collection('Users').doc(uid).set(usermodel.tojson(uid));
+  }
+
+  Future Companysignup(String uid, CompanyModel companymodel) async {
+    log('add db');
+
+    await db.collection('CompanyUsers').doc(uid).set(companymodel.toJson(uid));
   }
 
   Future<void> logout(BuildContext context) async {
@@ -129,12 +149,12 @@ class FirebaseController with ChangeNotifier {
     // log(' ith mode company lenght${company.length.toString()}');
   }
 
-  Future addcompany(
+  Future addcompanyies(
     Company productmodel,
     BuildContext context,
   ) async {
     try {
-      final com = await db.collection('Company').doc();
+      final com = await db.collection('Companyies').doc();
 
       com.set(productmodel.tojson(com.id));
     } catch (e) {
@@ -195,14 +215,16 @@ class FirebaseController with ChangeNotifier {
   // fetching were ordertype
   List<Addproductmodel> orderstatus = [];
   Future fetchingorderstatus(String were) async {
-    QuerySnapshot<Map<String, dynamic>> snapshotd = await db
+    Stream<QuerySnapshot> snapshotd = await db
         .collection('addNewOrder')
         .where('orderstatus', isEqualTo: were)
-        .get();
+        .snapshots();
 
-    orderstatus = snapshotd.docs.map((e) {
-      return Addproductmodel.fromJson(e.data());
-    }).toList();
+    snapshotd.listen((event) {
+      orderstatus = event.docs.map((e) {
+        return Addproductmodel.fromJson(e.data() as Map<String, dynamic>);
+      }).toList();
+    });
 
     log(' product model    ${orderstatus.length.toString()}');
   }
@@ -215,5 +237,15 @@ class FirebaseController with ChangeNotifier {
     if (snapshot.exists) {
       deliveryboy = DeliveryBoys.fromJson(snapshot.data()!);
     }
+  }
+
+  //delivery boy
+
+  final isconform = false;
+
+  updateconfoorm(userid, String status) async {
+    await db.collection('addNewOrder').doc(userid).update({
+      'orderstatus': status,
+    });
   }
 }

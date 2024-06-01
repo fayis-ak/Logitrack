@@ -88,14 +88,15 @@ class _AddCompanyState extends State<AddCompany> {
 
       log('Image URL: $url');
 
-      await Provider.of<FirebaseController>(context, listen: false).addcompany(
-          Company(
-            CompanyName: CompanyName.text,
-            imageurl: url,
-            CompanyCharge: CompanyCharge.text,
-            wdwide: selectd,
-          ),
-          context);
+      await Provider.of<FirebaseController>(context, listen: false)
+          .addcompanyies(
+              Company(
+                CompanyName: CompanyName.text,
+                imageurl: url,
+                CompanyCharge: CompanyCharge.text,
+                wdwide: selectd,
+              ),
+              context);
       log('Add product success');
       succestoast(context, 'Add product success');
     } catch (e) {

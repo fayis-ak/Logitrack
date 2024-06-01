@@ -1,8 +1,11 @@
- 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logitrack/modules/company/screens/auth_service/Loggin_screen.dart';
 import 'package:logitrack/modules/company/widgets/container.dart';
 import 'package:logitrack/modules/company/widgets/textformwidget.dart';
+import 'package:logitrack/services/firebase_controller.dart';
+import 'package:logitrack/utils/toast.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../utils/colors.dart';
 import '../../../../../../utils/responsivesize.dart';
@@ -16,6 +19,24 @@ class ProfileView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('profile'),
+        actions: [
+          Consumer<FirebaseController>(
+            builder: (context, insatnce, _) {
+              return IconButton(
+                onPressed: () async {
+                  insatnce.logout(context).then((value) {
+                    succestoast(context, 'Logout sucess');
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LogginScreenCompany()));
+                  });
+                },
+                icon: Icon(Icons.logout),
+              );
+            },
+          )
+        ],
       ),
       body: Scaffold(
         body: Padding(
@@ -170,7 +191,7 @@ class ProfileView extends StatelessWidget {
                       color: ColorsClass.SplashScreenbg,
                       width: Helper.W(context) * .600,
                       height: Helper.H(context) * .070,
-                      text: 'Sign up',
+                      text: 'Update',
                       radius: Helper.W(context) * .050,
                     ),
                   ),
