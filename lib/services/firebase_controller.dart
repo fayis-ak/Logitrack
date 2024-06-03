@@ -43,7 +43,7 @@ class FirebaseController with ChangeNotifier {
 
   // company login
   TextEditingController companylogginemail = TextEditingController();
-  TextEditingController  companypasswordloggin = TextEditingController();
+  TextEditingController companypasswordloggin = TextEditingController();
 
   clearcontroller() {
     Pickeupname.clear();
@@ -135,7 +135,7 @@ class FirebaseController with ChangeNotifier {
 
   List<Company> company = [];
   Future companyfetch() async {
-    Stream<QuerySnapshot> snapshot = await db.collection('Company').snapshots();
+    Stream<QuerySnapshot> snapshot = db.collection('Companyies').snapshots();
 
     snapshot.listen((snapshot) {
       company = snapshot.docs.map((docs) {
@@ -215,7 +215,7 @@ class FirebaseController with ChangeNotifier {
   // fetching were ordertype
   List<Addproductmodel> orderstatus = [];
   Future fetchingorderstatus(String were) async {
-    Stream<QuerySnapshot> snapshotd = await db
+    Stream<QuerySnapshot> snapshotd =   db
         .collection('addNewOrder')
         .where('orderstatus', isEqualTo: were)
         .snapshots();
@@ -247,5 +247,26 @@ class FirebaseController with ChangeNotifier {
     await db.collection('addNewOrder').doc(userid).update({
       'orderstatus': status,
     });
+  }
+
+  String? deliverydoc;
+
+  List<DeliveryBoys> deliverylist = [];
+  Future fetchDelivery() async {
+    final snapshot = db.collection('DeliveryBoys').snapshots();
+
+    snapshot.listen((event) {
+      deliverylist = event.docs.map((e) {
+        return DeliveryBoys.fromJson(e.data());
+      }).toList();
+    });
+  }
+
+  Future remooveDelivery(docid) async {
+    try {
+      db.collection('DeliveryBoys').doc(docid).delete();
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

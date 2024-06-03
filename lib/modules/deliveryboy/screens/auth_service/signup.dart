@@ -5,11 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logitrack/models/deliveryboys.dart';
 import 'package:logitrack/modules/deliveryboy/screens/bottom_navbar.dart';
 
 import 'package:logitrack/modules/deliveryboy/widgets/container.dart';
 import 'package:logitrack/modules/deliveryboy/widgets/textformwidget.dart';
+import 'package:logitrack/services/controller.dart';
 import 'package:logitrack/services/firebase_controller.dart';
 import 'package:logitrack/utils/colors.dart';
 import 'package:logitrack/utils/responsivesize.dart';
@@ -35,8 +37,13 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
   TextEditingController _vehiclenumberController = TextEditingController();
   TextEditingController _passwordcontroler = TextEditingController();
 
+  XFile? xFile;
+
+  String image = '';
+
   @override
   Widget build(BuildContext context) {
+    final provideobj = Provider.of<Controller>(context);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -62,6 +69,31 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
                     ),
                   ],
                 ),
+                SizedBox(
+                    height: Helper.H(context) * .100,
+                    child: Stack(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: Helper.W(context) * .10,
+                              
+                            ),
+                          ],
+                        ),
+                        Positioned(
+                            left: Helper.W(context) * .45,
+                            top: Helper.W(context) * .10,
+                            child: IconButton(
+                                onPressed: () async {
+                                  provideobj.pickimagefromgallery();
+                                },
+                                icon: Icon(
+                                  Icons.camera_alt_outlined,
+                                )))
+                      ],
+                    )),
                 SizedBox(
                   height: Helper.H(context) * .050,
                 ),
