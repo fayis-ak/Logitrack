@@ -47,9 +47,9 @@ class AuthController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future signup(String email, String password, String name, context) async {
+  Future signup(
+      String email, String password, String name, context, imageurl) async {
     try {
-      log(' ====================signup try working on ====================');
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((credential) {
@@ -60,7 +60,7 @@ class AuthController with ChangeNotifier {
             email: email,
             password: password,
             name: name,
-            imageurl: '',
+            imageurl: imageurl,
             address: '',
           ),
         )

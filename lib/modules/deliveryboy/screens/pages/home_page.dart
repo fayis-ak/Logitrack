@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logitrack/models/addproductorder.dart';
 
 import 'package:logitrack/modules/deliveryboy/screens/pages/order.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/routes/home/cenceled.dart';
@@ -34,11 +35,11 @@ class _HomepageDeliveryState extends State<HomepageDelivery> {
         return FutureBuilder(
           future: instancedeli.fetchigdelivery(auth.currentUser!.uid),
           builder: (context, snapshot) {
-            // if (snapshot.connectionState == ConnectionState.waiting) {
-            //   return Center(
-            //     child: CircularProgressIndicator(),
-            //   );
-            // }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
             final dat = instancedeli.deliveryboy;
 
             log(snapshot.data.toString());
@@ -200,122 +201,142 @@ class _HomepageDeliveryState extends State<HomepageDelivery> {
                     child: Consumer<FirebaseController>(
                       builder: (context, instance, _) {
                         return StreamBuilder(
-                          stream: instance.fetchingproductorder().asStream(),
+                          stream: instance.fetchingproductorder(),
                           builder: (context, snapshot) {
-                            final sineldocdata = instance.deliveryaccesprdoct;
-                            if (sineldocdata.isEmpty) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return Center(
-                                child: TextWidget(
-                                  text: 'No order This time',
-                                  style: TextStyle(
-                                    fontSize: Helper.W(context) * .050,
-                                    color: CupertinoColors.activeBlue,
-                                  ),
-                                ),
+                                child: CircularProgressIndicator(),
                               );
                             }
-                            ;
-                            return ListView.separated(
-                              shrinkWrap: true,
-                              itemCount: sineldocdata.length,
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: Helper.H(context) * .200,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue.shade50,
-                                      borderRadius: BorderRadius.circular(
-                                        Helper.W(context) * .030,
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: Helper.W(context) * .020,
-                                        horizontal: Helper.W(context) * .030,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                            // final sineldocdata = instance.deliveryaccesprdoct;
+
+                            List<Addproductmodel> list = [];
+
+                            list = snapshot.data!.docs.map((e) {
+                              return Addproductmodel.fromJson(
+                                  e.data() as Map<String, dynamic>);
+                            }).toList();
+
+                            if (snapshot.hasData) {
+                              return list.isEmpty
+                                  ? Center(
+                                      child: Text('NO ORder tise time'),
+                                    )
+                                  : ListView.separated(
+                                      shrinkWrap: true,
+                                      itemCount: list.length,
+                                      physics: BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                          onTap: () {},
+                                          child: Container(
+                                            width: double.infinity,
+                                            // height: Helper.H(context) * .200,
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue.shade50,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                Helper.W(context) * .030,
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical:
+                                                    Helper.W(context) * .020,
+                                                horizontal:
+                                                    Helper.W(context) * .030,
+                                              ),
+                                              child: Column(
                                                 children: [
-                                                  TextWidget(
-                                                    text: sineldocdata[index]
-                                                        .Deliveryname,
-                                                    style:
-                                                        AppTextStyles.boldText(
-                                                      fontSize:
-                                                          Helper.W(context) *
-                                                              .050,
-                                                    ),
-                                                  ),
-                                                  TextWidget(
-                                                    text:
-                                                        '12 march 2024 on 3:00 pm',
-                                                    style: TextStyle(
-                                                      fontSize:
-                                                          Helper.W(context) *
-                                                              .030,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  TextWidget(
-                                                    text: sineldocdata[index]
-                                                        .Deliveryadress,
-                                                    style: AppTextStyles
-                                                        .regularText(),
-                                                  ),
-                                                  TextWidget(
-                                                    text:
-                                                        '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
-                                                    style: AppTextStyles
-                                                        .regularText(
-                                                      fontSize:
-                                                          Helper.W(context) *
-                                                              .025,
-                                                      color: Colors.grey,
-                                                    ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          TextWidget(
+                                                            text: list[index]
+                                                                .Deliveryname,
+                                                            style: AppTextStyles
+                                                                .boldText(
+                                                              fontSize: Helper.W(
+                                                                      context) *
+                                                                  .050,
+                                                            ),
+                                                          ),
+                                                          TextWidget(
+                                                            text:
+                                                                '12 march 2024 on 3:00 pm',
+                                                            style: TextStyle(
+                                                              fontSize: Helper.W(
+                                                                      context) *
+                                                                  .030,
+                                                              color:
+                                                                  Colors.grey,
+                                                            ),
+                                                          ),
+                                                          TextWidget(
+                                                            text: list[index]
+                                                                .Deliveryadress,
+                                                            style: AppTextStyles
+                                                                .regularText(),
+                                                          ),
+
+                                                          // TextWidget(
+                                                          //   text:
+                                                          //       '54 W Nob Hill Blvd City/Town Yakima State/\n Postal Code98902',
+                                                          //   style: AppTextStyles
+                                                          //       .regularText(
+                                                          //     fontSize:
+                                                          //         Helper.W(context) *
+                                                          //             .025,
+                                                          //     color: Colors.grey,
+                                                          //   ),
+                                                          // ),
+                                                        ],
+                                                      ),
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ContainerWidget(
+                                                            color: ColorsClass
+                                                                .greenColor,
+                                                            width: Helper.W(
+                                                                    context) *
+                                                                .250,
+                                                            height: Helper.H(
+                                                                    context) *
+                                                                .030,
+                                                            text: 'Accept',
+                                                            radius: Helper.W(
+                                                                    context) *
+                                                                .030,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  ContainerWidget(
-                                                    color:
-                                                        ColorsClass.greenColor,
-                                                    width: Helper.W(context) *
-                                                        .250,
-                                                    height: Helper.H(context) *
-                                                        .030,
-                                                    text: 'Accept',
-                                                    radius: Helper.W(context) *
-                                                        .030,
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return SizedBox(
-                                  height: Helper.H(context) * .030,
-                                );
-                              },
-                            );
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return SizedBox(
+                                          height: Helper.H(context) * .030,
+                                        );
+                                      },
+                                    );
+                            }
+                            return Container();
                           },
                         );
                       },

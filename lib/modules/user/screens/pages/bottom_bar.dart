@@ -19,7 +19,7 @@ class _BottomnavUserState extends State<BottomnavUser> {
     return [
       Homepage(),
       TrackOrderScreen(),
-      Orderbottom(),
+      OrderStatus(),
       Profile(),
     ];
   }

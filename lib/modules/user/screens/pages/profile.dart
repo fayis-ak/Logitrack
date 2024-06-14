@@ -110,9 +110,9 @@ class Profile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CircleAvatar(
-                              radius: Helper.W(context) * .090,
+                              radius: Helper.W(context) * .120,
                               backgroundImage:
-                                  AssetImage('assets/images/circleprofile.png'),
+                                  NetworkImage(instance.userModel!.imageurl),
                             ),
                           ],
                         ),
@@ -167,17 +167,18 @@ class Profile extends StatelessWidget {
                   leading: Icon(Icons.notifications_active),
                   title: Text('notification'),
                 ),
-                ListTile(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PaymentUser(),
-                        ));
-                  },
-                  leading: Icon(Icons.payment_outlined),
-                  title: Text('Payment'),
-                ),
+                // ListTile(
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => PaymentUser(),
+                //       ),
+                //     );
+                //   },
+                //   leading: Icon(Icons.payment_outlined),
+                //   title: Text('Payment'),
+                // ),
                 ListTile(
                   leading: Icon(Icons.security),
                   title: Text('Security'),

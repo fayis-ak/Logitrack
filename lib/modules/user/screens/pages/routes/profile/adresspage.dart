@@ -3,6 +3,7 @@ import 'package:logitrack/models/addressmodel.dart';
 import 'package:logitrack/modules/company/utils/responsivesize.dart';
 import 'package:logitrack/modules/company/widgets/textformwidget.dart';
 import 'package:logitrack/services/firebase_controller.dart';
+import 'package:logitrack/utils/strings.dart';
 import 'package:provider/provider.dart';
 
 class AdressPage extends StatelessWidget {
@@ -59,10 +60,13 @@ class AdressPage extends StatelessWidget {
                     return ElevatedButton(
                       onPressed: () async {
                         if (formkey.currentState!.validate()) {
-                          instance.addadres(AddresModel(
-                            adress: adrescontrol.text,
-                            city: city.text,
-                          ));
+                          instance.addadres(
+                            AddresModel(
+                              adress: adrescontrol.text,
+                              city: city.text,
+                            ),
+                            auth.currentUser!.uid,
+                          );
                         }
                       },
                       child: Text('Add address'),

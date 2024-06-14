@@ -1,5 +1,5 @@
 
-class DeliveryBoys {
+class DeliveryBoysModel {
   String Name;
   String Email;
   String DLNumber;
@@ -7,7 +7,7 @@ class DeliveryBoys {
   String? id;
   String vehicl;
 
-  DeliveryBoys({
+  DeliveryBoysModel({
     required this.Name,
     required this.Email,
     required this.DLNumber,
@@ -25,8 +25,8 @@ class DeliveryBoys {
         'vehicle':vehicl,
       };
 
-  factory DeliveryBoys.fromJson(Map<String, dynamic> json) {
-    return DeliveryBoys(
+  factory DeliveryBoysModel.fromJson(Map<String, dynamic> json) {
+    return DeliveryBoysModel(
       Name: json['Name'],
       Email: json['Email'],
       DLNumber: json['DLNumber'],

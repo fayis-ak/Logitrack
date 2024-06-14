@@ -3,6 +3,7 @@ import 'package:logitrack/modules/company/screens/home/home_page.dart';
 import 'package:logitrack/modules/company/screens/pages/notiication.dart';
 import 'package:logitrack/modules/company/screens/pages/order.dart';
 import 'package:logitrack/modules/company/screens/pages/profile.dart';
+import 'package:logitrack/modules/company/screens/pages/routes/home/tracking.dart';
 
 class BottomnavCompany extends StatefulWidget {
   int selectedindex = 0;
@@ -18,7 +19,7 @@ class _BottomnavCompanyState extends State<BottomnavCompany> {
     final _pages = [
       HomepageCompany(),
       OrderbottomCompany(),
-      NotificationScreenCompany(),
+      CompanyOrder(),
       Profile(),
     ];
 

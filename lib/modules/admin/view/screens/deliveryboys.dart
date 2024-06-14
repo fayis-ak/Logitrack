@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logitrack/models/deliveryboys.dart';
-import 'package:logitrack/modules/admin/widgets/container.dart';
+
 import 'package:logitrack/services/firebase_controller.dart';
 import 'package:logitrack/utils/colors.dart';
 import 'package:logitrack/utils/toast.dart';
@@ -80,45 +78,67 @@ Widget DeliveryBoys(context) {
                       // color: Colors.red,
                     ),
                     child: StreamBuilder(
-                      stream: provider.fetchDelivery().asStream(),
+                      stream: provider.fetchDelivery(),
                       builder: (context, snapshot) {
-                        final data = provider.deliverylist;
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListView.separated(
-                            itemCount: data.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: CircleAvatar(),
-                                title: Text(data[index].Name),
-                                subtitle: Text(data[index].DLNumber),
-                                trailing: GestureDetector(
-                                  onTap: () =>
-                                      _showMyDialog(context, data[index].id),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: Helper.W(context) * .050,
-                                    height: Helper.H(context) * .030,
-                                    decoration: BoxDecoration(
-                                        color: Color(0xFF084077),
-                                        borderRadius: BorderRadius.circular(
-                                            Helper.W(context) * .020)),
-                                    child: Text(
-                                      'Remove',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        List<DeliveryBoysModel> list = [];
+
+                        list = snapshot.data!.docs.map((e) {
+                          return DeliveryBoysModel.fromJson(
+                              e.data() as Map<String, dynamic>);
+                        }).toList();
+
+                        if (snapshot.hasData) {
+                          return list.isEmpty
+                              ? Center(
+                                  child: Text('No delivery '),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListView.separated(
+                                    itemCount: list.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        leading: CircleAvatar(),
+                                        title: Text(list[index].Name),
+                                        subtitle: Text(list[index].DLNumber),
+                                        trailing: GestureDetector(
+                                          onTap: () => _showMyDialog(
+                                              context, list[index].id),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: Helper.W(context) * .050,
+                                            height: Helper.H(context) * .030,
+                                            decoration: BoxDecoration(
+                                                color: Color(0xFF084077),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        Helper.W(context) *
+                                                            .020)),
+                                            child: Text(
+                                              'Remove',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return SizedBox(
+                                        height: Helper.H(context) * .030,
+                                      );
+                                    },
                                   ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return SizedBox(
-                                height: Helper.H(context) * .030,
-                              );
-                            },
-                          ),
-                        );
+                                );
+                        }
+                        return Container();
                       },
                     )),
                 //   Container(
@@ -137,7 +157,7 @@ Widget DeliveryBoys(context) {
                 //           itemBuilder: (context, index) {
                 //             return ListTile(
                 //                 leading: CircleAvatar(),
-                //                 title: Text('data'),
+                //                 title: Text('list'),
                 //                 subtitle: Text('fayissubsittl'),
                 //                 trailing: Containerwidget());
                 //           },

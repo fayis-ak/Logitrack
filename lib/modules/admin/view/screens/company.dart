@@ -1,39 +1,25 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logitrack/models/prductmodel.dart';
+
 import 'package:logitrack/services/firebase_controller.dart';
 import 'package:logitrack/utils/colors.dart';
-import 'package:logitrack/widgets/shimmer.dart';
+
 import 'package:provider/provider.dart';
 
 import '../../../../utils/responsivesize.dart';
 
-Widget Company(context) {
-  List<String> coriername = [
-    'FedEx',
-    'GATI',
-    'DHL',
-    'Blue Dart',
-    'Shipway',
-    'DTDC'
-  ];
-
-  List<String> imagecorier = [
-    'asset/courier/bluedat.png',
-    'assets/courier/gati.png',
-    'assets/courier/djl.png',
-    'asset/courier/bluedat.png',
-    'assets/courier/shipaway.png',
-    'assets/courier/dtdc.png',
-  ];
-
+Widget Companyscreen(context) {
   return Consumer<FirebaseController>(
     builder: (context, instance, _) {
-      return FutureBuilder(
-        future: instance.companyfetch(),
+      return StreamBuilder(
+        stream: instance.companyfetch(),
         builder: (context, snapshot) {
-          var snapshotdata = instance.company;
+          List<Company> list = [];
+
+          list = snapshot.data!.docs.map((docs) {
+            return Company.fromJson(docs.data() as Map<String, dynamic>);
+          }).toList();
 
           return SingleChildScrollView(
             child: Column(
@@ -80,7 +66,7 @@ Widget Company(context) {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                        child: snapshotdata.isEmpty
+                                        child: list.isEmpty
                                             ? Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -94,30 +80,32 @@ Widget Company(context) {
                                                 child: Container(
                                                   // color: Colors.red,
                                                   child: ListView.separated(
-                                                    itemCount:
-                                                        snapshotdata.length,
+                                                    itemCount: list.length,
                                                     itemBuilder:
                                                         (context, index) {
                                                       return Material(
                                                         elevation: 4,
                                                         borderRadius:
-                                                            BorderRadius.circular(
+                                                            BorderRadius
+                                                                .circular(
                                                           Helper.W(context) *
                                                               .010,
                                                         ),
                                                         child: Container(
-                                                          width: double.infinity,
-                                                          height:
-                                                              Helper.H(context) *
-                                                                  .130,
+                                                          width:
+                                                              double.infinity,
+                                                          height: Helper.H(
+                                                                  context) *
+                                                              .130,
                                                           decoration:
                                                               BoxDecoration(
-                                                            color:
-                                                                Color(0xFFECF1F4),
+                                                            color: Color(
+                                                                0xFFECF1F4),
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                              Helper.W(context) *
+                                                              Helper.W(
+                                                                      context) *
                                                                   .010,
                                                             ),
                                                           ),
@@ -126,7 +114,8 @@ Widget Company(context) {
                                                               Padding(
                                                                 padding:
                                                                     const EdgeInsets
-                                                                        .all(5.0),
+                                                                        .all(
+                                                                        5.0),
                                                                 child: Row(
                                                                   children: [
                                                                     Container(
@@ -144,20 +133,19 @@ Widget Company(context) {
                                                                               .cover,
                                                                           image:
                                                                               NetworkImage(
-                                                                            snapshotdata[index]
-                                                                                .imageurl,
+                                                                            list[index].imageurl,
                                                                           ),
                                                                         ),
                                                                       ),
                                                                     ),
-                    
+
                                                                     Column(
                                                                       crossAxisAlignment:
                                                                           CrossAxisAlignment
                                                                               .start,
                                                                       children: [
                                                                         Text(
-                                                                          snapshotdata[index]
+                                                                          list[index]
                                                                               .CompanyName,
                                                                           style:
                                                                               TextStyle(
@@ -178,17 +166,15 @@ Widget Company(context) {
                                                                       children: [
                                                                         Row(
                                                                           children: [
-                                                                            Icon(
-                                                                                Icons.star,
+                                                                            Icon(Icons.star,
                                                                                 color: Colors.yellow),
-                                                                            Text(
-                                                                                '4.0'),
+                                                                            Text('4.0'),
                                                                           ],
                                                                         ),
                                                                         Text(
                                                                             '1 March'),
                                                                         Text(
-                                                                            '\$${snapshotdata[index].CompanyCharge}'),
+                                                                            '\$${list[index].CompanyCharge}'),
                                                                       ],
                                                                     ),
                                                                   ],
@@ -265,7 +251,7 @@ Widget Company(context) {
                                     //                               ),
                                     //                             ),
                                     //                           ),
-                    
+
                                     //                           Column(
                                     //                             crossAxisAlignment:
                                     //                                 CrossAxisAlignment

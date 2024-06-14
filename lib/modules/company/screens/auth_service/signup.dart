@@ -26,7 +26,7 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
 
   @override
   Widget build(BuildContext context) {
-    final instance = Provider.of<FirebaseController>(context);
+    final instance = Provider.of<FirebaseController>(context, listen: false);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(

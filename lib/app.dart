@@ -6,6 +6,7 @@ import 'package:logitrack/modules/company/screens/auth_service/Loggin_screen.dar
 import 'package:logitrack/modules/company/screens/bottom_navbar.dart';
 import 'package:logitrack/modules/company/widgets/text_style.dart';
 import 'package:logitrack/modules/deliveryboy/screens/auth_service/Loggin_screen.dart';
+import 'package:logitrack/modules/deliveryboy/screens/bottom_navbar.dart';
 import 'package:logitrack/modules/user/screens/auth_service/checkuser.dart';
 import 'package:logitrack/modules/user/screens/pages/routes/home/courier_services.dart';
 
@@ -50,7 +51,11 @@ class MyApp extends StatelessWidget {
         //admin
         // home: DashboardHome(),
 
-        home: Userprf(),
+        home:
+            // BottomnavDelivery(
+            //   selectedindex: 0,
+            // ),
+            Userprf(),
       ),
     );
   }

@@ -309,8 +309,8 @@ class _OrderbottomState extends State<Orderbottom> {
 //   }
 // }
 
-class OrderStatus extends StatelessWidget {
-  const OrderStatus({super.key});
+class CompanyOrder extends StatelessWidget {
+  const CompanyOrder({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -137,69 +137,18 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                   SizedBox(
                     height: Helper.H(context) * .030,
                   ),
-                  // MyCheckboxListTile(
-                  //   onChanged: (value) {
-                  //     setState(() {
-                  //       _isSelected = value!;
-                  //     });
-                  //   },
-                  //   title: 'Shipment Created',
-                  //   value: _isSelected,
-                  // ),
-                  // SizedBox(
-                  //   height: Helper.H(context) * .020,
-                  // ),
-                  // MyCheckboxListTile(
-                  //   onChanged: (value) {
-                  //     setState(() {
-                  //       _isSelected2 = value!;
-                  //     });
-                  //   },
-                  //   title: 'Vehicle Assigned',
-                  //   value: _isSelected2,
-                  // ),
-                  // SizedBox(
-                  //   height: Helper.H(context) * .020,
-                  // ),
-                  // MyCheckboxListTile(
-                  //   onChanged: (value) {
-                  //     setState(() {
-                  //       _isSelected3 = value!;
-                  //     });
-                  //   },
-                  //   title: 'Shipment Picked',
-                  //   value: _isSelected3,
-                  // ),
-                  // SizedBox(
-                  //   height: Helper.H(context) * .020,
-                  // ),
-                  // MyCheckboxListTile(
-                  //   onChanged: (value) {
-                  //     setState(() {
-                  //       _isSelected4 = value!;
-                  //     });
-                  //   },
-                  //   title: 'In Transit',
-                  //   value: _isSelected4,
-                  // ),
-                  // SizedBox(
-                  //   height: Helper.H(context) * .020,
-                  // ),
-                  // MyCheckboxListTile(
-                  //   onChanged: (value) {
-                  //     setState(() {
-                  //       _isSelected5 = value!;
-                  //     });
-                  //   },
-                  //   title: 'Shipment Delivered',
-                  //   value: _isSelected5,
-                  // ),
 
                   Consumer<FirebaseController>(
                     builder: (context, instance, _) {
                       return FutureBuilder(
                           future: instance.deliverystatus(widget.indexdata.id),
                           builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
                             final data = instance.deliverydetails;
 
                             // log(widget.indexdata.id as String);
@@ -218,14 +167,21 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                                     Consumer<FirebaseController>(
                                       builder: (context, instance, child) {
                                         return IconButton(
-                                            onPressed: () {
-                                              instance.updateconfoorm(
-                                                widget.indexdata.id,
-                                                'order request',
-                                              );
-                                            },
-                                            icon: Icon(
-                                                Icons.check_box_outline_blank));
+                                          onPressed: () {
+                                            instance.updateorderstatus(
+                                                'order request');
+                                            instance.updateconfoorm(
+                                              widget.indexdata.id,
+                                              'order request',
+                                            );
+                                          },
+                                          icon: Icon(
+                                            instance.orderStatus ==
+                                                    'order request'
+                                                ? Icons.check_box_rounded
+                                                : Icons.check_box_outline_blank,
+                                          ),
+                                        );
                                       },
                                     )
                                   ],
@@ -240,14 +196,21 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                                     Consumer<FirebaseController>(
                                       builder: (context, instance, child) {
                                         return IconButton(
-                                            onPressed: () {
-                                              instance.updateconfoorm(
-                                                widget.indexdata.id,
-                                                'order cancel',
-                                              );
-                                            },
-                                            icon: Icon(
-                                                Icons.check_box_outline_blank));
+                                          onPressed: () {
+                                            instance.updateorderstatus(
+                                                'order cancel');
+                                            instance.updateconfoorm(
+                                              widget.indexdata.id,
+                                              'order cancel',
+                                            );
+                                          },
+                                          icon: Icon(
+                                            instance.orderStatus ==
+                                                    'order cancel'
+                                                ? Icons.check_box_rounded
+                                                : Icons.check_box_outline_blank,
+                                          ),
+                                        );
                                       },
                                     )
                                   ],
@@ -262,14 +225,20 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                                     Consumer<FirebaseController>(
                                       builder: (context, instance, child) {
                                         return IconButton(
-                                            onPressed: () {
-                                              instance.updateconfoorm(
-                                                widget.indexdata.id,
-                                                'pending',
-                                              );
-                                            },
-                                            icon: Icon(
-                                                Icons.check_box_outline_blank));
+                                          onPressed: () {
+                                            instance
+                                                .updateorderstatus('pending');
+                                            instance.updateconfoorm(
+                                              widget.indexdata.id,
+                                              'pending',
+                                            );
+                                          },
+                                          icon: Icon(
+                                            instance.orderStatus == 'pending'
+                                                ? Icons.check_box_rounded
+                                                : Icons.check_box_outline_blank,
+                                          ),
+                                        );
                                       },
                                     )
                                   ],
@@ -285,13 +254,18 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                                       builder: (context, instance, child) {
                                         return IconButton(
                                             onPressed: () {
+                                              instance.updateorderstatus(
+                                                  'Complete');
                                               instance.updateconfoorm(
                                                 widget.indexdata.id,
                                                 'Complete',
                                               );
                                             },
-                                            icon: Icon(
-                                                Icons.check_box_outline_blank));
+                                            icon: Icon(instance.orderStatus ==
+                                                    'Complete'
+                                                ? Icons.check_box
+                                                : Icons
+                                                    .check_box_outline_blank));
                                       },
                                     ),
                                   ],
@@ -299,49 +273,7 @@ class _ShipmentDetailsState extends State<ShipmentDetails> {
                                 Text(data!.orderstatus.toString()),
                               ],
                             );
-                          }
-
-                          //   return Column(
-                          //     children: [
-                          //       ListView.separated(
-                          //         itemCount: orderstaus.length,
-                          //         shrinkWrap: true,
-                          //         itemBuilder: (context, index) {
-                          //           return Row(
-                          //             children: [
-                          //               Text(orderstaus[index]),
-                          //               Spacer(),
-                          //               Container(
-                          //                 width: Helper.H(context) * .020,
-                          //                 height: Helper.H(context) * .020,
-                          //                 child: Icon(
-                          //                   widget.indexdata.orderstatus ==
-                          //                           'orderconformed'
-                          //                       ? Icons.check_box
-                          //                       : Icons
-                          //                           .check_box_outline_blank_rounded,
-                          //                   color: widget.indexdata.orderstatus ==
-                          //                           'orderconformed'
-                          //                       ? Colors.blue
-                          //                       : Colors.red,
-                          //                 ),
-                          //               ),
-                          //             ],
-                          //           );
-                          //         },
-                          //         separatorBuilder: (context, index) {
-                          //           return SizedBox(
-                          //             height: Helper.H(context) * .050,
-                          //           );
-                          //         },
-                          //       ),
-                          //       SizedBox(
-                          //         height: Helper.H(context) * .050,
-                          //       ),
-                          //     ],
-                          //   );
-                          // },
-                          );
+                          });
                     },
                   ),
                   // Text(widget.indexdata.orderstatus)

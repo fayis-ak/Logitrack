@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ import 'package:logitrack/models/deliveryboys.dart';
 
 import 'package:logitrack/models/prductmodel.dart';
 import 'package:logitrack/models/user_model.dart';
+import 'package:logitrack/utils/strings.dart';
 
 import 'package:logitrack/utils/toast.dart';
 
@@ -97,12 +99,8 @@ class FirebaseController with ChangeNotifier {
     addorderdet.set(addpdmodel.tojson(addorderdet.id));
   }
 
-  Future addadres(AddresModel addresModel) async {
-    final docs = db
-        .collection('Users')
-        .doc(auth.currentUser!.uid)
-        .collection('address')
-        .doc();
+  Future addadres(AddresModel addresModel, uid) async {
+    final docs = db.collection('Users').doc(uid).collection('address').doc(uid);
     await docs.set(addresModel.toJson(docs.id));
     notifyListeners();
   }
@@ -133,20 +131,8 @@ class FirebaseController with ChangeNotifier {
     log(' product model    ${productmodl.length.toString()}');
   }
 
-  List<Company> company = [];
-  Future companyfetch() async {
-    Stream<QuerySnapshot> snapshot = db.collection('Companyies').snapshots();
-
-    snapshot.listen((snapshot) {
-      company = snapshot.docs.map((docs) {
-        return Company.fromJson(docs.data() as Map<String, dynamic>);
-      }).toList();
-    });
-
-    // company = snapshot.docs.map((e) {
-    //   return Company.fromJson(e.data());
-    // }).toList();
-    // log(' ith mode company lenght${company.length.toString()}');
+  Stream<QuerySnapshot> companyfetch() {
+    return db.collection('Companyies').snapshots();
   }
 
   Future addcompanyies(
@@ -183,7 +169,7 @@ class FirebaseController with ChangeNotifier {
   // delivery boys db
 
   Future addDelivery(
-    DeliveryBoys deliveryBoys,
+    DeliveryBoysModel deliveryBoys,
   ) async {
     var snapshot =
         await db.collection('DeliveryBoys').doc(auth.currentUser!.uid);
@@ -191,16 +177,16 @@ class FirebaseController with ChangeNotifier {
   }
 
   List<Addproductmodel> deliveryaccesprdoct = [];
-  Future fetchingproductorder() async {
-    Stream<QuerySnapshot> snapshotd = db.collection('addNewOrder').snapshots();
+  Stream<QuerySnapshot> fetchingproductorder() {
+    return db.collection('addNewOrder').snapshots();
 
-    snapshotd.listen((snapshot) {
-      deliveryaccesprdoct = snapshot.docs.map((doc) {
-        return Addproductmodel.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
-    }, onError: (error) {
-      log('Error fetching product orders: $error');
-    });
+    // snapshotd.listen((snapshot) {
+    //   deliveryaccesprdoct = snapshot.docs.map((doc) {
+    //     return Addproductmodel.fromJson(doc.data() as Map<String, dynamic>);
+    //   }).toList();
+    // }, onError: (error) {
+    //   log('Error fetching product orders: $error');
+    // });
   }
 
   Addproductmodel? deliverydetails;
@@ -215,7 +201,7 @@ class FirebaseController with ChangeNotifier {
   // fetching were ordertype
   List<Addproductmodel> orderstatus = [];
   Future fetchingorderstatus(String were) async {
-    Stream<QuerySnapshot> snapshotd =   db
+    Stream<QuerySnapshot> snapshotd = db
         .collection('addNewOrder')
         .where('orderstatus', isEqualTo: were)
         .snapshots();
@@ -230,12 +216,12 @@ class FirebaseController with ChangeNotifier {
   }
 
   // fetch deliveryboy
-  DeliveryBoys? deliveryboy;
+  DeliveryBoysModel? deliveryboy;
   Future fetchigdelivery(uid) async {
     final snapshot = await db.collection('DeliveryBoys').doc(uid).get();
 
     if (snapshot.exists) {
-      deliveryboy = DeliveryBoys.fromJson(snapshot.data()!);
+      deliveryboy = DeliveryBoysModel.fromJson(snapshot.data()!);
     }
   }
 
@@ -243,7 +229,7 @@ class FirebaseController with ChangeNotifier {
 
   final isconform = false;
 
-  updateconfoorm(userid, String status) async {
+  Future updateconfoorm(userid, String status) async {
     await db.collection('addNewOrder').doc(userid).update({
       'orderstatus': status,
     });
@@ -251,15 +237,15 @@ class FirebaseController with ChangeNotifier {
 
   String? deliverydoc;
 
-  List<DeliveryBoys> deliverylist = [];
-  Future fetchDelivery() async {
-    final snapshot = db.collection('DeliveryBoys').snapshots();
+  List<DeliveryBoysModel> deliverylist = [];
+  Stream<QuerySnapshot> fetchDelivery() {
+    return db.collection('DeliveryBoys').snapshots();
 
-    snapshot.listen((event) {
-      deliverylist = event.docs.map((e) {
-        return DeliveryBoys.fromJson(e.data());
-      }).toList();
-    });
+    // snapshot.listen((event) {
+    //   deliverylist = event.docs.map((e) {
+    //     return DeliveryBoys.fromJson(e.data());
+    //   }).toList();
+    // });
   }
 
   Future remooveDelivery(docid) async {
@@ -268,5 +254,87 @@ class FirebaseController with ChangeNotifier {
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  bool Orderrequst = false;
+  void orderrequstclick() {
+    Orderrequst = true;
+    notifyListeners();
+  }
+
+  bool ordercancel = false;
+  void ordercancelclick() {
+    ordercancel = true;
+    notifyListeners();
+  }
+
+  bool procesing = false;
+  void procesingclik() {
+    procesing = true;
+    notifyListeners();
+  }
+
+  bool complete = false;
+
+  void completeclick() {
+    complete = true;
+    notifyListeners();
+  }
+
+  String _orderStatus = '';
+
+  String get orderStatus => _orderStatus;
+
+  void updateorderstatus(String status) {
+    _orderStatus = status;
+    notifyListeners();
+  }
+
+  List<Addproductmodel> order = [];
+
+  Future getStatus(String uid) async {
+    final snapshotd = db
+        .collection('addNewOrder')
+        .where('userid', isEqualTo: uid)
+        .snapshots();
+
+    snapshotd.listen((event) {
+      order = event.docs.map((e) {
+        return Addproductmodel.fromJson(e.data());
+      }).toList();
+    });
+  }
+
+  int selectedindex = 0;
+
+  void statusupdate(uid) async {
+    final querysanp = await db
+        .collection('addNewOrder')
+        .where('userid', isEqualTo: uid)
+        .get();
+
+    if (querysanp.docs.isNotEmpty) {
+      final status = querysanp.docs.first.data()['orderstatus'];
+
+      switch (status) {
+        case 'order request':
+          selectedindex = 1;
+          notifyListeners();
+        case 'or':
+          selectedindex = 2;
+          notifyListeners();
+          break;
+        default:
+          log('no status');
+      }
+    }
+  }
+
+  Stream<QuerySnapshot> getAllDeliveryboys() {
+    return db.collection('DeliveryBoys').snapshots();
+  }
+
+  Stream getProfiel(uid) {
+    return db.collection('CompanyUsers').doc(uid).snapshots();
   }
 }

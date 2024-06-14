@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logitrack/modules/company/screens/pages/routes/track.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/home_page.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/notiication.dart';
 import 'package:logitrack/modules/deliveryboy/screens/pages/order.dart';
@@ -22,7 +23,7 @@ class _BottomnavDeliveryState extends State<BottomnavDelivery> {
     final _pages = [
       HomepageDelivery(),
       Orderbottomdelivery(),
-      NotificationScreenDelivery(),
+      DEliveryTrck(),
       Profiledelivery(),
     ];
 

@@ -339,7 +339,7 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
                         )
                             .then((value) {
                           instance.addDelivery(
-                            DeliveryBoys(
+                            DeliveryBoysModel(
                               Name: _usernameController.text,
                               Email: _emailController.text,
                               DLNumber: _drivinglicenseController.text,

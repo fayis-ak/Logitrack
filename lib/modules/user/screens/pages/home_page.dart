@@ -6,6 +6,7 @@ import 'package:logitrack/modules/company/widgets/text_style.dart';
 import 'package:logitrack/modules/user/screens/pages/routes/home/newOrder.dart';
 import 'package:logitrack/modules/user/screens/pages/routes/home/reviews.dart';
 import 'package:logitrack/modules/user/screens/pages/track_order.dart';
+import 'package:logitrack/services/controller.dart';
 import 'package:logitrack/services/firebase_controller.dart';
 import 'package:logitrack/services/user_controller.dart';
 
@@ -37,268 +38,276 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    final helper = Provider.of<FirebaseController>(context, listen: false);
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: Helper.H(context) * .080,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              // vertical: ResponsiveHelper.getWidth(context) * .180,
-              horizontal: Helper.W(context) * .110,
+        child: FutureBuilder(
+      future: helper.fetchSelectedUSerdata(auth.currentUser!.uid),
+      builder: (context, snapshot) {
+        return Column(
+          children: [
+            SizedBox(
+              height: Helper.H(context) * .080,
             ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: Helper.W(context) * .080,
-                      backgroundImage: AssetImage('assets/images/userimg.png'),
-                    ),
-                    SizedBox(
-                      width: Helper.W(context) * .050,
-                    ),
-                    Column(
-                      children: [
-                        TextWidget(
-                            text: 'Hi',
+            Padding(
+              padding: EdgeInsets.symmetric(
+                // vertical: ResponsiveHelper.getWidth(context) * .180,
+                horizontal: Helper.W(context) * .110,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: Helper.W(context) * .080,
+                        backgroundImage:
+                            NetworkImage(helper.userModel!.imageurl),
+                      ),
+                      SizedBox(
+                        width: Helper.W(context) * .050,
+                      ),
+                      Column(
+                        children: [
+                          TextWidget(
+                              text: 'Hi',
+                              style: TextStyle(
+                                fontSize: Helper.W(context) * .050,
+                              )),
+                          TextWidget(
+                            text: helper.userModel!.name,
                             style: TextStyle(
                               fontSize: Helper.W(context) * .050,
-                            )),
-                        TextWidget(
-                          text: 'curent user name',
-                          style: TextStyle(
-                            fontSize: Helper.W(context) * .050,
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: Helper.H(context) * .050,
-                ),
-                Textformwidget(
-                  controller: search,
-                  hint: 'Enter Tracking id number',
-                  radius: Helper.W(context) * .020,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Enter the required field";
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-              ],
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: Helper.H(context) * .050,
+                  ),
+                  Textformwidget(
+                    controller: search,
+                    hint: 'Enter Tracking id number',
+                    radius: Helper.W(context) * .020,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Enter the required field";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Helper.W(context) * .020,
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: Helper.H(context) * .050,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: Helper.H(context) * .300,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      Helper.W(context) * .030,
-                    ),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/images/containerimg.png'),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: Helper.W(context) * .020,
+              ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: Helper.H(context) * .050,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: Helper.H(context) * .300,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        Helper.W(context) * .030,
+                      ),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/images/containerimg.png'),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: Helper.H(context) * .050,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Helper.W(context) * .030,
+            SizedBox(
+              height: Helper.H(context) * .050,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NewOrderScreen(),
-                            ));
-                      },
-                      child: MainscreenContainer(
-                        image: 'assets/images/newordercont.png',
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: Helper.W(context) * .030,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewOrderScreen(),
+                              ));
+                        },
+                        child: MainscreenContainer(
+                          image: 'assets/images/newordercont.png',
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TrackOrderScreen(),
-                            ));
-                      },
-                      child: MainscreenContainer(
-                        image: 'assets/images/trackorder.png',
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TrackOrderScreen(),
+                              ));
+                        },
+                        child: MainscreenContainer(
+                          image: 'assets/images/trackorder.png',
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReviesScreen(),
-                            ));
-                      },
-                      child: MainscreenContainer(
-                        image: 'assets/images/reviews.png',
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReviesScreen(),
+                              ));
+                        },
+                        child: MainscreenContainer(
+                          image: 'assets/images/reviews.png',
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text('New Order'),
-                    Text('Track Order'),
-                    Text('Reviews'),
-                  ],
-                ),
-                SizedBox(
-                  height: Helper.H(context) * .050,
-                ),
-                Text('Recent Delivery'),
-                SizedBox(
-                  height: Helper.H(context) * .030,
-                ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('New Order'),
+                      Text('Track Order'),
+                      Text('Reviews'),
+                    ],
+                  ),
+                  SizedBox(
+                    height: Helper.H(context) * .050,
+                  ),
+                  Text('Recent Delivery'),
+                  SizedBox(
+                    height: Helper.H(context) * .030,
+                  ),
 
-                //  future: instance.fetchingorderstatus('order pending'),
-                // builder: (context, snapshot) {
-                //   final dat = snapshot.data;
+                  //  future: instance.fetchingorderstatus('order pending'),
+                  // builder: (context, snapshot) {
+                  //   final dat = snapshot.data;
 
-                Consumer<FirebaseController>(
-                  builder: (context, instance, child) {
-                    return FutureBuilder(
-                      future: instance.fetchingorderstatus('Complete'),
-                      builder: (context, snapshot) {
-                        // final prdctdt = instance.productmodl;.
-                        final coutpending = instance.orderstatus;
+                  Consumer<FirebaseController>(
+                    builder: (context, instance, child) {
+                      return FutureBuilder(
+                        future: instance.fetchingorderstatus('Complete'),
+                        builder: (context, snapshot) {
+                          // final prdctdt = instance.productmodl;.
+                          final coutpending = instance.orderstatus;
 
-                        return coutpending.isEmpty
-                            ? Center(
-                                child:
-                                    Text('No Recent Delivery \n        Order '),
-                              )
-                            : ListView.separated(
-                                physics: BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                TrackOrderScreen(),
-                                          ));
-                                    },
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: Helper.H(context) * .200,
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue.shade50,
-                                        borderRadius: BorderRadius.circular(
-                                          Helper.W(context) * .030,
+                          return coutpending.isEmpty
+                              ? Center(
+                                  child: Text(
+                                      'No Recent Delivery \n        Order '),
+                                )
+                              : ListView.separated(
+                                  physics: BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  TrackOrderScreen(),
+                                            ));
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: Helper.H(context) * .200,
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue.shade50,
+                                          borderRadius: BorderRadius.circular(
+                                            Helper.W(context) * .030,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    children: [
+                                                      Text('Order id'),
+                                                      Text(coutpending[index]
+                                                          .productid),
+                                                      Text('12 march 2024'),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    children: [
+                                                      Text('cont'),
+                                                      SizedBox(
+                                                        height:
+                                                            Helper.H(context) *
+                                                                .020,
+                                                      ),
+                                                      Text('16 march 2024'),
+                                                      Text(
+                                                        coutpending[index]
+                                                            .Deliveryadress,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: LinearProgressIndicator(
+                                                backgroundColor:
+                                                    Colors.cyanAccent,
+                                                valueColor:
+                                                    new AlwaysStoppedAnimation<
+                                                        Color>(Colors.red),
+                                                value: _progressValue,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  children: [
-                                                    Text('Order id'),
-                                                    Text(coutpending[index]
-                                                        .productid),
-                                                    Text('12 march 2024'),
-                                                  ],
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  children: [
-                                                    Text('cont'),
-                                                    SizedBox(
-                                                      height:
-                                                          Helper.H(context) *
-                                                              .020,
-                                                    ),
-                                                    Text('16 march 2024'),
-                                                    Text(
-                                                      coutpending[index]
-                                                          .Deliveryadress,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: LinearProgressIndicator(
-                                              backgroundColor:
-                                                  Colors.cyanAccent,
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(Colors.red),
-                                              value: _progressValue,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(
-                                    height: Helper.H(context) * .020,
-                                  );
-                                },
-                                itemCount: coutpending.length);
-                      },
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: Helper.H(context) * .030,
-                ),
-              ],
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return SizedBox(
+                                      height: Helper.H(context) * .020,
+                                    );
+                                  },
+                                  itemCount: coutpending.length);
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: Helper.H(context) * .030,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        );
+      },
+    ));
   }
 }
 

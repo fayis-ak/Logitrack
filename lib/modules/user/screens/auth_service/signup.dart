@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:logitrack/modules/company/utils/colors.dart';
+import 'package:logitrack/services/controller.dart';
 
 import 'package:logitrack/services/user_controller.dart';
 
@@ -24,10 +27,10 @@ class _SignupScreenUserState extends State<SignupScreenUser> {
 
   @override
   Widget build(BuildContext context) {
+    final helpercontrl = Provider.of<Controller>(context, listen: false);
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: Helper.W(context) * .050),
+        padding: EdgeInsets.symmetric(horizontal: Helper.W(context) * .050),
         child: SingleChildScrollView(child: Consumer<AuthController>(
           builder: (context, authcontroller, _) {
             return Form(
@@ -46,6 +49,48 @@ class _SignupScreenUserState extends State<SignupScreenUser> {
                           fontSize: Helper.W(context) * .060,
                         ),
                       ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                          width: Helper.W(context) * .30,
+                          height: Helper.H(context) * .10,
+                          child: Stack(
+                            children: [
+                              Consumer<Controller>(
+                                builder: (context, contrl, child) {
+                                  return Container(
+                                    width: Helper.W(context) * .20,
+                                    height: Helper.H(context) * .10,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(),
+                                        image: DecorationImage(
+                                            image: FileImage(
+                                          File(contrl.selectedimage.toString()),
+                                        ))),
+                                  );
+                                },
+                              ),
+                              Positioned(
+                                  top: Helper.W(context) * .12,
+                                  left: Helper.W(context) * .12,
+                                  child: Consumer<Controller>(
+                                    builder: (context, controler, child) {
+                                      return IconButton(
+                                        onPressed: () async {
+                                          controler.imagepicker();
+                                        },
+                                        icon: Icon(
+                                          Icons.camera_alt_outlined,
+                                        ),
+                                      );
+                                    },
+                                  )),
+                            ],
+                          )),
                     ],
                   ),
                   SizedBox(
@@ -106,7 +151,7 @@ class _SignupScreenUserState extends State<SignupScreenUser> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TExtWidget( 
+                      TExtWidget(
                         text: 'Password',
                         style: GoogleFonts.heebo(
                           fontSize: Helper.W(context) * .040,
@@ -178,7 +223,9 @@ class _SignupScreenUserState extends State<SignupScreenUser> {
                           authcontroller.passwordcontroller.text.trim(),
                           authcontroller.nameController.text.trim(),
                           context,
+                          helpercontrl.url,
                         );
+                        helpercontrl.claer();
                       }
                     },
                     child: ContainerWidget(

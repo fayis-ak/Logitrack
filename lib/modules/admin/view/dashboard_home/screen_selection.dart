@@ -20,7 +20,7 @@ class ScreenSelection extends StatelessWidget {
     if (selectedNavItem == 'Dashboard') {
       content = dashboard(context);
     } else if (selectedNavItem == 'Company') {
-      content = Company(context);
+      content = Companyscreen(context);
     } else if (selectedNavItem == 'Delivery Boys') {
       content = DeliveryBoys(context);
     } else if (selectedNavItem == 'Notification') {

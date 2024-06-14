@@ -1,8 +1,8 @@
- 
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Controller with ChangeNotifier {
@@ -32,9 +32,7 @@ class Controller with ChangeNotifier {
 
   String imageurl = '';
 
-  File?    _file;
-
-   
+  File? _file;
 
   FirebaseStorage storage = FirebaseStorage.instance;
 
@@ -55,6 +53,34 @@ class Controller with ChangeNotifier {
     } catch (error) {
       print(error);
     }
+    notifyListeners();
+  }
+
+  File? selectedimage;
+  String? url;
+  Future imagepicker() async {
+    final pickeimage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickeimage == null) return;
+
+    selectedimage = File(pickeimage.path);
+
+    SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
+    final curenttime = TimeOfDay.now().toString();
+
+    UploadTask uploadTask = FirebaseStorage.instance
+        .ref()
+        .child('userprofile/$curenttime')
+        .putFile(selectedimage!, metadata);
+    TaskSnapshot snapshot = await uploadTask;
+
+    url = await snapshot.ref.getDownloadURL();
+
+    notifyListeners();
+  }
+
+  claer() {
+    url = null;
     notifyListeners();
   }
 }
