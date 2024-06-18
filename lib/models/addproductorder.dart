@@ -1,5 +1,4 @@
-import 'package:logitrack/modules/deliveryboy/screens/pages/routes/profile/notification.dart';
-
+ 
 class Addproductmodel {
   String? id;
   String Pickupfromname;

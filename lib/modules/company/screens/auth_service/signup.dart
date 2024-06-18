@@ -24,9 +24,13 @@ class SignupScreenCompany extends StatefulWidget {
 class _SignupScreenCompanyState extends State<SignupScreenCompany> {
   int selectedIndex = 0;
 
+  final formkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final instance = Provider.of<FirebaseController>(context, listen: false);
+    final authcontlr = Provider.of<AuthController>(context, listen: false);
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -35,7 +39,7 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
         ),
         child: SingleChildScrollView(
           child: Form(
-            key: instance.formKey,
+            key: formkey,
             child: Column(
               children: [
                 SizedBox(
@@ -171,36 +175,47 @@ class _SignupScreenCompanyState extends State<SignupScreenCompany> {
                 SizedBox(
                   height: Helper.H(context) * .050,
                 ),
-                Consumer<AuthController>(
-                  builder: (context, insatnce, _) {
-                    return GestureDetector(
-                      onTap: () async {
-                        if (instance.formKey.currentState!.validate()) {
-                          log('on working signup button');
-                          await insatnce.CompanySignup(
-                            instance.companyemailController.text,
-                            instance.companypassword.text,
-                            context,
-                            CompanyModel(
-                              companyname:
-                                  instance.companyusernameController.text,
-                              email: instance.companyemailController.text,
-                              companylisence: instance.companylisence.text,
-                              CompanyLocation: instance.companylisence.text,
-                              password: instance.companypassword.text,
-                            ),
-                          );
-                        }
-                      },
-                      child: ContainerWidget(
-                        color: ColorsClass.SplashScreenbg,
-                        width: Helper.W(context) * .600,
-                        height: Helper.H(context) * .070,
-                        text: 'Sign up',
-                        radius: Helper.W(context) * .050,
-                      ),
-                    );
+                // if (formkey.currentState!.validate()) {
+                //           log('on working signup button');
+                //           await insatnce.companySignup(
+                //             instance.companyemailController.text,
+                //             instance.companypassword.text,
+                //             context,
+                //             CompanyModel(
+                //               companyname:
+                //                   instance.companyusernameController.text,
+                //               email: instance.companyemailController.text,
+                //               companylisence: instance.companylisence.text,
+                //               CompanyLocation: instance.companylisence.text,
+                //               password: instance.companypassword.text,
+                //             ),
+                //           );
+                //         }
+                GestureDetector(
+                  onTap: () async {
+                    if (formkey.currentState!.validate()) {
+                      log('on working signup button');
+                      await authcontlr.companySignup(
+                        instance.companyemailController.text,
+                        instance.companypassword.text,
+                        context,
+                        CompanyModel(
+                          companyname: instance.companyusernameController.text,
+                          email: instance.companyemailController.text,
+                          companylisence: instance.companylisence.text,
+                          CompanyLocation: instance.companylisence.text,
+                          password: instance.companypassword.text,
+                        ),
+                      );
+                    }
                   },
+                  child: ContainerWidget(
+                    color: ColorsClass.SplashScreenbg,
+                    width: Helper.W(context) * .600,
+                    height: Helper.H(context) * .070,
+                    text: 'Sign up',
+                    radius: Helper.W(context) * .050,
+                  ),
                 ),
                 SizedBox(
                   height: Helper.H(context) * .030,

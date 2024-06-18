@@ -69,7 +69,9 @@ class AuthController with ChangeNotifier {
           succestoast(context, 'Signup succes ');
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => Checkuserhere(),
+                builder: (context) => BottomnavUser(
+                  selectedindex: 0,
+                ),
               ),
               (route) => false);
         });
@@ -169,11 +171,15 @@ class AuthController with ChangeNotifier {
 
   //
 
-  Deliveryloggin(BuildContext context, String emaild, String passwordd) async {
+  Future Deliveryloggin(
+      BuildContext context, String emaild, String passwordd) async {
     try {
-      final credential = await auth
+      log('ith create');
+      await auth
           .signInWithEmailAndPassword(email: emaild, password: passwordd)
           .then((value) {
+        log('ith navigate');
+
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -183,9 +189,11 @@ class AuthController with ChangeNotifier {
             ));
       });
     } on FirebaseAuthException catch (e) {
-      errortoast(context, 'error ');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error')));
       if (e.code == 'weak-password') {
-        errortoast(context, 'error ');
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('weak password')));
       } else if (e.code == 'email-already-in-use') {
         errortoast(context, 'error ');
       }
@@ -195,8 +203,12 @@ class AuthController with ChangeNotifier {
     }
   }
 
-  Future CompanySignup(
-      String email, String password, BuildContext context, CompanyModel) async {
+  Future<void> companySignup(
+    String email,
+    String password,
+    BuildContext context,
+    CompanyModel companyModel,
+  ) async {
     try {
       log('try ulllil working');
       await auth
@@ -209,8 +221,14 @@ class AuthController with ChangeNotifier {
 
         final prvdr = Provider.of<FirebaseController>(context, listen: false);
 
-        prvdr.Companysignup(auth.currentUser!.uid, CompanyModel);
+        prvdr.companysignup(auth.currentUser!.uid, companyModel);
         log('add db');
+        Future companysignup(String uid, CompanyModel companymodel) async {
+          await db
+              .collection('CompanyUsers')
+              .doc(uid)
+              .set(companymodel.toJson(uid));
+        }
 
         Navigator.pushReplacement(
             context,

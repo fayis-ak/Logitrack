@@ -5,6 +5,7 @@ import 'package:another_stepper/dto/stepper_data.dart';
 import 'package:another_stepper/widgets/another_stepper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:logitrack/models/addproductorder.dart';
@@ -127,11 +128,12 @@ class _OrderbottomState extends State<Orderbottom> {
 
   Addproductmodel? addproductmodel;
 
-    
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -232,58 +234,114 @@ class _OrderbottomState extends State<Orderbottom> {
             //   ],
             // )
 
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: AnotherStepper(
-                stepperList: generateStepperData(),
-                stepperDirection: Axis.vertical,
-                iconWidth: 40,
-                iconHeight: 40,
-                activeBarColor: Colors.blue,
-                inActiveBarColor: Colors.grey,
-                inverted: false,
-                verticalGap: 30,
-                activeIndex: activeIndex,
-                barThickness: 8,
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(20),
+            //   child: AnotherStepper(
+            //     stepperList: generateStepperData(),
+            //     stepperDirection: Axis.vertical,
+            //     iconWidth: 40,
+            //     iconHeight: 40,
+            //     activeBarColor: Colors.blue,
+            //     inActiveBarColor: Colors.grey,
+            //     inverted: false,
+            //     verticalGap: 30,
+            //     activeIndex: activeIndex,
+            //     barThickness: 8,
+            //   ),
+            // ),
+            FutureBuilder<QuerySnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection('addNewOrder')
+                  .where('userid', isEqualTo: auth.currentUser!.uid)
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    var documents = snapshot.data!.docs;
+                    if (documents.isNotEmpty) {
+                      // Assuming you want to take the status of the first document
+                      var data = documents.first.data() as Map<String, dynamic>;
+                      String status = data['orderstatus'] ?? 'default';
 
-            Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      activeIndex = 1;
-                    });
-                  },
-                  child: Text('insta'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      activeIndex = 2;
-                    });
-                  },
-                  child: Text('youtube'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      activeIndex = 3;
-                    });
-                  },
-                  child: Text('upload'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      activeIndex = 4;
-                    });
-                  },
-                  child: Text('refer'),
-                ),
-              ],
-            )
+                      int activeIndex;
+                      switch (status) {
+                        case 'order request':
+                          activeIndex = 1;
+                          break;
+                        case 'in_progress':
+                          activeIndex = 1;
+                          break;
+                        case 'cancelled':
+                          activeIndex = 2;
+                          break;
+                        case 'completed':
+                          activeIndex = 3;
+                          break;
+                        default:
+                          activeIndex = 0;
+                      }
+
+                      return AnotherStepper(
+                        stepperList: generateStepperData(),
+                        stepperDirection: Axis.vertical,
+                        iconWidth: 40,
+                        iconHeight: 40,
+                        activeBarColor: Colors.blue,
+                        inActiveBarColor: Colors.grey,
+                        inverted: false,
+                        verticalGap: 30,
+                        activeIndex: activeIndex,
+                        barThickness: 8,
+                      );
+                    } else {
+                      return Center(child: Text('No data available'));
+                    }
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    return Center(child: Text('Document does not exist'));
+                  }
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+            //   Column(
+            //     children: [
+            //       ElevatedButton(
+            //         onPressed: () {
+            //           setState(() {
+            //             activeIndex = 1;
+            //           });
+            //         },
+            //         child: Text('insta'),
+            //       ),
+            //       ElevatedButton(
+            //         onPressed: () {
+            //           setState(() {
+            //             activeIndex = 2;
+            //           });
+            //         },
+            //         child: Text('youtube'),
+            //       ),
+            //       ElevatedButton(
+            //         onPressed: () {
+            //           setState(() {
+            //             activeIndex = 3;
+            //           });
+            //         },
+            //         child: Text('upload'),
+            //       ),
+            //       ElevatedButton(
+            //         onPressed: () {
+            //           setState(() {
+            //             activeIndex = 4;
+            //           });
+            //         },
+            //         child: Text('refer'),
+            //       ),
+            //     ],
+            //   )
           ],
         ),
       ),
@@ -317,7 +375,9 @@ class CompanyOrder extends StatelessWidget {
     final uid = auth.currentUser!.uid;
     log(uid);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

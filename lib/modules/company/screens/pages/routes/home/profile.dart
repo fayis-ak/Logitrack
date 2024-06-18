@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logitrack/app.dart';
 import 'package:logitrack/models/company.dart';
 import 'package:logitrack/models/deliveryboys.dart';
 import 'package:logitrack/modules/company/screens/auth_service/Loggin_screen.dart';
@@ -29,10 +30,12 @@ class ProfileView extends StatelessWidget {
                 onPressed: () async {
                   insatnce.logout(context).then((value) {
                     succestoast(context, 'Logout sucess');
-                    Navigator.pushReplacement(
+                    Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => LogginScreenCompany()));
+                          builder: (context) => Userprf(),
+                        ),
+                        (route) => false);
                   });
                 },
                 icon: Icon(Icons.logout),
@@ -50,12 +53,24 @@ class ProfileView extends StatelessWidget {
           child: SingleChildScrollView(
             child: Form(child: Consumer<FirebaseController>(
               builder: (context, helper, child) {
-                return StreamBuilder(
-                  stream: helper.getProfiel(auth.currentUser!.uid),
+                return FutureBuilder(
+                  future: helper.getProfiel(auth.currentUser!.uid),
                   builder: (context, snapshot) {
-                    List<CompanyModel> list = [];
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final data = helper.companyModel;
 
-                    // list = snapshot.data
+                    final name = TextEditingController(text: data!.companyname);
+                    final email = TextEditingController(text: data.email);
+                    final license =
+                        TextEditingController(text: data.companylisence);
+                    final location =
+                        TextEditingController(text: data.CompanyLocation);
+
+                    final password = TextEditingController(text: data.password);
 
                     return Column(
                       children: [
@@ -83,6 +98,7 @@ class ProfileView extends StatelessWidget {
                               ),
                             ),
                             Textformwidget(
+                              controller: name,
                               hint: 'Name',
                               radius: Helper.W(context) * .020,
                               validation: (value) {
@@ -107,6 +123,7 @@ class ProfileView extends StatelessWidget {
                               ),
                             ),
                             Textformwidget(
+                              controller: email,
                               hint: 'abcd45@gmail.com',
                               radius: Helper.W(context) * .020,
                               validation: (value) {
@@ -131,6 +148,7 @@ class ProfileView extends StatelessWidget {
                               ),
                             ),
                             Textformwidget(
+                              controller: license,
                               radius: Helper.W(context) * .020,
                               validation: (value) {
                                 if (value!.isEmpty) {
@@ -154,6 +172,7 @@ class ProfileView extends StatelessWidget {
                               ),
                             ),
                             Textformwidget(
+                              controller: location,
                               radius: Helper.W(context) * .020,
                               validation: (value) {
                                 if (value!.isEmpty) {
@@ -177,6 +196,7 @@ class ProfileView extends StatelessWidget {
                               ),
                             ),
                             Textformwidget(
+                              controller: password,
                               radius: Helper.W(context) * .020,
                               validation: (value) {
                                 if (value!.isEmpty) {

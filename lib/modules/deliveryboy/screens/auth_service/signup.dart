@@ -43,6 +43,8 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
 
   @override
   Widget build(BuildContext context) {
+    final fircontro = Provider.of<FirebaseController>(context);
+
     final provideobj = Provider.of<Controller>(context);
     return Scaffold(
       body: Padding(
@@ -78,7 +80,6 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
                           children: [
                             CircleAvatar(
                               radius: Helper.W(context) * .10,
-                              
                             ),
                           ],
                         ),
@@ -327,9 +328,7 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
                 SizedBox(
                   height: Helper.H(context) * .080,
                 ),
-                Consumer<FirebaseController>(
-                    builder: (context, instance, child) {
-                  return GestureDetector(
+                GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         await FirebaseAuth.instance
@@ -338,7 +337,7 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
                           password: _passwordcontroler.text,
                         )
                             .then((value) {
-                          instance.addDelivery(
+                          fircontro.addDelivery(
                             DeliveryBoysModel(
                               Name: _usernameController.text,
                               Email: _emailController.text,
@@ -348,6 +347,7 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
                             ),
                           );
                           succestoast(context, 'add delivery ');
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -358,15 +358,23 @@ class _SignupScreenDeliveryState extends State<SignupScreenDelivery> {
                         });
                       }
                     },
-                    child: ContainerWidget(
-                      color: ColorsClass.SplashScreenbg,
+                    child: Container(
                       width: Helper.W(context) * .600,
                       height: Helper.H(context) * .070,
-                      text: 'Sign up',
-                      radius: Helper.W(context) * .050,
-                    ),
-                  );
-                }),
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius:
+                              BorderRadius.circular(Helper.W(context) * .050)),
+                      child: Center(
+                        child: Text(
+                          'Sign up',
+                          style: GoogleFonts.heebo(
+                            color: ColorsClass.whiteColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )),
                 SizedBox(
                   height: Helper.H(context) * .030,
                 ),

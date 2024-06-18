@@ -156,18 +156,18 @@ class Profile extends StatelessWidget {
                         ));
                   },
                 ),
-                ListTile(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NotificationScreen(),
-                        ));
-                  },
-                  leading: Icon(Icons.notifications_active),
-                  title: Text('notification'),
-                ),
                 // ListTile(
+                //   onTap: () {
+                //     Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => NotificationScreen(),
+                //         ));
+                //   },
+                //   leading: Icon(Icons.notifications_active),
+                //   title: Text('notification'),
+                // ),
+                // // ListTile(
                 //   onTap: () {
                 //     Navigator.push(
                 //       context,
@@ -183,18 +183,18 @@ class Profile extends StatelessWidget {
                   leading: Icon(Icons.security),
                   title: Text('Security'),
                 ),
-                ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Language(),
-                      ),
-                    );
-                  },
-                  leading: Icon(Icons.language),
-                  title: Text('Language'),
-                ),
+                // ListTile(
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => Language(),
+                //       ),
+                //     );
+                //   },
+                //   leading: Icon(Icons.language),
+                //   title: Text('Language'),
+                // ),
                 ListTile(
                   leading: Icon(Icons.help),
                   title: Text('Help Center'),

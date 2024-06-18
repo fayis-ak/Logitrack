@@ -1,11 +1,11 @@
- 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:logitrack/app.dart';
 import 'package:logitrack/modules/admin/view/screens/aboutus.dart';
 import 'package:logitrack/modules/admin/view/screens/company.dart';
 import 'package:logitrack/modules/admin/view/screens/deliveryboys.dart';
 import 'package:logitrack/modules/admin/view/screens/notification.dart';
+import 'package:logitrack/modules/admin/view/screens/user.dart';
 
 import '../screens/dashboard.dart';
 
@@ -27,6 +27,8 @@ class ScreenSelection extends StatelessWidget {
       content = notification(context);
     } else if (selectedNavItem == 'About us') {
       content = aboutus(context);
+    } else if (selectedNavItem == 'user') {
+      content = userView(context);
     } else {
       content = AlertDialog(
         title: Text('Logout'),
@@ -35,6 +37,12 @@ class ScreenSelection extends StatelessWidget {
           TextButton(
             onPressed: () {
               // Navigator.of(context).pop();
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Userprf(),
+                  ),
+                  (route) => false);
             },
             child: Text('OK'),
           ),

@@ -46,6 +46,7 @@ class ProfileEditScreen extends StatelessWidget {
             builder: (context, snapshot) {
               _emaileditController.text = instance.userModel!.email;
               _nameeditController.text = instance.userModel!.name;
+              _passwordController.text = instance.userModel!.password;
 
               return SingleChildScrollView(
                 child: Form(
@@ -67,8 +68,9 @@ class ProfileEditScreen extends StatelessWidget {
                                     children: [
                                       CircleAvatar(
                                         radius: Helper.W(context) * .120,
-                                        backgroundImage: AssetImage(
-                                            'assets/images/circleprofile.png'),
+                                        backgroundImage: NetworkImage(
+                                          instance.userModel!.imageurl,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -140,11 +142,11 @@ class ProfileEditScreen extends StatelessWidget {
                             SizedBox(
                               height: Helper.H(context) * .030,
                             ),
-                            Text('Number'),
-                            BorderNoneetextformwidget(
-                              controller: _numberController,
-                              context: context,
-                            ),
+                            // Text('Number'),
+                            // BorderNoneetextformwidget(
+                            //   controller: _numberController,
+                            //   context: context,
+                            // ),
                             SizedBox(
                               height: Helper.H(context) * .030,
                             ),

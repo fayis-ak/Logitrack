@@ -19,7 +19,7 @@ class _BottomnavCompanyState extends State<BottomnavCompany> {
     final _pages = [
       HomepageCompany(),
       OrderbottomCompany(),
-      CompanyOrder(),
+      // CompanyOrder(),s
       Profile(),
     ];
 
@@ -52,10 +52,10 @@ Widget mynav({int? index, void Function(int)? onTap, selectedcolor}) {
         icon: Image.asset('assets/images/order.png'),
         label: 'Order',
       ),
-      NavigationDestination(
-        icon: Image.asset('assets/imagesdelivery/Alarm.png'),
-        label: 'Track',
-      ),
+      // NavigationDestination(
+      //   icon: Image.asset('assets/imagesdelivery/Alarm.png'),
+      //   label: 'Track',
+      // ),
       NavigationDestination(
         icon: Image.asset('assets/images/profile.png'),
         label: 'Profile',

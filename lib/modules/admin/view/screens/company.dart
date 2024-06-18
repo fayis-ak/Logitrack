@@ -15,6 +15,11 @@ Widget Companyscreen(context) {
       return StreamBuilder(
         stream: instance.companyfetch(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           List<Company> list = [];
 
           list = snapshot.data!.docs.map((docs) {

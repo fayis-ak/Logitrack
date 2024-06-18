@@ -244,14 +244,14 @@ class _HomepageCompanyState extends State<HomepageCompany> {
                                             width: Helper.W(context) * .620,
                                           ),
                                           GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Tracking(),
-                                                  ));
-                                            },
+                                            // onTap: () {
+                                            //   Navigator.push(
+                                            //       context,
+                                            //       MaterialPageRoute(
+                                            //         builder: (context) =>
+                                            //             Tracking(),
+                                            //       ));
+                                            // },
                                             child: Container(
                                               width: Helper.W(context) * .200,
                                               height: Helper.H(context) * .030,

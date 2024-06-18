@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +10,7 @@ import 'package:logitrack/models/company.dart';
 import 'package:logitrack/models/deliveryboys.dart';
 
 import 'package:logitrack/models/prductmodel.dart';
+import 'package:logitrack/models/reviewmodel.dart';
 import 'package:logitrack/models/user_model.dart';
 import 'package:logitrack/utils/strings.dart';
 
@@ -59,6 +59,16 @@ class FirebaseController with ChangeNotifier {
   }
 
   // ========create
+
+  Future addReview(ReviewModel reviewModel) async {
+    final snapshot = db.collection('Review').doc();
+
+    snapshot.set(reviewModel.tojsone(snapshot.id));
+  }
+
+  Stream<QuerySnapshot> getAllReview() {
+    return db.collection('Review').snapshots();
+  }
 
   Future adduser(String uid, usermodel) async {
     db.collection('Users').doc(uid).set(usermodel.tojson(uid));
@@ -171,8 +181,7 @@ class FirebaseController with ChangeNotifier {
   Future addDelivery(
     DeliveryBoysModel deliveryBoys,
   ) async {
-    var snapshot =
-        await db.collection('DeliveryBoys').doc(auth.currentUser!.uid);
+    var snapshot = db.collection('DeliveryBoys').doc(auth.currentUser!.uid);
     snapshot.set(deliveryBoys.tojson(snapshot.id));
   }
 
@@ -248,9 +257,21 @@ class FirebaseController with ChangeNotifier {
     // });
   }
 
+  Stream<QuerySnapshot> getAlluser() {
+    return db.collection('Users').snapshots();
+  }
+
   Future remooveDelivery(docid) async {
     try {
       db.collection('DeliveryBoys').doc(docid).delete();
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future userremove(docid) async {
+    try {
+      db.collection('Users').doc(docid).delete();
     } catch (e) {
       log(e.toString());
     }
@@ -334,7 +355,23 @@ class FirebaseController with ChangeNotifier {
     return db.collection('DeliveryBoys').snapshots();
   }
 
-  Stream getProfiel(uid) {
-    return db.collection('CompanyUsers').doc(uid).snapshots();
+  CompanyModel? companyModel;
+
+  Future<void> getProfiel(String uid) async {
+    final snapshot = db.collection('CompanyUsers').doc(uid).snapshots();
+
+    snapshot.listen((event) {
+      if (event.exists) {
+        companyModel =
+            CompanyModel.fromJsone(event.data() as Map<String, dynamic>);
+      } else {
+         
+        companyModel = null;
+      }
+    });
+  }
+
+  Future companysignup(String uid, CompanyModel companymodel) async {
+    await db.collection('CompanyUsers').doc(uid).set(companymodel.toJson(uid));
   }
 }

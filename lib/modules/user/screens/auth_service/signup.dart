@@ -225,7 +225,7 @@ class _SignupScreenUserState extends State<SignupScreenUser> {
                           context,
                           helpercontrl.url,
                         );
-                        helpercontrl.claer();
+                        // helpercontrl.claer();
                       }
                     },
                     child: ContainerWidget(

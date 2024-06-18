@@ -43,6 +43,15 @@ class _HomepageState extends State<Homepage> {
         child: FutureBuilder(
       future: helper.fetchSelectedUSerdata(auth.currentUser!.uid),
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(
+              child: AlertDialog(
+                content: CircularProgressIndicator(),
+              ),
+            ),
+          );
+        }
         return Column(
           children: [
             SizedBox(

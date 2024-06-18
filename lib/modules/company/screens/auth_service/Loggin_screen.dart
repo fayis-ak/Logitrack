@@ -101,12 +101,12 @@ class LogginScreenCompany extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      TExtWidget(
-                        text: 'Forgot Password?',
-                        style: GoogleFonts.heebo(
-                          color: ColorsClass.SplashScreenbg,
-                        ),
-                      ),
+                      // TExtWidget(
+                      //   text: 'Forgot Password?',
+                      //   style: GoogleFonts.heebo(
+                      //     color: ColorsClass.SplashScreenbg,
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(

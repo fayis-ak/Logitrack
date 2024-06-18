@@ -18,16 +18,14 @@ import 'package:logitrack/utils/strings.dart';
 import 'package:provider/provider.dart';
 
 class Orderbottom extends StatefulWidget {
-  const Orderbottom({super.key});
+  Addproductmodel addproductmodel;
+  Orderbottom({super.key, required this.addproductmodel});
 
   @override
   State<Orderbottom> createState() => _OrderbottomState();
 }
 
 class _OrderbottomState extends State<Orderbottom> {
-  int _index = 0;
-
-  int activeIndex = 0;
   final Completer<GoogleMapController> _controller = Completer();
 
   final google_api_key = "AIzaSyBZHkeiz0Y1kI-xgC4rzrqObBNu_8DEA6I";
@@ -62,8 +60,12 @@ class _OrderbottomState extends State<Orderbottom> {
   @override
   void initState() {
     getpolyPoint();
+    activeIndex = getActiveIndex(widget.addproductmodel.orderstatus);
     super.initState();
+    log(widget.addproductmodel.orderstatus);
   }
+
+  late int activeIndex;
 
   List<StepperData> generateStepperData() {
     return [
@@ -127,7 +129,20 @@ class _OrderbottomState extends State<Orderbottom> {
 
   Addproductmodel? addproductmodel;
 
-    
+  int getActiveIndex(String status) {
+    switch (status) {
+      case 'orderconformed':
+        return 1;
+      case 'pending':
+        return 2;
+      case 'Complete order':
+        return 3;
+      case 'order cancel':
+        return 4;
+      default:
+        return 0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,6 +225,7 @@ class _OrderbottomState extends State<Orderbottom> {
             SizedBox(
               height: ResponsiveHelper.getHeight(context) * .030,
             ),
+
             // Stepper(
             //   physics: BouncingScrollPhysics(),
             //   currentStep: _index,
@@ -247,43 +263,6 @@ class _OrderbottomState extends State<Orderbottom> {
                 barThickness: 8,
               ),
             ),
-
-            Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      activeIndex = 1;
-                    });
-                  },
-                  child: Text('insta'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      activeIndex = 2;
-                    });
-                  },
-                  child: Text('youtube'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      activeIndex = 3;
-                    });
-                  },
-                  child: Text('upload'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      activeIndex = 4;
-                    });
-                  },
-                  child: Text('refer'),
-                ),
-              ],
-            )
           ],
         ),
       ),
@@ -291,23 +270,7 @@ class _OrderbottomState extends State<Orderbottom> {
   }
 }
 
-// void activeindex(BuildContext context) async {
-//   final provdr = Provider.of<Controller>(context);
-
-//   final fetch = Provider.of<FirebaseController>(context);
-
-//   QuerySnapshot<Map<String, dynamic>> dat = await db
-//       .collection('addNewOrder')
-//       .where('userid', isEqualTo: auth.currentUser!.uid)
-//       .get();
-
-//   switch (dat.docs) {
-//     case 1:
-//       provdr.activeindex;
-//     case 2:
-//       provdr.activeindex;
-//   }
-// }
+////////////////////////////////////////////////////////////====first track screen =====///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class OrderStatus extends StatelessWidget {
   const OrderStatus({super.key});
@@ -317,7 +280,9 @@ class OrderStatus extends StatelessWidget {
     final uid = auth.currentUser!.uid;
     log(uid);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -326,63 +291,83 @@ class OrderStatus extends StatelessWidget {
                 return FutureBuilder(
                   future: instance.getStatus(uid),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
                     final data = instance.order;
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: instance.order.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Helper.W(context) * .050,
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Orderbottom(),
-                                  ));
-                            },
-                            child: Material(
-                              borderRadius: BorderRadius.circular(
-                                  Helper.W(context) * .020),
-                              elevation: 4,
-                              child: Container(
-                                width: Helper.W(context) * .220,
-                                height: Helper.H(context) * .120,
-                                child: Column(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Text('TRACK YOUR ORDER'),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: Helper.H(context) * .020,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(data[index].Pickupaddress),
-                                        Text('<=To=>'),
-                                        Text(data[index].Deliveryadress)
-                                      ],
+                    return data.isEmpty
+                        ? Center(
+                            child: Text('NO ORDER PLEASE ORDER '),
+                          )
+                        : ListView.separated(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: instance.order.length,
+                            itemBuilder: (context, index) {
+                              return data.isEmpty
+                                  ? Center(
+                                      child: Text('NO ORDER'),
                                     )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(
-                          height: Helper.H(context) * .050,
-                        );
-                      },
-                    );
+                                  : Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: Helper.W(context) * .050,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Orderbottom(
+                                                  addproductmodel: data[index],
+                                                ),
+                                              ));
+                                        },
+                                        child: Material(
+                                          borderRadius: BorderRadius.circular(
+                                              Helper.W(context) * .020),
+                                          elevation: 4,
+                                          child: Container(
+                                            width: Helper.W(context) * .220,
+                                            height: Helper.H(context) * .120,
+                                            child: Column(
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Text('TRACK YOUR ORDER'),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height:
+                                                      Helper.H(context) * .020,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(data[index]
+                                                        .Pickupaddress),
+                                                    Text('<=To=>'),
+                                                    Text(data[index]
+                                                        .Deliveryadress)
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                            },
+                            separatorBuilder: (context, index) {
+                              return SizedBox(
+                                height: Helper.H(context) * .050,
+                              );
+                            },
+                          );
                   },
                 );
               },

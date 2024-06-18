@@ -23,6 +23,7 @@ class Profile extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text('Delivery Boys'),
+          automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
           child: Column(
